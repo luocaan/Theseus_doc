@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模组开发指南 · SEECMD 模组文档</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html">SEECMD 模组文档</a>
+  <nav>
+    <a href="index.html">快速上手</a>
+    <a href="guide.html" class="active">开发指南</a>
+    <a href="api.html">API 参考</a>
+    <a href="design.html">架构设计</a>
+  </nav>
+  <span class="version">v2 · @Experimental</span>
+</header>
+<div class="layout">
+<aside class="sidebar"><div class="toc-title">本页目录</div><nav class="toc"><ul><li class="l2"><a href="#1-环境搭建">1. 环境搭建</a></li><li class="l3"><a href="#jdk">JDK</a></li><li class="l3"><a href="#依赖引用">依赖引用</a></li><li class="l3"><a href="#包边界规则强制">包边界规则（强制）</a></li><li class="l2"><a href="#2-最小模组">2. 最小模组</a></li><li class="l3"><a href="#关键点">关键点</a></li><li class="l2"><a href="#3-核心示例一替换进度条">3. 核心示例一：替换进度条</a></li><li class="l3"><a href="#要点">要点</a></li><li class="l2"><a href="#4-核心示例二miss-一次打开自己的-galgame">4. 核心示例二：MISS 一次打开自己的 galgame</a></li><li class="l3"><a href="#要点">要点</a></li><li class="l2"><a href="#5-核心示例三注册新音符类型">5. 核心示例三：注册新音符类型</a></li><li class="l3"><a href="#谱面-json-怎么写">谱面 JSON 怎么写</a></li><li class="l3"><a href="#要点">要点</a></li><li class="l2"><a href="#6-判定修改">6. 判定修改</a></li><li class="l3"><a href="#judgmentpolicy-注册示例widejudgemod-风格">JudgmentPolicy 注册示例（WideJudgeMod 风格）</a></li><li class="l3"><a href="#judgmentadjuster-注册示例perfect--great-收紧">JudgmentAdjuster 注册示例（PERFECT → GREAT 收紧）</a></li><li class="l3"><a href="#judgeresults-工具类">JudgeResults 工具类</a></li><li class="l3"><a href="#调整器行为约定">调整器行为约定</a></li><li class="l3"><a href="#多-adjuster-链式级联">多 adjuster 链式级联</a></li><li class="l3"><a href="#判定等级自定义判定已实现并接线">判定等级：自定义判定（已实现并接入）</a></li><li class="l2"><a href="#7-事件监听">7. 事件监听</a></li><li class="l3"><a href="#7-个游玩事件触发时机">7 个游玩事件触发时机</a></li><li class="l3"><a href="#订阅与取消订阅">订阅与取消订阅</a></li><li class="l3"><a href="#游玩事件仅场景内可见">游玩事件仅场景内可见</a></li><li class="l3"><a href="#跨模组订阅顺序">跨模组订阅顺序</a></li><li class="l3"><a href="#notejudgedevent--combobreakevent-同-tick-顺序保证">NoteJudgedEvent → ComboBreakEvent 同 tick 顺序保证</a></li><li class="l3"><a href="#全局事件已实现">全局事件（已实现）</a></li><li class="l2"><a href="#8-渲染覆盖细节">8. 渲染覆盖细节</a></li><li class="l3"><a href="#覆盖的触发与开销">覆盖的触发与开销</a></li><li class="l3"><a href="#z-顺序约定自底向上">z 顺序约定（自底向上）</a></li><li class="l3"><a href="#覆盖的通用写法">覆盖的通用写法</a></li><li class="l2"><a href="#9-打包规范">9. 打包规范</a></li><li class="l3"><a href="#打包为-jar">打包为 jar</a></li><li class="l3"><a href="#图标资源">图标资源</a></li><li class="l3"><a href="#备注字段">备注字段</a></li><li class="l3"><a href="#通过-jar-加载">通过 jar 加载</a></li><li class="l3"><a href="#外置模组管理工具">外置模组管理工具</a></li><li class="l3"><a href="#模组-id-命名规范">模组 id 命名规范</a></li><li class="l2"><a href="#10-数据目录约定">10. 数据目录约定</a></li><li class="l3"><a href="#约定">约定</a></li><li class="l2"><a href="#11-配置文件">11. 配置文件</a></li><li class="l3"><a href="#特性">特性</a></li><li class="l3"><a href="#api">API</a></li><li class="l3"><a href="#示例">示例</a></li><li class="l2"><a href="#12-依赖声明">12. 依赖声明</a></li><li class="l3"><a href="#拓扑排序激活">拓扑排序激活</a></li><li class="l3"><a href="#缺失依赖">缺失依赖</a></li><li class="l3"><a href="#循环依赖">循环依赖</a></li><li class="l3"><a href="#阶段-a-限制">当前版本限制</a></li><li class="l3"><a href="#示例">示例</a></li><li class="l2"><a href="#13-日志调试">13. 日志调试</a></li><li class="l3"><a href="#获取-logger">获取 Logger</a></li><li class="l3"><a href="#与-loglimiter-集成">与 LogLimiter 集成</a></li><li class="l3"><a href="#日志级别建议">日志级别建议</a></li><li class="l3"><a href="#通过-configjson-控制-fine-输出">通过 config.json 控制 FINE 输出</a></li><li class="l2"><a href="#14-异常反馈">14. 异常反馈</a></li><li class="l3"><a href="#阶段-a仅日志记录不弹窗">当前版本：仅日志记录，不弹窗</a></li><li class="l3"><a href="#各阶段行为">各阶段行为</a></li><li class="l3"><a href="#load_failed-状态">LOAD_FAILED 状态</a></li><li class="l3"><a href="#阶段-b集中显示">后续版本：集中显示</a></li><li class="l2"><a href="#15-谱面字段">15. 谱面字段</a></li><li class="l3"><a href="#谱面-json-示例">谱面 JSON 示例</a></li><li class="l3"><a href="#说明">说明</a></li><li class="l2"><a href="#16-附api-速查">16. 附：API 速查</a></li><li class="l3"><a href="#现状保留阶段-a">保留（，当前版本）</a></li><li class="l3"><a href="#v2-新增已实现">v2 新增已实现</a></li></ul></nav></aside>
+<main class="content">
+<h1>模组开发指南</h1>
+<p class="doc-sub">面向第三方开发者的完整开发流程：环境搭建 → 最小模组 → 核心示例 → 打包发布</p>
+<p>本指南面向希望为 SEECMD 开发第三方模组的开发者，覆盖从环境搭建到打包发布的完整流程。v2 指南以「<strong>能力原语 + 内容注册表 + 渲染上下文抽象（RenderCanvas）</strong>」为核心：模组不是等宿主提供功能钩子，而是自由组合「读数据 / 改状态 / 画东西」的原语，并注册新内容。</p>
+<blockquote><p><strong>API 成熟度声明</strong>：</p><ul><li> <strong>已实现（<code>@Experimental</code> 预览版）</strong>：<code>com.seecmd.mod.api.*</code>（含 <code>context</code> / <code>render</code> / <code>capability</code> / <code>scene</code> / <code>judge</code> / <code>event</code> / <code>spi</code>）下全部接口均已落地，涵盖内容注册表、能力接口、全局事件与 <code>RenderCanvas</code> 渲染抽象。</li><li> <strong>接入程度差异</strong>：注册表「可注册 / 可查询 / 可遍历」框架已实现；判定等级（<code>JudgmentKindRegistry</code>）与能力覆盖（<code>GameplayHud</code>）、全局事件、<code>RenderCanvas</code> 已接入主循环；音符类型 / 游戏模式 / 谱面扩展段的核心循环派发仍为后续接入工作（详见各节）。</li><li>所有接口标注 <code>@Experimental</code>（实现中，可能调整），正式发布前可能微调。</li></ul><p>接口签名的唯一权威定义见 <a href="api.html"><code>mod-api.md</code></a>；分层结构与核心抽象见 <a href="design.html"><code>mod-system-design.md</code></a>。</p></blockquote>
+<hr>
+<h2 id="1-环境搭建">1. 环境搭建</h2>
+<h3 id="jdk">JDK</h3>
+<ul><li><strong>JDK 17 或更高版本</strong>。模组代码使用 Java 17 语言特性（record、sealed、switch 模式匹配等均可）。</li><li>推荐使用与宿主一致的 JDK 发行版编译，避免字节码版本不匹配。</li></ul>
+<h3 id="依赖引用">依赖引用</h3>
+<p>模组开发需要将 SEECMD 的 <strong><code>mod-api</code> 瘦身 jar</strong> 作为编译期依赖。该 jar 仅含 <code>com.seecmd.mod.api.*</code>（含子包）与 <code>com.seecmd.mod.api.spi.*</code>，剥离了宿主实现与游戏内核，是第三方模组唯一应依赖的宿主产物。</p>
+<p>宿主已将 <code>com.seecmd:mod-api:&lt;版本&gt;</code> 安装到本地 Maven 仓库（坐标与主工程版本一致，如 <code>0.6.7</code>）。</p>
+<p>Maven 示例：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">xml</span></div><pre><code>&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.seecmd&lt;/groupId&gt;
+        &lt;artifactId&gt;mod-api&lt;/artifactId&gt;
+        &lt;version&gt;0.6.7&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;!-- api.spi 的签名参数（JsonObject）依赖 Gson，宿主运行期提供 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+        &lt;artifactId&gt;gson&lt;/artifactId&gt;
+        &lt;version&gt;2.10.1&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre></div>
+<blockquote><p><code>scope</code> 必须为 <code>provided</code> / <code>compileOnly</code>：API 由宿主在运行期提供，模组 jar 不得把宿主类打进去，否则会引发类加载冲突。</p></blockquote>
+<p>Gradle 示例：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">groovy</span></div><pre><code>dependencies {
+    compileOnly 'com.seecmd:mod-api:0.6.7'
+    compileOnly 'com.google.code.gson:gson:2.10.1'
+}</code></pre></div>
+<h3 id="包边界规则强制">包边界规则（强制）</h3>
+<p>模组代码<strong>只允许</strong> <code>import com.seecmd.mod.api.*</code>（含子包 <code>context</code> / <code>render</code> / <code>capability</code> / <code>scene</code> / <code>judge</code> / <code>event</code>）与 <code>com.seecmd.mod.api.spi.*</code>。</p>
+<p><strong>禁止</strong> import 任何宿主实现包或游戏内核包，包括但不限于：</p>
+<ul><li><code>com.seecmd.mod.host.*</code>（宿主实现）</li><li><code>com.seecmd.core.*</code>（场景、日志、配置内核等）</li><li><code>com.seecmd.gameplay.*</code>（场景、玩法实现）</li><li><code>com.seecmd.model.*</code>（谱面数据模型）</li><li><code>com.seecmd.trigger.*</code>、<code>com.seecmd.io.*</code>、<code>com.seecmd.menu.*</code>、<code>com.seecmd.render.*</code> 等</li></ul>
+<blockquote><p><code>mod-api</code> 瘦身 jar（仅含 <code>com.seecmd.mod.api.*</code> 与 <code>com.seecmd.mod.api.spi.*</code>）已从物理上隔离 API 与宿主/内核。模组若依赖内核包，将因编译期无法引用而直接失败。请从一开始就遵守此规则。</p></blockquote>
+<p><strong>标准库</strong>：<code>java.*</code> / <code>javax.*</code> / <code>java.util.*</code> / <code>java.nio.file.*</code> / <code>java.util.logging.*</code> 等 JDK 自带类按需 import。</p>
+<ul><li> 允许：<code>java.awt.Color</code>（纯值对象，见 <code>RenderCanvas</code> 颜色规格）、<code>java.awt.event.KeyEvent</code>（键码常量）、<code>com.google.gson.JsonObject</code>（音符/扩展段解析的<strong>参数类型</strong>，由宿主运行时提供 Gson 库，见 <a href="#第-5-节">第 5 节</a>）。</li><li> 禁止：<code>java.awt.Graphics2D</code>、<code>java.awt.image.BufferedImage</code>、<code>java.awt.image.*</code> 等<strong>图形实现类</strong>——v2 中绘制统一走抽象 <code>RenderCanvas</code>，不再暴露 AWT 图形上下文。</li></ul>
+<hr>
+<h2 id="2-最小模组">2. 最小模组</h2>
+<p>最小模组只需实现 <code>Mod</code> 接口，提供 <code>info()</code> 元信息，并按需覆写 <code>onLoad(ModContext)</code>。</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>package com.example.helloworld;
+
+import com.seecmd.mod.api.Mod;
+import com.seecmd.mod.api.ModContext;
+import com.seecmd.mod.api.ModInfo;
+
+import java.util.List;
+
+public class HelloWorldMod implements Mod {
+
+    @Override
+    public ModInfo info() {
+        return ModInfo.of(
+                &quot;com_example_helloworld&quot;,   // id：小写下划线
+                &quot;Hello World&quot;,               // 显示名
+                &quot;0.1.0&quot;,                     // 版本
+                List.of(&quot;Alice&quot;),            // 作者
+                &quot;最小模组示例&quot;               // 描述
+        );
+    }
+
+    @Override
+    public void onLoad(ModContext ctx) {
+        // onLoad 在模组被启用时调用一次，此处可读取配置、初始化资源、注册内容
+        ctx.getLogger().info(&quot;Hello World 模组已加载&quot;);
+        // 数据目录在首次访问时自动创建
+        ctx.getLogger().info(&quot;数据目录: &quot; + ctx.getDataDir());
+    }
+}</code></pre></div>
+<h3 id="关键点">关键点</h3>
+<ul><li><code>Mod.info()</code> 是唯一必须实现的方法；<code>onLoad</code> / <code>onUnload</code> 有默认空实现，按需覆写。</li><li><code>ModInfo.of(...)</code> 构造无依赖的模组信息；若需声明依赖，使用 <code>ModInfo</code> record 全参构造或 <code>dependsOn</code> 字段（见 <a href="#第-12-节">第 12 节</a>）。</li><li>若模组需要参与游玩（滤镜/判定/事件），改实现 <code>GameplayMod</code> 接口（继承自 <code>Mod</code>），见后续章节。</li><li><code>ModContext</code> 是模组的「工具箱」：读取日志 / 数据目录 / 配置，并在 <code>onLoad</code> 中注册内容（<code>noteTypes()</code> / <code>gameModes()</code> / <code>judgmentKinds()</code> / <code>chartExtensions()</code>）与能力（<code>capabilities()</code>）。</li></ul>
+<hr>
+<h2 id="3-核心示例一替换进度条">3. 核心示例一：替换进度条</h2>
+<blockquote><p> <strong>已实现</strong>：本示例使用的能力接口（<code>GameplayHud</code> / <code>RenderCanvas</code>）已落地并可编译运行。</p></blockquote>
+<p><strong>设计思路</strong>（能力原语，而非功能封装）：宿主<strong>不</strong>提供「把进度条替换成指定样式」这类方法，只提供三件原语——</p>
+<ol><li><strong>改状态</strong>：<code>setProgressVisible(false)</code> —— 隐藏原版进度条（覆盖机制）；</li><li><strong>读数据</strong>：<code>values().progress()</code> —— 读取进度数值；</li><li><strong>画东西</strong>：<code>renderOverlay(canvas, hudCtx)</code> —— 由模组自绘。</li></ol>
+<p>样式完全由模组决定，宿主不预设任何「皮肤」概念。</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>package com.example.neonprogress;
+
+import com.seecmd.mod.api.GameplayMod;
+import com.seecmd.mod.api.ModContext;
+import com.seecmd.mod.api.ModInfo;
+import com.seecmd.mod.api.capability.GameplayHud;
+import com.seecmd.mod.api.context.HudContext;
+import com.seecmd.mod.api.context.HudValues;
+import com.seecmd.mod.api.render.RenderCanvas;
+
+import java.awt.Color;
+import java.util.List;
+
+/** 把原版进度条替换成自绘的霓虹风格。 */
+public class NeonProgressMod implements GameplayMod, GameplayHud {
+
+    private HudValues hud;              //  数值注入未接线：当前宿主未把 HudValues 注入模组，运行期为 null
+    private boolean progressHidden = true;
+
+    @Override
+    public ModInfo info() {
+        return ModInfo.of(&quot;com_example_neon_progress&quot;, &quot;Neon Progress&quot;, &quot;0.1.0&quot;,
+                List.of(&quot;Alice&quot;), &quot;把进度条替换成霓虹风格&quot;);
+    }
+
+    @Override
+    public void onLoad(ModContext ctx) {
+        // 注册本模组为 GameplayHud 能力：宿主在每个游玩场景自动注入并回调
+        ctx.capabilities().register(GameplayHud.class, this);
+        // 改状态：隐藏原版进度条（覆盖机制的开关）
+        setProgressVisible(false);
+    }
+
+    // ===== GameplayHud 实现 =====
+
+    /** 读数据：宿主提供 HUD 数值（progress / combo / score / accuracy ...）。 */
+    @Override
+    public HudValues values() {
+        return hud;
+    }
+
+    /** 改状态：进度条可见性开关。 */
+    @Override
+    public void setProgressVisible(boolean visible) {
+        this.progressHidden = !visible;
+    }
+
+    @Override
+    public void setComboVisible(boolean visible) { /* 本例不覆盖连击 */ }
+
+    @Override
+    public void setScoreVisible(boolean visible) { /* 本例不覆盖分数 */ }
+
+    @Override
+    public void setAccuracyVisible(boolean visible) { /* 本例不覆盖准度 */ }
+
+    /** 画东西：宿主在覆盖渲染阶段调用，本模组自绘霓虹进度条。 */
+    @Override
+    public void renderOverlay(RenderCanvas canvas, HudContext hudCtx) {
+        if (!progressHidden) {
+            return; // 防御：仅在本模组隐藏了原版时才自绘
+        }
+        double p = values().progress();            // 读原版进度数值
+        int x = 40, y = 700, w = 600, h = 8;        // 示意坐标，可按需调整
+        canvas.setColor(Color.BLACK);
+        canvas.fillRect(x, y, w, h);                // 底槽
+        canvas.setColor(new Color(0, 255, 200));
+        canvas.fillRect(x, y, (int) (w * p), h);    // 已播放部分
+        canvas.setAlpha(0.5);
+        canvas.drawRect(x, y, w, h);                // 半透明描边
+        canvas.setAlpha(1.0);
+    }
+}</code></pre></div>
+<div class="demo" data-demo="neon-progress"><div class="demo-head"><span class="play-ic"></span><span class="demo-title">实时预览</span><span class="demo-cap">实时预览：上面这段 renderOverlay 代码在游戏里绘制出的霓虹进度条</span></div><div class="demo-body-placeholder"></div></div>
+<h3 id="要点">要点</h3>
+<ul><li>覆盖语义：宿主<strong>先查开关</strong>——<code>setProgressVisible(false)</code> 后原版进度条不再绘制；随后在覆盖渲染阶段调用 <code>renderOverlay</code>。</li><li>只有「有组件被隐藏」时宿主才调用 <code>renderOverlay</code>，零模组覆盖时无额外开销（见<a href="#第-8-节">第 8 节</a>）。</li><li><code>RenderCanvas</code> 是模组<strong>唯一</strong>允许的绘制入口，杜绝接触平台图形 API（<code>Graphics2D</code> / <code>GraphicsContext</code>）。</li><li> <strong>数值注入未接入</strong>：宿主已把「覆盖渲染」接入（<code>renderOverlay</code> 会被调用），但 <code>HudValues</code> 尚未注入模组——当前 <code>values()</code> 返回 <code>null</code>，覆盖层只能自绘静态内容，暂读不到实时 progress/combo/score。后续版本将把数值快照注入后，模组才能实现「读数值 + 自绘」的完整覆盖。</li></ul>
+<hr>
+<h2 id="4-核心示例二miss-一次打开自己的-galgame">4. 核心示例二：MISS 一次打开自己的 galgame</h2>
+<blockquote><p> <strong>接入限制</strong>：本示例使用的能力接口（<code>SceneHost</code> / <code>Scene</code> / <code>GameStateAccess</code> / <code>AudioAccess</code>）接口已定义，但<strong>宿主当前仅注入了 <code>GameplayHud</code></strong>；其余能力类型运行期 <code>capabilities().get(Xxx.class)</code> 返回 <code>null</code>。本示例为后续版本 的规划用法，暂不可实际运行。<code>GameplayHud</code> 覆盖示例（第 3 节）已实测可用。</p></blockquote>
+<p><strong>设计思路</strong>（跨域能力组合）：模组可影响游戏<strong>每一处</strong>——把「判定事件（<code>NoteJudgedEvent</code>）+ 状态机（<code>GameStateAccess</code>）+ 场景栈（<code>SceneHost</code>）+ 音频（<code>AudioAccess</code>）+ 自定义场景（<code>Scene</code>）」自由组合，就能实现「MISS 一次打开自带的 galgame」。宿主不需要为此提供任何专用钩子。</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>NoteJudgedEvent (judgment == seecmd:miss)
+  → game.pause()                            // 改状态：暂停游玩（可被 resume 恢复）
+  → audio.playSound(...)                    // 改状态：播放自配音效
+  → scenes.push(new MyGalgameScene(...))    // 改状态：压入自定义场景
+  → (galgame 场景内由模组自绘、自处理输入)
+  → 玩家返回时：scenes.pop() + game.resume() // 恢复游玩</code></pre></div>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>package com.example.missgalgame;
+
+import com.seecmd.mod.api.GameplayMod;
+import com.seecmd.mod.api.ModContext;
+import com.seecmd.mod.api.ModInfo;
+import com.seecmd.mod.api.capability.AudioAccess;
+import com.seecmd.mod.api.capability.GameStateAccess;
+import com.seecmd.mod.api.capability.SceneHost;
+import com.seecmd.mod.api.event.ModEventBus;
+import com.seecmd.mod.api.event.NoteJudgedEvent;
+import com.seecmd.mod.api.event.Subscription;
+import com.seecmd.mod.api.render.RenderCanvas;
+import com.seecmd.mod.api.scene.InputEvent;
+import com.seecmd.mod.api.scene.Scene;
+
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+/** MISS 一次就打开模组自带的 galgame。 */
+public class MissGalgameMod implements GameplayMod {
+
+    private final List&lt;Subscription&gt; subs = new ArrayList&lt;&gt;();
+    private GameStateAccess game;
+    private SceneHost scenes;
+    private AudioAccess audio;
+
+    @Override
+    public ModInfo info() {
+        return ModInfo.of(&quot;com_example_miss_galgame&quot;, &quot;Miss Galgame&quot;, &quot;0.1.0&quot;,
+                List.of(&quot;Alice&quot;), &quot;MISS 时打开自带的 galgame&quot;);
+    }
+
+    @Override
+    public void onLoad(ModContext ctx) {
+        // 取用宿主注入的能力实例
+        game = ctx.capabilities().get(GameStateAccess.class);
+        scenes = ctx.capabilities().get(SceneHost.class);
+        audio = ctx.capabilities().get(AudioAccess.class);
+    }
+
+    @Override
+    public void registerEvents(ModEventBus bus) {
+        subs.add(bus.subscribe(NoteJudgedEvent.class, e -&gt; {
+            // 判定等级为 JudgmentKindDefinition，用 id() 判断
+            String kind = e.result().judgment().id();
+            if (&quot;seecmd:miss&quot;.equals(kind)) {
+                openGalgame();
+            }
+        }));
+    }
+
+    private void openGalgame() {
+        game.pause(); // 1. 暂停游玩（音乐走 pause/resume，保持进度）
+        audio.playSound(&quot;com_example_miss_galgame:alert&quot;, 0.8); // 2. 自配音效
+        scenes.push(new MyGalgameScene(game, scenes)); // 3. 压入自定义场景
+    }
+
+    @Override
+    public void onUnload() {
+        for (Subscription s : subs) {
+            s.unsubscribe();
+        }
+        subs.clear();
+    }
+}
+
+/** 模组自定义场景，实现 API 场景抽象 `Scene`（接口已定义，宿主未接线，见节首提示）。 */
+class MyGalgameScene implements Scene {
+
+    private final GameStateAccess game;
+    private final SceneHost scenes;
+
+    MyGalgameScene(GameStateAccess game, SceneHost scenes) {
+        this.game = game;
+        this.scenes = scenes;
+    }
+
+    @Override
+    public String id() {
+        return &quot;com_example_miss_galgame:galgame&quot;;
+    }
+
+    @Override
+    public void render(RenderCanvas canvas) {
+        // 模组自绘 galgame 画面：立绘、对话框、选项按钮……
+    }
+
+    @Override
+    public boolean handleInput(InputEvent event) {
+        if (event.keyCode() == KeyEvent.VK_ESCAPE) {
+            scenes.pop();   // 退出 galgame 场景
+            game.resume();  // 恢复游玩（AudioEngine 恢复播放位置）
+            return true;    // 已消费
+        }
+        return false;
+    }
+}</code></pre></div>
+<h3 id="要点">要点</h3>
+<ul><li><strong>暂停语义</strong>：<code>pause()</code> 暂停的是游玩与音乐，<code>resume()</code> 恢复并维持原播放位置与速度（符合宿主 <code>MusicPlayer</code> 的 pause/resume 约定）。不要用 <code>endGame()</code> 结束本局。</li><li><strong>场景语义</strong>：<code>SceneHost.push(scene)</code> 压入新场景后当前游玩场景挂起；<code>pop()</code> 弹回。<code>Scene</code> 是 API 场景抽象（<code>com.seecmd.mod.api.scene</code>），host 内部桥接到内核 <code>SceneManager</code>，模组不必接触内核场景类。</li><li>返回后游玩从暂停点继续，无需模组做任何状态复原。</li></ul>
+<hr>
+<h2 id="5-核心示例三注册新音符类型">5. 核心示例三：注册新音符类型</h2>
+<blockquote><p> <strong>注册表框架已实现</strong>：<code>NoteTypeDefinition</code> / <code>NoteTypeRegistry</code> / <code>JudgeInput</code> / <code>JudgeSink</code> 等类型均已落地，可注册、查询、遍历。
+ <strong>接入限制</strong>：核心循环（谱面解析 / 判定引擎 / 轨道渲染）当前仍按内置音符类型派发，<strong>尚未切换到定义对象派发</strong>。本示例说明 API 用法；要让自定义音符类型真正参与游玩派发，需等待核心循环接入完成。</p></blockquote>
+<p><strong>设计思路</strong>（内容注册表）：现状音符类型是写死的枚举（<code>NORMAL/HOLD/BARRIER/EXPLOIT/PAYLOAD</code>），模组无法「加内容」。v2 中，音符类型开放为注册表——模组实现 <code>NoteTypeDefinition</code>（<strong>解析 + 判定 + 渲染</strong>三件套），注册后宿主通用路径自动消费，谱面里写上对应类型 key 即生效。</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>package com.example.slidenote;
+
+import com.google.gson.JsonObject;
+
+import com.seecmd.mod.api.GameplayMod;
+import com.seecmd.mod.api.ModContext;
+import com.seecmd.mod.api.ModInfo;
+import com.seecmd.mod.api.render.RenderCanvas;
+import com.seecmd.mod.api.spi.JudgeInput;
+import com.seecmd.mod.api.spi.JudgeSink;
+import com.seecmd.mod.api.spi.JudgmentKindRegistry;
+import com.seecmd.mod.api.spi.NoteData;            // api 侧音符基类
+import com.seecmd.mod.api.spi.NoteParseContext;
+import com.seecmd.mod.api.spi.NoteRenderContext;
+import com.seecmd.mod.api.spi.NoteTypeDefinition;
+import com.seecmd.mod.api.spi.NoteTypeRegistry;
+
+import java.awt.Color;
+import java.util.List;
+
+/** 注册新音符类型「滑键 slide」。 */
+public class SlideNoteMod implements GameplayMod {
+
+    @Override
+    public ModInfo info() {
+        return ModInfo.of(&quot;com_example_slide_note&quot;, &quot;Slide Note&quot;, &quot;0.1.0&quot;,
+                List.of(&quot;Alice&quot;), &quot;新增滑键音符类型&quot;);
+    }
+
+    @Override
+    public void onLoad(ModContext ctx) {
+        // 注册到音符类型注册表（进程级，仅一次）
+        ctx.noteTypes().register(new SlideNoteDefinition(ctx.judgmentKinds()));
+    }
+}
+
+/** 滑键定义：解析、判定、渲染全部由本类负责。 */
+class SlideNoteDefinition implements NoteTypeDefinition {
+
+    private final JudgmentKindRegistry kinds; // 用于产出判定等级
+
+    SlideNoteDefinition(JudgmentKindRegistry kinds) {
+        this.kinds = kinds;
+    }
+
+    @Override
+    public String id() {
+        return &quot;com_example_slide_note:slide&quot;;
+    }
+
+    @Override
+    public String displayName() {
+        return &quot;滑键&quot;;
+    }
+
+    /** 谱面 JSON 中该音符的序列化 key（type 字段）。 */
+    @Override
+    public String serializationKey() {
+        return &quot;slide&quot;;
+    }
+
+    /** 解析：从谱面 JSON 对象创建运行时音符。 */
+    @Override
+    public NoteData deserialize(JsonObject json, NoteParseContext ctx) {
+        SlideNote note = new SlideNote();
+        note.setTime(json.get(&quot;time&quot;).getAsLong());
+        note.setLane(json.get(&quot;lane&quot;).getAsInt());
+        if (json.has(&quot;endLane&quot;)) {
+            note.setEndLane(json.get(&quot;endLane&quot;).getAsInt());
+        }
+        return note;
+    }
+
+    /** 判定：音符到达判定线时，按时间差产出判定等级。 */
+    @Override
+    public void onJudge(JudgeInput input, JudgeSink sink) {
+        long delta = Math.abs(input.deltaMs());
+        if (delta &lt;= 70) {
+            sink.accept(kinds.get(&quot;seecmd:perfect&quot;), input.judgeTime());
+        } else if (delta &lt;= 150) {
+            sink.accept(kinds.get(&quot;seecmd:great&quot;), input.judgeTime());
+        } else {
+            sink.accept(kinds.get(&quot;seecmd:miss&quot;), input.judgeTime());
+        }
+    }
+
+    /** 渲染：每帧在音符位置绘制滑键外观。 */
+    @Override
+    public void render(RenderCanvas canvas, NoteRenderContext ctx) {
+        canvas.setColor(new Color(0, 180, 255));
+        canvas.fillRect(ctx.x(), ctx.y(), ctx.width(), 8);
+        canvas.setColor(new Color(0, 120, 255));
+        canvas.drawLine(ctx.x(), ctx.y() + 4, ctx.x() + ctx.width(), ctx.y() + 4);
+    }
+}
+
+/** 滑键运行时数据，继承 api 侧音符基类。 */
+class SlideNote extends NoteData {
+    private int endLane;
+
+    void setEndLane(int endLane) {
+        this.endLane = endLane;
+    }
+
+    int endLane() {
+        return endLane;
+    }
+}</code></pre></div>
+<div class="demo" data-demo="chart-json-parse"><div class="demo-head"><span class="play-ic"></span><span class="demo-title">实时预览</span><span class="demo-cap">实时预览：谱面 JSON 如何被 NoteTypeRegistry 解析为运行时音符</span></div><div class="demo-body-placeholder"></div></div>
+<h3 id="谱面-json-怎么写">谱面 JSON 怎么写</h3>
+<p><code>serializationKey()</code> 与谱面 JSON 中音符的 <code>type</code> 字段对应。宿主解析谱面时用 <code>NoteTypeRegistry.bySerializationKey(&quot;slide&quot;)</code> 找到本定义，再调用 <code>deserialize</code> 创建运行时音符：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">json</span></div><pre><code>{
+  &quot;title&quot;: &quot;Slide Demo&quot;,
+  &quot;author&quot;: &quot;Bob&quot;,
+  &quot;difficulty&quot;: &quot;Hard&quot;,
+  &quot;bpm&quot;: 140,
+  &quot;lanes&quot;: 4,
+  &quot;notes&quot;: [
+    {
+      &quot;type&quot;: &quot;slide&quot;,
+      &quot;time&quot;: 5000,
+      &quot;lane&quot;: 1,
+      &quot;endLane&quot;: 3
+    },
+    {
+      &quot;type&quot;: &quot;slide&quot;,
+      &quot;time&quot;: 5200,
+      &quot;lane&quot;: 2,
+      &quot;endLane&quot;: 0
+    }
+  ]
+}</code></pre></div>
+<h3 id="要点">要点</h3>
+<ul><li><strong>通用路径消费</strong>：宿主核心循环（谱面解析 / 判定引擎 / 轨道渲染）不再为每种类型写 <code>if/else</code>，而是遍历注册表分发。新增类型自动获得「能解析、能判定、能渲染」的完整能力。</li><li><strong>判定等级来自注册表</strong>：<code>onJudge</code> 通过 <code>sink.accept(kinds.get(&quot;seecmd:perfect&quot;), time)</code> 产出判定，评分 / 统计 / 特效按 <code>JudgmentKindRegistry</code> 遍历，无需硬编码枚举。</li><li>其余三种注册表（游戏模式 <code>GameModeRegistry</code>、判定等级 <code>JudgmentKindRegistry</code>、谱面扩展段 <code>ChartExtensionRegistry</code>）的注册方式与本节同构：<code>onLoad</code> 中 <code>ctx.xxx().register(...)</code> 一次。</li></ul>
+<hr>
+<h2 id="6-判定修改">6. 判定修改</h2>
+<p>判定修改分两类，语义不同，<strong>不可混用</strong>（已实现）：</p>
+<table><thead><tr><th>类型</th><th>接口</th><th>作用</th><th>合并语义</th></tr></thead><tbody><tr><td><strong>policy（策略）</strong></td><td><code>JudgmentPolicy</code></td><td>定义判定<strong>时间窗口</strong></td><td>多个 policy 取<strong>最大值</strong>（最宽松）</td></tr><tr><td><strong>adjuster（调整器）</strong></td><td><code>JudgmentAdjuster</code></td><td><strong>改写判定结果</strong></td><td>多个 adjuster <strong>链式级联</strong></td></tr></tbody></table>
+<blockquote><p><strong>核心区分</strong>：policy 是<strong>宽松判定</strong>（放大窗口，让玩家更容易命中），多模组叠加取最大值；adjuster 是<strong>收紧/改写判定</strong>（如把 PERFECT 降级为 GREAT），按注册顺序依次改写结果。若想"收紧判定"，<strong>必须用 adjuster</strong>，因为 policy 只会越合越宽。</p></blockquote>
+<div class="demo" data-demo="judgment-window"><div class="demo-head"><span class="play-ic"></span><span class="demo-title">实时预览</span><span class="demo-cap">实时预览：判定窗口可视化（默认 vs 宽松 ×1.5，可拖拽指针）</span></div><div class="demo-body-placeholder"></div></div>
+<div class="demo" data-demo="combo-behavior"><div class="demo-head"><span class="play-ic"></span><span class="demo-title">实时预览</span><span class="demo-cap">实时预览：连击行为 INCREMENT / RESET / NONE（点击徽章可编辑）</span></div><div class="demo-body-placeholder"></div></div>
+<h3 id="judgmentpolicy-注册示例widejudgemod-风格">JudgmentPolicy 注册示例（WideJudgeMod 风格）</h3>
+<p>将全部 5 个判定窗口放大 1.5 倍。五个字段语义统一为"值越大越宽松"。</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>import com.seecmd.mod.api.GameplayMod;
+import com.seecmd.mod.api.ModInfo;
+import com.seecmd.mod.api.judge.JudgmentPolicy;
+import com.seecmd.mod.api.judge.JudgmentPolicyRegistry;
+
+import java.util.List;
+
+public class WideJudgeMod implements GameplayMod {
+
+    // 基础窗口 70/150/150/150/50 × 1.5
+    private static final long PERFECT_WINDOW_MS = 105L;
+    private static final long GREAT_WINDOW_MS   = 225L;
+    private static final long MISS_WINDOW_MS    = 225L;
+    private static final long HOLD_END_WINDOW_MS = 225L;
+    private static final long LATE_CUTOFF_MS    = 75L;
+
+    @Override
+    public ModInfo info() {
+        return ModInfo.of(&quot;com_example_wide_judge&quot;, &quot;Wide Judge&quot;, &quot;0.1.0&quot;,
+                List.of(&quot;Alice&quot;), &quot;宽松判定（×1.5）&quot;);
+    }
+
+    @Override
+    public void registerJudgmentPolicy(JudgmentPolicyRegistry registry) {
+        registry.registerPolicy(new JudgmentPolicy() {
+            @Override public long perfectWindowMs()  { return PERFECT_WINDOW_MS; }
+            @Override public long greatWindowMs()    { return GREAT_WINDOW_MS; }
+            @Override public long missWindowMs()     { return MISS_WINDOW_MS; }
+            @Override public long holdEndWindowMs()  { return HOLD_END_WINDOW_MS; }
+            @Override public long lateCutoffMs()     { return LATE_CUTOFF_MS; }
+        });
+    }
+}</code></pre></div>
+<p>窗口字段含义：</p>
+<ul><li><code>perfectWindowMs</code> / <code>greatWindowMs</code> / <code>missWindowMs</code>：各判定等级的时间容忍时长。</li><li><code>holdEndWindowMs</code>：长音符结尾判定窗口。</li><li><code>lateCutoffMs</code>：越过判定线后仍可补判的时长。</li></ul>
+<p>无任何 policy 注册时，宿主使用内置默认策略 <code>70/150/150/150/50</code>（见 <a href="api.html"><code>mod-api.md</code></a> 附录 A）。</p>
+<h3 id="judgmentadjuster-注册示例perfect--great-收紧">JudgmentAdjuster 注册示例（PERFECT → GREAT 收紧）</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>import com.seecmd.mod.api.GameplayMod;
+import com.seecmd.mod.api.ModContext;
+import com.seecmd.mod.api.ModInfo;
+import com.seecmd.mod.api.context.GameplayContext;
+import com.seecmd.mod.api.judge.JudgeResult;
+import com.seecmd.mod.api.judge.JudgeResults;
+import com.seecmd.mod.api.judge.JudgmentAdjuster;
+import com.seecmd.mod.api.judge.JudgmentPolicyRegistry;
+import com.seecmd.mod.api.spi.JudgmentKindRegistry;
+
+import java.util.List;
+
+public class StrictJudgeMod implements GameplayMod {
+
+    private JudgmentKindRegistry kinds; // onLoad 时取得，用于查询内置/自定义判定等级
+
+    @Override
+    public ModInfo info() {
+        return ModInfo.of(&quot;com_example_strict_judge&quot;, &quot;Strict Judge&quot;, &quot;0.1.0&quot;,
+                List.of(&quot;Alice&quot;), &quot;将 PERFECT 收紧为 GREAT&quot;);
+    }
+
+    @Override
+    public void onLoad(ModContext ctx) {
+        this.kinds = ctx.judgmentKinds();
+    }
+
+    @Override
+    public void registerJudgmentAdjuster(JudgmentPolicyRegistry registry) {
+        registry.registerAdjuster(new JudgmentAdjuster() {
+            @Override
+            public JudgeResult adjust(JudgeResult input, GameplayContext ctx) {
+                // 判定等级为 JudgmentKindDefinition，用 id() 判断
+                String id = input.judgment() != null ? input.judgment().id() : &quot;&quot;;
+                // 仅当 combo 较高时收紧，避免新手期过严
+                if (ctx.combo() &gt;= 50 &amp;&amp; &quot;seecmd:perfect&quot;.equals(id)) {
+                    return JudgeResults.withJudgment(input, kinds.get(&quot;seecmd:great&quot;));
+                }
+                return input; // 不改写时原样返回
+            }
+        });
+    }
+}</code></pre></div>
+<h3 id="judgeresults-工具类">JudgeResults 工具类</h3>
+<p><code>JudgeResult</code> 为只读接口，改写时必须通过 <code>JudgeResults</code> 静态工厂构造新实例（不可变）：</p>
+<table><thead><tr><th>方法</th><th>说明</th></tr></thead><tbody><tr><td><code>JudgeResults.withJudgment(src, judgment)</code></td><td>仅替换判定等级，保留 note/judgeTime/isHoldEnd</td></tr><tr><td><code>JudgeResults.withJudgeTime(src, judgeTime)</code></td><td>仅替换判定时间</td></tr><tr><td><code>JudgeResults.with(src, judgment, judgeTime)</code></td><td>同时替换判定等级与时间</td></tr></tbody></table>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>// 例：把 PERFECT 降级为 GREAT，并把判定时间对齐到音符时间
+JudgeResult rewritten = JudgeResults.with(
+        input,
+        kinds.get(&quot;seecmd:great&quot;),   // JudgmentKindDefinition
+        input.note().time()
+);</code></pre></div>
+<blockquote><p><code>withJudgment</code> / <code>with</code> 的第二个参数为 <code>JudgmentKindDefinition</code>（从 <code>JudgmentKindRegistry</code> 取得，内置等级 id：<code>seecmd:perfect</code> / <code>seecmd:great</code> / <code>seecmd:miss</code> / <code>seecmd:none</code>）。</p></blockquote>
+<h3 id="调整器行为约定">调整器行为约定</h3>
+<ul><li><strong>返回 null 会被跳过并记 WARNING</strong>：当前结果保持不变，链继续往后执行。若不想改写，请显式 <code>return input;</code>，<strong>不要返回 null</strong>。</li><li><strong>adjuster 不可修改 note 字段</strong>：<code>JudgeResults</code> 不提供 <code>withNote(...)</code>，判定结果的音符引用始终与输入一致。这是有意限制——判定改写不应改变被判定音符本身。</li><li><strong>异常隔离</strong>：adjuster 抛异常会被跳过（当前结果不变）并经 <code>LogLimiter</code> 限频记录，不影响后续 adjuster 与游戏运行。</li><li><strong>NONE → MISS 转换</strong>：调整链结束后，若最终判定等级 id 仍为 <code>seecmd:none</code>，宿主自动改写为 <code>seecmd:miss</code>。</li></ul>
+<h3 id="多-adjuster-链式级联">多 adjuster 链式级联</h3>
+<p>调整器按<strong>注册顺序</strong>链式执行，前一个的输出作为后一个的输入：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>policy 判定 → adjuster#1.adjust(result) → adjuster#2.adjust(...) → ... → 计分/特效</code></pre></div>
+<blockquote><p>因此 adjuster 链对顺序敏感。跨模组的注册顺序遵循 <code>ModManager.register</code> 调用顺序（见 <a href="#第-7-节">第 7 节</a>）。模组作者应假设链中可能存在其他 adjuster，避免依赖"输入必然是某等级"的假设。</p></blockquote>
+<h3 id="判定等级自定义判定已实现并接线">判定等级：自定义判定（已实现并接入）</h3>
+<p>判定等级已统一为注册表驱动：初始判定产物为内置等级（<code>seecmd:perfect</code> / <code>seecmd:great</code> / <code>seecmd:miss</code> / <code>seecmd:none</code>），<code>JudgeResult.judgment()</code> 直接返回 <code>JudgmentKindDefinition</code>；<code>JudgmentKindRegistry</code> + <code>JudgmentKindDefinition</code> <strong>已实现并接入主循环</strong>——<code>GameplayScene.applyJudgment</code> 以 <code>JudgmentKindDefinition</code> 驱动计分 / 连击 / 血量 / 渲染，<code>ScoreManager.addJudgment(def)</code> 统一处理内置与自定义判定等级。</p>
+<p>调整器改写到自定义判定等级的方式：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>registry.registerAdjuster((input, gameplayCtx) -&gt; {
+    String id = input.judgment() != null ? input.judgment().id() : &quot;&quot;;
+    if (&quot;seecmd:perfect&quot;.equals(id)) {
+        return JudgeResults.withJudgment(input, this.kinds.get(&quot;mymod:good&quot;));
+    }
+    return input;
+});</code></pre></div>
+<p>要点：</p>
+<ul><li>自定义判定的 <code>comboBehavior</code> 决定连击行为：<code>INCREMENT</code> 递增、<code>RESET</code> 归零（按 miss 语义处理，清空连击显示）、<code>NONE</code> 不变。</li><li><code>scoreValue()</code> / <code>accuracyWeight()</code> 参与计分与血量；<code>color()</code> 与 <code>render()</code> 决定判定特效与连击文字的样式。</li><li>注意 <code>RESET</code> 类判定在当前设计中<strong>不显示连击行</strong>（与 miss 同语义），但会写入日志与统计（见第 7 节日志）。</li></ul>
+<hr>
+<h2 id="7-事件监听">7. 事件监听</h2>
+<p>模组通过 <code>ModEventBus</code> 订阅游玩事件。在 <code>GameplayMod.registerEvents</code> 中注册订阅（已实现）。</p>
+<div class="demo" data-demo="event-timeline"><div class="demo-head"><span class="play-ic"></span><span class="demo-title">实时预览</span><span class="demo-cap">实时预览：一场游玩中模组订阅到的事件序列与数据</span></div><div class="demo-body-placeholder"></div></div>
+<h3 id="7-个游玩事件触发时机">7 个游玩事件触发时机</h3>
+<table><thead><tr><th>事件</th><th>触发时机</th></tr></thead><tbody><tr><td><code>ChartLoadedEvent</code></td><td>谱面加载完成（loading step4 完成、谱面数据已加载、音乐未启动）。此时 <code>musicTimeMs</code> 为负（入场过渡期），<code>progress</code> 为 0。适合读取谱面元数据做预处理。</td></tr><tr><td><code>GameplayStartEvent</code></td><td>游玩正式开始（loading 完成后）。</td></tr><tr><td><code>NoteJudgedEvent</code></td><td>单个音符判定完成后（<code>applyJudgment</code> 之后）。含判定结果与游玩状态快照。</td></tr><tr><td><code>ComboBreakEvent</code></td><td>combo 从 >0 变为 0 时触发一次，紧随对应的 <code>NoteJudgedEvent</code> 之后。连续 MISS 不会重复触发（combo 已是 0）；重启谱面时 combo 归零不触发。</td></tr><tr><td><code>PauseEvent</code></td><td>游玩被暂停时。</td></tr><tr><td><code>ResumeEvent</code></td><td>游玩从暂停恢复时。</td></tr><tr><td><code>GameplayEndEvent</code></td><td>游玩结束、进入结算（<code>goToResult</code>）前。</td></tr></tbody></table>
+<p>所有事件均提供 <code>context()</code> 返回不可变的 <code>GameplayContext</code> 快照；<code>NoteJudgedEvent</code> 额外提供 <code>result()</code> 返回 <code>JudgeResult</code>。</p>
+<h3 id="订阅与取消订阅">订阅与取消订阅</h3>
+<p><code>subscribe</code> 返回 <code>Subscription</code> 令牌，模组<strong>应在 <code>onUnload</code> 时取消所有订阅</strong>，避免内存泄漏。</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>import com.seecmd.mod.api.GameplayMod;
+import com.seecmd.mod.api.ModContext;
+import com.seecmd.mod.api.ModInfo;
+import com.seecmd.mod.api.event.ChartLoadedEvent;
+import com.seecmd.mod.api.event.ComboBreakEvent;
+import com.seecmd.mod.api.event.ModEventBus;
+import com.seecmd.mod.api.event.NoteJudgedEvent;
+import com.seecmd.mod.api.event.Subscription;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StatsMod implements GameplayMod {
+
+    private final List&lt;Subscription&gt; subscriptions = new ArrayList&lt;&gt;();
+    private ModContext ctx;
+
+    @Override
+    public ModInfo info() {
+        return ModInfo.of(&quot;com_example_stats&quot;, &quot;Stats&quot;, &quot;0.1.0&quot;,
+                List.of(&quot;Alice&quot;), &quot;统计与事件示例&quot;);
+    }
+
+    @Override
+    public void onLoad(ModContext ctx) {
+        this.ctx = ctx;
+    }
+
+    @Override
+    public void registerEvents(ModEventBus bus) {
+        subscriptions.add(bus.subscribe(ChartLoadedEvent.class, e -&gt; {
+            ctx.getLogger().info(&quot;谱面加载: &quot; + e.context().chartTitle()
+                    + &quot; / 总音符 &quot; + e.context().totalNoteCount());
+        }));
+
+        subscriptions.add(bus.subscribe(NoteJudgedEvent.class, e -&gt; {
+            // 统计 PERFECT 数等
+        }));
+
+        subscriptions.add(bus.subscribe(ComboBreakEvent.class, e -&gt; {
+            ctx.getLogger().info(&quot;Combo 中断！最高连击 &quot; + e.context().maxCombo());
+            // 可在此触发屏幕震动、闪屏等特效
+        }));
+    }
+
+    @Override
+    public void onUnload() {
+        for (Subscription s : subscriptions) {
+            s.unsubscribe();
+        }
+        subscriptions.clear();
+    }
+}</code></pre></div>
+<blockquote><p><code>ModEventBus</code> 内部对 handler 持有<strong>弱引用</strong>兜底：模组未取消订阅且实例被 GC 时会自动清理，但不保证时效，仍应显式 <code>unsubscribe</code>。事件 <code>publish</code> <strong>同步执行</strong>，不支持异步。</p></blockquote>
+<h3 id="游玩事件仅场景内可见">游玩事件仅场景内可见</h3>
+<p><code>GameplayModHost</code>（含游玩 <code>ModEventBus</code>）在<strong>每次进入 <code>GameplayScene</code> 时重新构造</strong>，离开场景时销毁。因此：</p>
+<ul><li>游玩事件<strong>仅在 <code>GameplayScene</code> 内发布与可见</strong>，菜单、选歌、结算等场景不会收到游玩事件。</li><li>模组的 <code>registerEvents</code> 在每次进入游玩时被重新调用，订阅是"本次游玩内有效"的。不要把跨场景的全局状态挂在事件闭包里而不清理。</li></ul>
+<h3 id="跨模组订阅顺序">跨模组订阅顺序</h3>
+<p>事件分发给同一事件类型的多个订阅者时，顺序遵循 <code>ModManager.register</code> 的调用顺序（注册表保持插入顺序）。因此：</p>
+<ul><li>多个模组订阅同一事件时，先注册的模组先收到。</li><li>这与判定 adjuster 链的顺序规则一致。</li></ul>
+<h3 id="notejudgedevent--combobreakevent-同-tick-顺序保证">NoteJudgedEvent → ComboBreakEvent 同 tick 顺序保证</h3>
+<p>当一次 MISS 导致 combo 归零时，宿主保证<strong>同一判定 tick 内</strong>先发布 <code>NoteJudgedEvent</code>，紧接着发布 <code>ComboBreakEvent</code>。模组可安全地假设：在收到 <code>ComboBreakEvent</code> 时，对应的 <code>NoteJudgedEvent</code> 已被所有订阅者处理完毕。</p>
+<h3 id="全局事件已实现">全局事件（已实现）</h3>
+<blockquote><p> 本小节使用<strong>全局事件总线</strong>（<code>GlobalEventBus</code>），已实现并接入主循环：<code>MainApp</code> 发布启动 / 关闭事件，<code>SceneManager</code> 发布场景切换事件，<code>SettingsScene</code> 发布设置变更事件。</p></blockquote>
+<p>游玩事件是<strong>场景级</strong>的；跨场景的横切关注点（启动 / 关闭 / 场景切换 / 设置变更）用<strong>全局事件</strong>，通过 <code>ModContext.globalEventBus()</code> 订阅，进程级有效：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>@Override
+public void onLoad(ModContext ctx) {
+    ctx.globalEventBus().subscribe(SceneChangedEvent.class, e -&gt; {
+        // 场景切换后触发：e.from() / e.to() 返回 SceneInfo
+        ctx.getLogger().info(&quot;场景切换: &quot; + e.from().id() + &quot; -&gt; &quot; + e.to().id());
+    });
+
+    ctx.globalEventBus().subscribe(SettingsChangedEvent.class, e -&gt; {
+        // 设置变更后触发：e.changedKeys() 返回变更键集合
+        ctx.getLogger().info(&quot;设置变更: &quot; + e.changedKeys());
+    });
+}</code></pre></div>
+<p><strong>全局事件目录</strong>（继承 <code>GlobalEvent</code> 标记接口）：</p>
+<table><thead><tr><th>事件类</th><th>触发时机</th><th>方法</th></tr></thead><tbody><tr><td><code>GameStartupEvent</code></td><td>游戏启动完成（模组加载后）</td><td>无额外数据</td></tr><tr><td><code>GameShutdownEvent</code></td><td>游戏关闭前</td><td>无额外数据</td></tr><tr><td><code>SceneChangedEvent</code></td><td>场景切换后</td><td><code>from()</code> → <code>SceneInfo</code>；<code>to()</code> → <code>SceneInfo</code></td></tr><tr><td><code>SettingsChangedEvent</code></td><td>游戏设置变更后</td><td><code>changedKeys()</code> → <code>Set&lt;String&gt;</code></td></tr></tbody></table>
+<p><strong>两条总线的生命周期差异</strong>：</p>
+<table><thead><tr><th>维度</th><th>全局总线（<code>ModContext.globalEventBus()</code>）</th><th>游玩总线（<code>GameplayMod.registerEvents</code> 传入）</th></tr></thead><tbody><tr><td>作用域</td><td>进程级，整个游戏生命周期有效</td><td>场景级，仅 <code>GameplayScene</code> 内有效</td></tr><tr><td>重建时机</td><td>游戏启动时创建，关闭时销毁</td><td>每次进入游玩时重建</td></tr><tr><td>适用场景</td><td>菜单 / 选歌 / 结算等跨场景</td><td>游玩内判定 / 暂停 / 结束</td></tr></tbody></table>
+<hr>
+<h2 id="8-渲染覆盖细节">8. 渲染覆盖细节</h2>
+<p>「替换原版渲染」的场景统一使用<strong>覆盖机制</strong>，避免为每种组件发明新 API：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>① 开关：setXxxVisible(false)           —— 宿主在默认渲染该组件时检查开关，被覆盖则不画原版
+② 读数：values() / context()           —— 模组读取被覆盖组件的底层数据
+③ 覆盖：renderOverlay(canvas, hudCtx)  —— 宿主在覆盖渲染阶段调用，模组在 canvas 上自绘</code></pre></div>
+<h3 id="覆盖的触发与开销">覆盖的触发与开销</h3>
+<ul><li><strong>宿主先查覆盖、被覆盖则不画原版</strong>：<code>GameplayHud.renderOverlay</code> <strong>只在有模组调用过 <code>setXxxVisible(false)</code> 时才被调用</strong>；没有任何组件被隐藏时，宿主不调用覆盖渲染，无额外开销（与「无滤镜零开销」原则一致）。</li><li>同一 HUD 组件被多个模组覆盖时按注册顺序叠加，<strong>后注册的覆盖先绘制</strong>（位于上层）。</li></ul>
+<h3 id="z-顺序约定自底向上">z 顺序约定（自底向上）</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>NOTES（轨道/音符） → JUDGE_FX（判定特效） → HUD（原版 HUD）
+→ OVERLAY（renderOverlay 覆盖层） → FULLSCREEN（全屏覆盖层）</code></pre></div>
+<p>模组在 <code>HudContext.layer()</code> 中可查询当前绘制阶段，在 <code>HudContext.zOrder()</code> 中查询覆盖层 z 顺序，避免覆盖层与特效层误叠：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>@Override
+public void renderOverlay(RenderCanvas canvas, HudContext hudCtx) {
+    // 仅在全屏覆盖层之上绘制自定义演出元素
+    if (hudCtx.layer() != RenderLayer.FULLSCREEN) {
+        return;
+    }
+    // ...
+}</code></pre></div>
+<h3 id="覆盖的通用写法">覆盖的通用写法</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>// onLoad 中请求隐藏 + 注册能力
+ctx.capabilities().register(GameplayHud.class, this);
+setProgressVisible(false);
+
+// renderOverlay 中读数据 + 自绘
+double p = values().progress();
+canvas.setColor(Color.WHITE);
+canvas.fillRect(/* 按 p 绘制 */);</code></pre></div>
+<hr>
+<h2 id="9-打包规范">9. 打包规范</h2>
+<h3 id="打包为-jar">打包为 jar</h3>
+<p>模组编译后打包为标准 jar，<strong>必须包含 <code>META-INF/MANIFEST.MF</code></strong>。manifest 声明模组入口类与元信息，供游戏加载器和外置模组管理工具读取。</p>
+<h4 id="manifest-字段表">Manifest 字段表</h4>
+<table><thead><tr><th>字段</th><th>必填</th><th>说明</th></tr></thead><tbody><tr><td><code>Seecmd-Mod-Class</code></td><td><strong>是</strong></td><td>模组入口类全限定名，游戏加载器据此实例化模组</td></tr><tr><td><code>Seecmd-Mod-Id</code></td><td>否（建议）</td><td>模组 id，用于日志。实际 id 从 <code>Mod.info()</code> 读取，不一致时以 <code>Mod.info()</code> 为准</td></tr><tr><td><code>Seecmd-Mod-Name</code></td><td>否（建议）</td><td>模组显示名称，外置管理工具列表展示</td></tr><tr><td><code>Seecmd-Mod-Version</code></td><td>否（建议）</td><td>模组版本号，外置管理工具列表展示</td></tr><tr><td><code>Seecmd-Mod-Authors</code></td><td>否（建议）</td><td>作者列表，逗号分隔（如 <code>Alice, Bob</code>）</td></tr><tr><td><code>Seecmd-Mod-Description</code></td><td>否（建议）</td><td>简介文本，外置管理工具详情面板展示</td></tr><tr><td><code>Seecmd-Mod-Icon</code></td><td>否</td><td>图标资源路径（jar 内，如 <code>icon.png</code>），外置管理工具展示</td></tr><tr><td><code>Seecmd-Mod-Notes</code></td><td>否</td><td>备注文本，作者写给用户的使用说明/注意事项，外置管理工具详情面板展示</td></tr><tr><td><code>Seecmd-Mod-Depends-On</code></td><td>否</td><td>依赖模组 id 列表，逗号分隔，外置管理工具据此检查依赖完整性</td></tr></tbody></table>
+<blockquote><p><strong>重要</strong>：除 <code>Seecmd-Mod-Class</code> 外，其余字段虽非必填，但<strong>强烈建议填写</strong>。外置模组管理工具（<code>mods/mod-manager.jar</code>）从 manifest 读取这些字段展示模组信息，<strong>不实例化模组类</strong>。未填写的模组在管理工具中将显示为空或默认值。</p></blockquote>
+<blockquote><p><strong>一致性约定</strong>：<code>Mod.info()</code> 返回的 <code>id/name/version/authors/description/dependsOn</code> 应与 manifest 声明保持一致。运行时游戏以 <code>Mod.info()</code> 为准，外置工具以 manifest 为准。</p></blockquote>
+<p>完整 manifest 示例：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>Manifest-Version: 1.0
+Seecmd-Mod-Id: com_example_helloworld
+Seecmd-Mod-Class: com.example.helloworld.HelloWorldMod
+Seecmd-Mod-Name: Hello World
+Seecmd-Mod-Version: 0.1.0
+Seecmd-Mod-Authors: Alice, Bob
+Seecmd-Mod-Description: 一个示例模组，演示 SEECMD 模组 API 基础用法
+Seecmd-Mod-Icon: icon.png
+Seecmd-Mod-Notes: 启用后会在游玩画面左上角显示 Hello World 文字。与其他渲染滤镜模组叠加时按注册顺序依次应用。
+Seecmd-Mod-Depends-On: com_example_lib</code></pre></div>
+<p>Maven 配置：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">xml</span></div><pre><code>&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+            &lt;configuration&gt;
+                &lt;archive&gt;
+                    &lt;manifestEntries&gt;
+                        &lt;Seecmd-Mod-Id&gt;com_example_helloworld&lt;/Seecmd-Mod-Id&gt;
+                        &lt;Seecmd-Mod-Class&gt;com.example.helloworld.HelloWorldMod&lt;/Seecmd-Mod-Class&gt;
+                        &lt;Seecmd-Mod-Name&gt;Hello World&lt;/Seecmd-Mod-Name&gt;
+                        &lt;Seecmd-Mod-Version&gt;0.1.0&lt;/Seecmd-Mod-Version&gt;
+                        &lt;Seecmd-Mod-Authors&gt;Alice, Bob&lt;/Seecmd-Mod-Authors&gt;
+                        &lt;Seecmd-Mod-Description&gt;一个示例模组，演示 SEECMD 模组 API 基础用法&lt;/Seecmd-Mod-Description&gt;
+                        &lt;Seecmd-Mod-Icon&gt;icon.png&lt;/Seecmd-Mod-Icon&gt;
+                        &lt;Seecmd-Mod-Notes&gt;启用后会在游玩画面左上角显示 Hello World 文字。&lt;/Seecmd-Mod-Notes&gt;
+                        &lt;Seecmd-Mod-Depends-On&gt;com_example_lib&lt;/Seecmd-Mod-Depends-On&gt;
+                    &lt;/manifestEntries&gt;
+                &lt;/archive&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;</code></pre></div>
+<p>打包时注意：</p>
+<ul><li><strong>不要把宿主类打进模组 jar</strong>（依赖 scope 用 <code>provided</code> / <code>compileOnly</code>）。</li><li>模组自身的资源文件（图片、配置模板等）正常打入 jar resources 即可。</li><li>依赖 <code>com.seecmd:mod-api:&lt;版本&gt;</code>（瘦身 jar），<strong>不依赖主 jar</strong>，并严格遵守包边界规则（见<a href="#第-1-节">第 1 节</a>）。</li></ul>
+<h3 id="图标资源">图标资源</h3>
+<ul><li><strong>格式</strong>：PNG（支持透明通道）</li><li><strong>推荐尺寸</strong>：64×64 像素（外置管理工具按此尺寸展示）</li><li><strong>路径声明</strong>：通过 manifest 的 <code>Seecmd-Mod-Icon</code> 指定 jar 内资源路径（如 <code>icon.png</code>、<code>assets/icon.png</code>）</li><li><strong>资源放置</strong>：图标文件作为 jar resources 打包，与 class 文件同级或放在 <code>resources/</code> 子目录</li><li><strong>缺失处理</strong>：未声明或文件不存在时，外置管理工具显示默认占位符</li></ul>
+<h3 id="备注字段">备注字段</h3>
+<p><code>Seecmd-Mod-Notes</code> 是作者写给用户的说明文本，区别于 <code>Seecmd-Mod-Description</code>（简短一句话简介）：</p>
+<ul><li><strong>Description</strong>：一句话简介，用于列表快速识别（建议 ≤ 50 字）</li><li><strong>Notes</strong>：详细说明，可包含使用注意事项、已知问题、配置说明等（建议多行，无长度限制）</li></ul>
+<h3 id="通过-jar-加载">通过 jar 加载</h3>
+<p>宿主已提供 jar 加载器（基于 spec 后续版本 兼容性预留设计提前实现），扫描模组 jar 的 manifest 定位入口类，加载并注册到 <code>ModManager</code>。</p>
+<p><strong>加载路径</strong>：游戏工作目录下的 <code>mods/</code> 文件夹（与 <code>data/</code> 同级）。不存在则跳过加载（不自动创建）。</p>
+<p><strong>加载时机</strong>：游戏启动时，在内置模组注册之后、<code>enabledMods</code> 激活之前。仅启动时扫描一次，不支持运行时热加载。</p>
+<p><strong>manifest 要求</strong>：</p>
+<ul><li><strong>必须</strong>含 <code>Seecmd-Mod-Class</code>（入口类全限定名）</li><li><code>Seecmd-Mod-Id</code>/<code>Seecmd-Mod-Version</code> 可选，仅用于日志；实际 id 从 <code>Mod.info()</code> 读取，与 manifest 不一致时以 <code>Mod.info()</code> 为准</li></ul>
+<p><strong>ClassLoader 隔离</strong>：每个 jar 使用独立 <code>URLClassLoader</code>，parent ClassLoader 加载 <code>com.seecmd.mod.api.*</code> 包，保证模组间共享 API 类型。模组类之间默认隔离。</p>
+<p><strong>异常隔离</strong>：单个 jar 加载失败（文件损坏/manifest 缺失/类找不到/不是 Mod 子类型/实例化失败/id 冲突）返回 false 并限频记录日志，不影响其他 jar 与游戏运行。</p>
+<p><strong>非模组 jar 跳过</strong>：<code>mods/</code> 目录下可能存在非模组 jar（如外置模组管理工具 <code>mod-manager.jar</code>）。这类 jar 的 manifest 缺少 <code>Seecmd-Mod-Class</code>，加载器静默跳过（INFO 日志，不报错）。</p>
+<h3 id="外置模组管理工具">外置模组管理工具</h3>
+<p>游戏随分发包提供外置模组管理工具 <code>mods/mod-manager.jar</code>，玩家可双击或通过 <code>java -jar mods/mod-manager.jar</code> 启动。</p>
+<p><strong>功能</strong>：</p>
+<ul><li>扫描 <code>mods/</code> 目录，列出所有模组（名称、版本、启用状态）</li><li>选中模组查看详情：图标、名称、版本、作者、简介、备注、依赖、加载状态</li><li>勾选/取消勾选启用状态，点击"保存设置"持久化到 <code>data/settings.json</code> 的 <code>enabledMods</code></li><li>依赖缺失的模组标红显示，详情面板提示缺失的依赖 id</li><li>损坏 jar 标红显示"读取失败"</li></ul>
+<p><strong>工作原理</strong>：</p>
+<ul><li>工具从 jar 的 <code>META-INF/MANIFEST.MF</code> 读取模组元信息，<strong>不实例化模组类</strong>，不依赖游戏 jar</li><li>工具自身 manifest 含 <code>Main-Class</code> 但不含 <code>Seecmd-Mod-Class</code>，因此游戏加载器会跳过它</li><li>工具推断游戏根目录为自身所在 <code>mods/</code> 的父目录，据此访问 <code>data/settings.json</code></li></ul>
+<h3 id="模组-id-命名规范">模组 id 命名规范</h3>
+<ul><li><strong>小写下划线</strong>，如 <code>com_example_wide_judge</code>。</li><li><strong>不得以 <code>builtin_</code> 开头</strong>：该前缀保留给游戏内置模组（如 <code>builtin_glitch</code>、<code>builtin_monochrome</code>、<code>builtin_wide_judge</code>）。</li><li><strong>建议使用反向域名前缀</strong>避免冲突：<code>&lt;域名反转&gt;_&lt;功能名&gt;</code>，例如 <code>com_example_stats</code>、<code>org_myteam_hardcore</code>。</li><li>id 在整个游戏内必须唯一，重复注册会被忽略并告警。</li></ul>
+<hr>
+<h2 id="10-数据目录约定">10. 数据目录约定</h2>
+<p><code>ModContext.getDataDir()</code> 返回模组专属数据目录：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>data/mods/{modId}/</code></pre></div>
+<p>例如 <code>com_example_stats</code> 模组的数据目录为 <code>data/mods/com_example_stats/</code>。</p>
+<h3 id="约定">约定</h3>
+<ul><li>目录在<strong>首次访问 <code>getDataDir()</code> 时自动创建</strong>（含父目录）。创建失败不抛异常，模组在后续读写时自行处理 IO 异常。</li><li>模组<strong>只允许在此目录内读写</strong>自有数据文件。</li><li><strong>禁止访问</strong>其他游戏目录，包括但不限于：</li><li><code>data/charts/</code>（谱面库）</li><li><code>userdata/</code>（用户存档）</li><li><code>data/settings.json</code>（游戏设置）</li><li>其他模组的数据目录 <code>data/mods/{其他 modId}/</code></li><li>模组配置文件 <code>config.json</code> 由 <code>ModContext.config()</code> 自动管理于本目录（见 <a href="#第-11-节">第 11 节</a>），无需手动拼路径。</li></ul>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>@Override
+public void onLoad(ModContext ctx) {
+    Path dataDir = ctx.getDataDir(); // data/mods/com_example_stats/
+    Path scoresFile = dataDir.resolve(&quot;scores.json&quot;);
+    // 在此目录内读写自定义数据文件
+}</code></pre></div>
+<hr>
+<h2 id="11-配置文件">11. 配置文件</h2>
+<p><code>ModContext.config()</code> 返回 <code>ModConfig</code>，封装 <code>data/mods/{modId}/config.json</code> 的读写。</p>
+<h3 id="特性">特性</h3>
+<ul><li><strong>扁平 key-value JSON</strong>：值类型限定 <code>String</code> / <code>Integer</code> / <code>Double</code> / <code>Boolean</code> / <code>List&lt;Object&gt;</code>。复杂结构请模组自行 JSON 序列化为 String 存储单个 key。</li><li><strong>懒加载</strong>：首次调用 get 时加载；文件不存在返回默认值且<strong>不创建空文件</strong>。</li><li><strong>同步写盘</strong>：<code>set</code> 调用时立即持久化到磁盘。</li><li><strong>线程安全</strong>：实例方法 <code>synchronized</code> 保护，可在事件处理器与滤镜中并发访问。</li><li><strong>解析失败</strong>：文件存在但 JSON 非法时记 WARNING 并返回默认值（不抛异常）。</li></ul>
+<h3 id="api">API</h3>
+<table><thead><tr><th>方法</th><th>说明</th></tr></thead><tbody><tr><td><code>get(key, default)</code></td><td>读取字符串，不存在返回默认值</td></tr><tr><td><code>getInt(key, default)</code></td><td>读取整数，不存在或类型不符返回默认值</td></tr><tr><td><code>getBool(key, default)</code></td><td>读取布尔，不存在或类型不符返回默认值</td></tr><tr><td><code>getDouble(key, default)</code></td><td>读取浮点，不存在或类型不符返回默认值</td></tr><tr><td><code>set(key, value)</code></td><td>写入并同步持久化</td></tr><tr><td><code>getAll()</code></td><td>返回全部配置的只读 <code>Map</code> 视图</td></tr></tbody></table>
+<h3 id="示例">示例</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public class ConfigDemoMod implements GameplayMod {
+    private ModContext ctx;
+
+    @Override
+    public void onLoad(ModContext ctx) {
+        this.ctx = ctx;
+        ModConfig cfg = ctx.config();
+
+        // 读取配置（带默认值）
+        boolean debug = cfg.getBool(&quot;debug&quot;, false);
+        int maxParticles = cfg.getInt(&quot;maxParticles&quot;, 200);
+        double intensity = cfg.getDouble(&quot;intensity&quot;, 0.8);
+
+        if (debug) {
+            ctx.getLogger().info(&quot;maxParticles=&quot; + maxParticles + &quot;, intensity=&quot; + intensity);
+        }
+
+        // 首次运行写入默认值
+        if (!cfg.getAll().containsKey(&quot;installed&quot;)) {
+            cfg.set(&quot;installed&quot;, true);
+            cfg.set(&quot;version&quot;, 1);
+        }
+    }
+}</code></pre></div>
+<p>对应 <code>config.json</code>：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">json</span></div><pre><code>{
+  &quot;debug&quot;: true,
+  &quot;maxParticles&quot;: 300,
+  &quot;intensity&quot;: 0.9,
+  &quot;installed&quot;: true,
+  &quot;version&quot;: 1
+}</code></pre></div>
+<hr>
+<h2 id="12-依赖声明">12. 依赖声明</h2>
+<p><code>ModInfo.dependsOn</code> 字段声明模组间的<strong>硬依赖</strong>（被依赖的模组 id 列表）。</p>
+<h3 id="拓扑排序激活">拓扑排序激活</h3>
+<ul><li>宿主按 <code>dependsOn</code> 关系对启用模组做<strong>拓扑排序</strong>，依赖在前、被依赖在后，依次调用 <code>onLoad</code>。</li><li>被依赖模组必须已注册且处于启用/已激活状态，否则依赖它的模组激活失败。</li></ul>
+<h3 id="缺失依赖">缺失依赖</h3>
+<ul><li>若 <code>dependsOn</code> 中的某个 id 既未注册也未激活，宿主抛出 <code>MissingDependencyException</code>，该模组状态标记为 <code>LOAD_FAILED</code>。</li><li>可通过 <code>ModManager.getLoadError(modId)</code> 获取异常，<code>MissingDependencyException.getMissing()</code> 返回缺失的 id 列表。</li></ul>
+<h3 id="循环依赖">循环依赖</h3>
+<ul><li>若依赖关系成环（如 A→B→A），环上所有模组标记为 <code>LOAD_FAILED</code>。</li><li><code>MissingDependencyException.getCircularChain()</code> 返回环上的 id 列表，首尾相同（如 <code>[&quot;A&quot;,&quot;B&quot;,&quot;A&quot;]</code>）。</li><li>错误信息中会列出完整环路径。</li></ul>
+<h3 id="阶段-a-限制">当前版本限制</h3>
+<ul><li><strong>当前版本仅支持硬依赖</strong>（<code>dependsOn</code>）。可选依赖、版本范围匹配等能力留待后续版本。</li></ul>
+<h3 id="示例">示例</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>@Override
+public ModInfo info() {
+    // 使用 record 全参构造声明依赖
+    return new ModInfo(
+            &quot;com_example_stats_ext&quot;,       // id
+            &quot;Stats Extension&quot;,             // name
+            &quot;0.1.0&quot;,                       // version
+            List.of(&quot;Alice&quot;),              // authors
+            &quot;依赖基础统计模组的扩展&quot;,       // description
+            List.of(&quot;com_example_stats&quot;)   // dependsOn：硬依赖 com_example_stats
+    );
+}</code></pre></div>
+<blockquote><p>模组 <code>id</code> 和 <code>dependsOn</code> 中的 id 必须严格匹配（小写下划线，区分大小写）。建议依赖关系双方约定稳定的 id，避免重命名导致断链。</p></blockquote>
+<hr>
+<h2 id="13-日志调试">13. 日志调试</h2>
+<h3 id="获取-logger">获取 Logger</h3>
+<p><code>ModContext.getLogger()</code> 返回 <code>java.util.logging.Logger</code>，名称为 <code>seecmd.mod.{modId}</code>：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>@Override
+public void onLoad(ModContext ctx) {
+    Logger log = ctx.getLogger(); // Logger 名: &quot;seecmd.mod.com_example_stats&quot;
+    log.info(&quot;模组已加载&quot;);
+    log.fine(&quot;详细调试信息&quot;); // FINE 级别，默认不输出
+}</code></pre></div>
+<h3 id="与-loglimiter-集成">与 LogLimiter 集成</h3>
+<p>模组系统的异常隔离日志（滤镜/调整器/事件异常、加载失败等）通过项目内置的 <code>LogLimiter</code> 限频输出，<strong>5 秒窗口</strong>内同一 key 只打印一次，窗口内累计抑制次数会在下次打印时附注 <code>suppressed N times</code>。这避免高频路径（如每帧滤镜、每次判定）的日志洪水。</p>
+<p>模组自身通过 <code>getLogger()</code> 输出的日志走标准 JUL 通道；当模组在回调中抛异常时，宿主会经 <code>LogLimiter</code> 限频记录（而非崩溃）。</p>
+<h3 id="日志级别建议">日志级别建议</h3>
+<table><thead><tr><th>级别</th><th>用途</th></tr></thead><tbody><tr><td><code>SEVERE</code></td><td>模组无法继续工作的致命错误（极少使用）</td></tr><tr><td><code>WARNING</code></td><td>可恢复的异常、降级行为、不合规输入</td></tr><tr><td><code>INFO</code></td><td>生命周期事件（加载/卸载）、关键状态切换</td></tr><tr><td><code>FINE</code></td><td>详细调试信息，默认不输出，按需开启</td></tr></tbody></table>
+<h3 id="通过-configjson-控制-fine-输出">通过 config.json 控制 FINE 输出</h3>
+<p>推荐做法：在模组配置中提供 <code>debug</code> 开关，仅在开启时输出 <code>FINE</code> 日志，避免生产环境噪声。下面用事件回调演示（不依赖渲染 API，任何回调位置同理）：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>private Logger log;
+private boolean debug;
+
+@Override
+public void onLoad(ModContext ctx) {
+    this.log = ctx.getLogger();
+    this.debug = ctx.config().getBool(&quot;debug&quot;, false);
+    if (debug) {
+        log.setLevel(java.util.logging.Level.ALL);
+        log.fine(&quot;FINE 日志已开启&quot;);
+    }
+}
+
+@Override
+public void registerEvents(ModEventBus bus) {
+    bus.subscribe(NoteJudgedEvent.class, e -&gt; {
+        if (debug) {
+            log.fine(&quot;judged t=&quot; + e.context().musicTimeMs()
+                    + &quot; misses=&quot; + e.context().misses());
+        }
+    });
+}</code></pre></div>
+<blockquote><p>注意：每帧输出 <code>FINE</code> 日志即便被 JUL 抑制也会有字符串拼接开销，建议用 <code>log.isLoggable(Level.FINE)</code> 守卫，或仅在 <code>debug</code> 为真时拼接。</p></blockquote>
+<hr>
+<h2 id="14-异常反馈">14. 异常反馈</h2>
+<h3 id="阶段-a仅日志记录不弹窗">当前版本：仅日志记录，不弹窗</h3>
+<ul><li><strong>所有模组异常仅记录日志（经 <code>LogLimiter</code> 限频），不弹窗</strong>。当前版本 没有面向玩家的模组错误 UI。</li><li>单个模组的异常<strong>不会崩溃游戏</strong>：宿主对每个外部回调均做 try-catch 隔离。</li></ul>
+<h3 id="各阶段行为">各阶段行为</h3>
+<table><thead><tr><th>场景</th><th>行为</th></tr></thead><tbody><tr><td><code>onLoad</code> 失败</td><td>模组状态标记为 <code>LOAD_FAILED</code>，异常可通过 <code>ModManager.getLoadError(id)</code> 读取；模组不进入 active 列表</td></tr><tr><td>滤镜 <code>apply</code> 异常</td><td>跳过该滤镜本次调用，记 WARNING，其他滤镜与渲染不受影响</td></tr><tr><td>调整器 <code>adjust</code> 异常</td><td>跳过该调整器，当前结果不变，记 WARNING，链继续</td></tr><tr><td>调整器返回 null</td><td>跳过该调整器（当前结果不变）并记 WARNING</td></tr><tr><td>事件订阅者异常</td><td>跳过该订阅者，记 WARNING，其他订阅者仍收到事件</td></tr><tr><td>注册钩子异常</td><td>该钩子注册内容作废，模组仍进入 host 参与其他钩子</td></tr><tr><td> 注册表回调异常（音符/模式/判定/扩展）</td><td>跳过本次回调，记 WARNING；对应内容可能缺渲染或行为，无崩溃</td></tr><tr><td> 能力接口方法调用异常</td><td>本次调用失效，记 WARNING；对应能力本次不生效，无崩溃</td></tr><tr><td><code>onUnload</code> 异常</td><td>记录日志，模组仍从 active 移除，不阻塞其他模组卸载</td></tr></tbody></table>
+<h3 id="load_failed-状态">LOAD_FAILED 状态</h3>
+<p><code>ModManager.getLoadStatus(id)</code> 返回 <code>ModLoadStatus</code> 枚举：</p>
+<ul><li><code>NOT_REGISTERED</code>：未注册</li><li><code>REGISTERED</code>：已注册未启用</li><li><code>LOAD_FAILED</code>：启用但 onLoad 失败（含依赖缺失/循环依赖/抛异常）</li><li><code>ACTIVE</code>：已激活</li><li><code>UNLOADED</code>：当前版本不出现，保留供后续版本</li></ul>
+<h3 id="阶段-b集中显示">后续版本：集中显示</h3>
+<p>后续版本将提供管理 UI，集中展示各模组的状态与加载错误（基于 <code>getLoadStatus</code> / <code>getLoadError</code>），玩家可在界面内查看失败原因。当前版本期间开发者通过日志排查。</p>
+<hr>
+<h2 id="15-谱面字段">15. 谱面字段</h2>
+<p>谱面 <code>metadata</code> 可声明两项模组相关字段，供玩家在选歌详情面板检查：</p>
+<table><thead><tr><th>字段</th><th>类型</th><th>含义</th></tr></thead><tbody><tr><td><code>requiredLaneWidth</code></td><td><code>double</code></td><td>谱面建议的轨道宽度。<code>0</code> 表示不指定；玩家打开详情面板时，若该值与当前游戏设置不等，会弹窗提示。</td></tr><tr><td><code>requiredMods</code></td><td><code>List&lt;String&gt;</code></td><td>谱面建议启用的模组 id 列表。玩家打开详情面板时，若未启用列表中的模组，会弹窗提示。</td></tr></tbody></table>
+<h3 id="谱面-json-示例">谱面 JSON 示例</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">json</span></div><pre><code>{
+  &quot;title&quot;: &quot;Demo Chart&quot;,
+  &quot;author&quot;: &quot;Bob&quot;,
+  &quot;difficulty&quot;: &quot;Hard&quot;,
+  &quot;metadata&quot;: {
+    &quot;requiredLaneWidth&quot;: 12.0,
+    &quot;requiredMods&quot;: [&quot;com_example_wide_judge&quot;, &quot;com_example_stats&quot;]
+  }
+}</code></pre></div>
+<h3 id="说明">说明</h3>
+<ul><li>这两个字段是<strong>建议性</strong>的：仅弹窗提示玩家，不强制启用或拦截游玩。玩家可选择忽略提示继续游玩。</li><li><code>requiredMods</code> 中的 id 必须与模组 <code>ModInfo.id()</code> 严格匹配。</li><li>谱面作者在分发谱面时，应同步说明所依赖模组的获取方式，避免玩家找不到对应模组。</li></ul>
+<hr>
+<h2 id="16-附api-速查">16. 附：API 速查</h2>
+<h3 id="现状保留阶段-a">保留（，当前版本）</h3>
+<table><thead><tr><th>关注点</th><th>入口接口</th><th>注册方法</th></tr></thead><tbody><tr><td>模组生命周期</td><td><code>Mod</code></td><td><code>info()</code> / <code>onLoad(ModContext)</code> / <code>onUnload()</code> / <code>registerCollectibles</code></td></tr><tr><td>收集品</td><td><code>CollectibleRegistry</code></td><td><code>Mod.registerCollectibles</code> → <code>register(CollectItem)</code>（ 参数为内核类，后续版本收敛）</td></tr><tr><td>游玩模组</td><td><code>GameplayMod extends Mod</code></td><td><code>registerRenderFilters</code> / <code>registerBackgroundRenderers</code> / <code>registerHitEffectStyles</code> / <code>replacesDisorderProgressBar</code> / <code>registerJudgmentPolicy</code> / <code>registerJudgmentAdjuster</code> / <code>registerEvents</code></td></tr><tr><td>滤镜</td><td><code>RenderFilter</code></td><td><code>RenderFilterRegistry.register</code>（<code>apply(RenderCanvas, FilterFrame)</code>）</td></tr><tr><td>背景渲染器</td><td><code>BackgroundRenderer</code></td><td><code>BackgroundRendererRegistry.register</code></td></tr><tr><td>打击特效</td><td><code>HitEffectStyleProvider</code></td><td><code>HitEffectStyleRegistry.register</code></td></tr><tr><td>判定窗口</td><td><code>JudgmentPolicy</code></td><td><code>JudgmentPolicyRegistry.registerPolicy</code></td></tr><tr><td>判定改写</td><td><code>JudgmentAdjuster</code></td><td><code>JudgmentPolicyRegistry.registerAdjuster</code></td></tr><tr><td>游玩事件</td><td><code>ModEventBus.subscribe</code></td><td>返回 <code>Subscription</code>，<code>onUnload</code> 时 <code>unsubscribe</code></td></tr><tr><td>上下文视图</td><td><code>GameplayContext</code> / <code>NoteView</code> / <code>LaneView</code></td><td>只读，随事件/滤镜提供</td></tr><tr><td>配置</td><td><code>ModContext.config()</code> → <code>ModConfig</code></td><td><code>get/getInt/getBool/getDouble/set/getAll</code></td></tr><tr><td>日志</td><td><code>ModContext.getLogger()</code></td><td><code>java.util.logging.Logger</code>，名 <code>seecmd.mod.{modId}</code></td></tr><tr><td>数据目录</td><td><code>ModContext.getDataDir()</code></td><td><code>data/mods/{modId}/</code></td></tr><tr><td>收集品解锁</td><td><code>ModContext.unlockCollect(String)</code></td><td>主动解锁指定 id 的收集品</td></tr><tr><td>元信息</td><td><code>ModInfo</code> record</td><td><code>ModInfo.of(...)</code> 或全参构造（含 <code>dependsOn</code>）</td></tr></tbody></table>
+<h3 id="v2-新增已实现">v2 新增已实现</h3>
+<table><thead><tr><th>关注点</th><th>入口</th><th>说明</th></tr></thead><tbody><tr><td>音符类型注册表</td><td><code>ModContext.noteTypes()</code> → <code>NoteTypeRegistry</code></td><td>注册 <code>NoteTypeDefinition</code>； 核心循环尚未按自定义类型派发</td></tr><tr><td>游戏模式注册表</td><td><code>ModContext.gameModes()</code> → <code>GameModeRegistry</code></td><td>注册 <code>GameModeDefinition</code>； 核心循环尚未按自定义类型派发</td></tr><tr><td>判定等级注册表</td><td><code>ModContext.judgmentKinds()</code> → <code>JudgmentKindRegistry</code></td><td>注册 <code>JudgmentKindDefinition</code>，<strong>已接入主循环</strong></td></tr><tr><td>谱面扩展段注册表</td><td><code>ModContext.chartExtensions()</code> → <code>ChartExtensionRegistry</code></td><td>注册 <code>ChartExtensionParser</code>，经扩展段加载派发</td></tr><tr><td>能力注入</td><td><code>ModContext.capabilities()</code> → <code>CapabilityRegistry</code></td><td>注册/取用能力；<strong>当前仅 <code>GameplayHud</code> 已接入核心循环</strong></td></tr><tr><td>全局事件</td><td><code>ModContext.globalEventBus()</code></td><td>进程级总线，<strong>已接入主循环</strong></td></tr><tr><td>渲染入口</td><td><code>RenderCanvas</code> / <code>RenderImage</code> / <code>RenderResources</code></td><td>模组唯一绘制入口，<strong>已实现</strong></td></tr><tr><td>场景抽象</td><td><code>Scene</code> / <code>SceneInfo</code> / <code>InputEvent</code>（<code>api.scene</code>）</td><td>接口已定义，<strong>宿主尚未注入实现</strong>（运行期 <code>get()</code> 返回 <code>null</code>）</td></tr></tbody></table>
+<blockquote><p>完整签名与行为契约见 <a href="api.html"><code>mod-api.md</code></a>。全部接口标注 <code>@Experimental</code>（实现中，可能调整）。</p></blockquote>
+</main>
+</div>
+<footer class="site-foot">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
