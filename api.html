@@ -659,7 +659,7 @@ void apply(RenderCanvas canvas, FilterFrame frame);</code></pre></div>
     default boolean autoFrameDuration() { return frameDurationMs() &lt;= 0; }
 
     /** 精灵图。非 null 时 frames() 被忽略，按 cellWidth/cellHeight 网格拆帧。 */
-    default Image sheetImage() { return null; }
+    default RenderImage sheetImage() { return null; }
 
     /** 精灵图每格宽（像素）。 */
     default int cellWidth() { return 0; }
@@ -668,7 +668,7 @@ void apply(RenderCanvas canvas, FilterFrame frame);</code></pre></div>
     default int cellHeight() { return 0; }
 
     /** 显式帧列表（仅 sheetImage() 返回 null 时使用）。 */
-    List&lt;Image&gt; frames();
+    List&lt;RenderImage&gt; frames();
 
     /** 是否循环播放。 */
     boolean loop();
@@ -676,8 +676,9 @@ void apply(RenderCanvas canvas, FilterFrame frame);</code></pre></div>
     /** 绘制缩放（1.0 = 原始大小）。 */
     float scale();
 }</code></pre></div>
+<blockquote><p>� 图片统一使用 <code>RenderImage</code> 抽象句柄（经 <code>RenderResources.loadImage</code> 加载），模组不需要接触平台图像类型。</p></blockquote>
 <p>工厂方法见 <code>HitEffectStyles</code>（<code>com.seecmd.mod.api.render</code>）：</p>
-<table><thead><tr><th>方法</th><th>说明</th></tr></thead><tbody><tr><td><code>text(String text, long durationMs)</code></td><td>文本特效，默认 1.0 缩放</td></tr><tr><td><code>imageSequence(List&lt;Image&gt; frames, long frameDurationMs)</code></td><td>图片序列，显式每帧时长</td></tr><tr><td><code>imageSequenceByDuration(List&lt;Image&gt; frames, long durationMs)</code></td><td>图片序列，只写总时长，每帧自动均分</td></tr><tr><td><code>imageSheet(Image sheet, int cellWidth, int cellHeight, long durationMs)</code></td><td>精灵图拆帧，每帧自动均分</td></tr></tbody></table>
+<table><thead><tr><th>方法</th><th>说明</th></tr></thead><tbody><tr><td><code>text(String text, long durationMs)</code></td><td>文本特效，默认 1.0 缩放</td></tr><tr><td><code>imageSequence(List&lt;RenderImage&gt; frames, long frameDurationMs)</code></td><td>图片序列，显式每帧时长</td></tr><tr><td><code>imageSequenceByDuration(List&lt;RenderImage&gt; frames, long durationMs)</code></td><td>图片序列，只写总时长，每帧自动均分</td></tr><tr><td><code>imageSheet(RenderImage sheet, int cellWidth, int cellHeight, long durationMs)</code></td><td>精灵图拆帧，每帧自动均分</td></tr></tbody></table>
 <blockquote><p>� 以上每个工厂另有带 <code>loop</code> / <code>scale</code> 参数的重载。拆帧顺序固定为从左到右、从上到下。</p></blockquote>
 <hr>
 <h2 id="6-上下文视图">6. 上下文视图</h2>
