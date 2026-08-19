@@ -68,7 +68,7 @@
 <h3 id="包依赖说明">包依赖说明</h3>
 <p>模组编译期仅依赖 <code>com.seecmd:mod-api</code> 瘦身 jar，该 jar 仅含 <code>com.seecmd.mod.api.*</code> 与 <code>com.seecmd.mod.api.spi.*</code>，从物理上隔离了 API 与宿主/内核。标准库类（<code>java.*</code> / <code>java.util.*</code> / <code>java.nio.file.*</code> 等）按需 import，<code>java.awt.Color</code> 作为纯值对象允许使用；绘制统一走抽象 <code>RenderCanvas</code>，不接触任何平台图形 API。</p>
 <h3 id="模板工程推荐">模板工程（推荐）</h3>
-<p>不需要从零搭建工程。官方提供最小模板 <code>mods-template</code>（随游戏发布或从文档站下载），解压后改三处即可开始：</p>
+<p>不需要从零搭建工程。官方提供最小模板 <strong><code>mods-template</code></strong>：<a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mods-template-0.1.0.zip" rel="noopener">点击下载 mods-template-0.1.0.zip</a>（zip 内含 <code>mod-api</code> jar 与 <code>build.bat</code>，解压即用）。解压后改三处即可开始：</p>
 <ol><li>按需修改 <code>pom.xml</code> 中的 <code>groupId/artifactId/version</code> 与 manifest 字段（含 <code>Seecmd-Mod-Class</code> 入口类）；</li><li>在 <code>src/main/java</code> 下写代码、<code>src/main/resources</code> 下放资源；</li><li>构建二选一：</li></ol>
 <table><thead><tr><th>方式</th><th>命令</th><th>适用</th></tr></thead><tbody><tr><td>一键脚本（无需 Maven）</td><td>双击 <code>build.bat</code></td><td>没有 Maven 的开发者</td></tr><tr><td>Maven</td><td><code>mvn package</code>（首次需先安装 mod-api 到本地仓库）</td><td>使用 Maven 的开发者</td></tr></tbody></table>
 <p>两种方式产物一致，均为带完整 manifest 的模组 jar，放入游戏 <code>mods/</code> 目录即可加载。</p>
