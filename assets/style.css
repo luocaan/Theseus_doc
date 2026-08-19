@@ -762,9 +762,9 @@ pre code {
     background: #f0f2f5;
   }
 
-  /* 本页目录改为移动端抽屉（带背景，避免透明覆盖正文） */
+  /* 本页目录改为移动端侧滑抽屉（带背景与滑动动画） */
   .sidebar {
-    display: none;
+    display: flex;
     position: fixed;
     top: var(--header-h);
     left: 0;
@@ -777,9 +777,14 @@ pre code {
     z-index: 40;
     padding: 16px 14px 24px;
     overflow-y: auto;
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.28s ease, visibility 0s linear 0.28s;
   }
   .sidebar.open {
-    display: flex;
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform 0.28s ease;
   }
 }
 
@@ -921,5 +926,88 @@ pre code {
   }
   .content .code-wrap pre {
     font-size: 11px;
+  }
+}
+
+/* ================= THS 在线体验 ================= */
+
+.ths-play {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+.play-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.ths-play textarea {
+  width: 100%;
+  box-sizing: border-box;
+  height: 300px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.55;
+  background: #101216;
+  color: #c8cdd5;
+  border: 1px solid #2a2f3a;
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  resize: vertical;
+  tab-size: 4;
+  outline: none;
+}
+.ths-play textarea:focus {
+  border-color: var(--accent);
+}
+.ths-play canvas {
+  width: 100%;
+  aspect-ratio: 760 / 320;
+  border: 1px solid #2a2f3a;
+  border-radius: var(--radius);
+  background: #14161a;
+  display: block;
+}
+.play-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.play-row .btn {
+  font-size: 12px;
+  padding: 4px 10px;
+}
+.play-log {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: #0d0f13;
+  color: #9aa3b0;
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  height: 96px;
+  overflow-y: auto;
+  line-height: 1.7;
+}
+.play-log .lg-ok { color: #2ea46f; }
+.play-log .lg-warn { color: #d9a03f; }
+.play-log .lg-err { color: #e35d5d; }
+.play-hint {
+  font-size: 12px;
+  color: var(--fg-dim);
+  background: var(--bg-elev);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 6px 10px;
+  line-height: 1.6;
+}
+@media (max-width: 768px) {
+  .ths-play {
+    grid-template-columns: 1fr;
+  }
+  .ths-play textarea {
+    height: 220px;
   }
 }

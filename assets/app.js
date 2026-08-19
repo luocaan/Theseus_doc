@@ -1061,6 +1061,564 @@
     box.appendChild(body);
   });
 
+  /* ------------------------------------------------------------
+     Demo 7 · THS 在线体验
+     浏览器端简易 THS 解释器 + 游玩模拟，让零基础者即时看到效果
+     ------------------------------------------------------------ */
+
+  register("ths-playground", function (box) {
+    var W = 760, H = 320;
+    var canvas = el("canvas");
+    var ctx = canvas.getContext("2d");
+    var dpr = 1;
+    function fit() {
+      dpr = Math.max(1, window.devicePixelRatio || 1);
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    fit();
+
+    // ---------- 预设示例（零基础友好，可直接修改） ----------
+    var PRESETS = [
+      {
+        name: "花屏滤镜",
+        src: '# THS 示例：花屏滤镜\n' +
+             'name "花屏滤镜"\nid "glitch_demo"\nauthor "THS"\nversion "1.0"\n\n' +
+             '# 开启花屏效果，调整强度与速度\n' +
+             'set_filter "glitch" {\n    intensity = 0.5\n    speed = 1.0\n}\n\n' +
+             '# 每帧画一行文字\n' +
+             'on_render {\n    text "GLITCH MODE" 20 20\n}',
+      },
+      {
+        name: "黑白 + 暗角",
+        src: '# THS 示例：黑白电影 + 边缘暗角\n' +
+             'name "黑白世界"\nid "mono_demo"\nauthor "THS"\nversion "1.0"\n\n' +
+             '# 去掉颜色\n' +
+             'set_filter "monochrome" {\n    amount = 1.0\n}\n\n' +
+             '# 四周压暗\n' +
+             'set_filter "vignette" {\n    radius = 0.35\n    darkness = 0.6\n}',
+      },
+      {
+        name: "自定义 HUD",
+        src: '# THS 示例：自定义连击与准度显示\n' +
+             'name "自定义 HUD"\nid "hud_demo"\nauthor "THS"\nversion "1.0"\n\n' +
+             'hud "combo" {\n    position = "top"\n    color = 0 255 200\n    font_size = 48\n}\n\n' +
+             'hud "accuracy" {\n    position = "top"\n    color = 255 255 255\n}\n\n' +
+             '# 每帧在画面上追加一行信息\n' +
+             'on_render {\n    text "SCORE " + score 20 40\n    text "ACC " + accuracy 20 62\n}',
+      },
+      {
+        name: "判定特效",
+        src: '# THS 示例：PERFECT 判定时爆发粒子\n' +
+             'name "判定特效"\nid "effect_demo"\nauthor "THS"\nversion "1.0"\n\n' +
+             '# 每次判定为 perfect 时，在音符位置放粒子\n' +
+             'on_note_judged {\n    if note_result == "perfect" {\n        effect "burst" {\n            count = 18\n            speed = 3.0\n            color = 255 255 255\n        }\n    }\n    if note_result == "great" {\n        effect "burst" {\n            count = 8\n            speed = 1.5\n            color = 255 200 80\n        }\n    }\n}',
+      },
+      {
+        name: "连击触发器",
+        src: '# THS 示例：连击触发屏幕震动与闪白\n' +
+             'name "连击触发器"\nid "trigger_demo"\nauthor "THS"\nversion "1.0"\n\n' +
+             '# 连击达到 8 次：屏幕震动\n' +
+             'on_combo 8 {\n    trigger "shake" {\n        duration = 1.0\n        intensity = 0.5\n    }\n}\n\n' +
+             '# 连击达到 16 次：全屏闪白\n' +
+             'on_combo 16 {\n    trigger "flash" {\n        color = 255 255 255\n        duration = 0.4\n    }\n}\n\n' +
+             '# 结算时显示一句鼓励\n' +
+              'on_game_end {\n    trigger "message" {\n        text = "太棒了！"\n    }\n}',
+      },
+    ];
+
+    // ---------- THS 解析器（支持文档中的子集语法） ----------
+    function parseTHS(src) {
+      var ast = { filters: [], judgment: null, hud: null, events: [], render: [] };
+      var lines = src.split(/\r?\n/);
+      var i = 0;
+
+      function readParams() {
+        var p = {};
+        while (i < lines.length) {
+          var line = lines[i].trim();
+          i++;
+          if (!line || line.startsWith("#")) continue;
+          if (line === "}") break;
+          var m = line.match(/^(\w+)\s*=\s*(.+)$/);
+          if (m) p[m[1]] = parseValue(m[2]);
+        }
+        return p;
+      }
+      function parseValue(s) {
+        s = s.trim();
+        if (/^".*"$/.test(s)) return s.slice(1, -1);
+        if (/^-?\d+(\.\d+)?$/.test(s)) return +s;
+        var parts = s.split(/\s+/).map(function (x) { return +x; });
+        if (parts.length === 3 && parts.every(function (x) { return !isNaN(x); })) return parts;
+        return s;
+      }
+      function readCmds() {
+        var cmds = [];
+        while (i < lines.length) {
+          var line = lines[i].trim();
+          i++;
+          if (!line || line.startsWith("#")) continue;
+          if (line === "}") break;
+          var m;
+          if (/^if\s+/.test(line)) {
+            var cond = line.replace(/^if\s+/, "").replace(/\{\s*$/, "").trim();
+            cmds.push({ t: "if", cond: cond, body: readCmds() });
+          } else if ((m = line.match(/^(trigger|effect)\s+"([^"]+)"\s*\{/))) {
+            cmds.push({ t: m[1], name: m[2], params: readParams() });
+          } else if ((m = line.match(/^(text|log)\s+(.+?)\s+(-?\d+)\s+(-?\d+)\s*$/))) {
+            cmds.push({ t: m[1], expr: m[2], x: +m[3], y: +m[4] });
+          } else if ((m = line.match(/^(text|log)\s+(.+)$/))) {
+            cmds.push({ t: m[1], expr: m[2], x: 20, y: 40 });
+          } else if ((m = line.match(/^color\s+(\d+)\s+(\d+)\s+(\d+)/))) {
+            cmds.push({ t: "color", rgb: [+m[1], +m[2], +m[3]] });
+          } else if ((m = line.match(/^rect\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)/))) {
+            cmds.push({ t: "rect", x: +m[1], y: +m[2], w: +m[3], h: +m[4] });
+          }
+          // 其余未知行忽略（语法宽容，适合零基础）
+        }
+        return cmds;
+      }
+
+      while (i < lines.length) {
+        var line = lines[i].trim();
+        i++;
+        if (!line || line.startsWith("#")) continue;
+        var m;
+        if ((m = line.match(/^set_filter\s+"([^"]+)"\s*\{/))) {
+          ast.filters.push({ name: m[1], params: readParams() });
+        } else if ((m = line.match(/^set_judgment\s+"([^"]+)"\s*\{/))) {
+          ast.judgment = { name: m[1], params: readParams() };
+        } else if ((m = line.match(/^hud\s+"([^"]+)"\s*\{/))) {
+          ast.hud = { name: m[1], params: readParams() };
+        } else if (/^on_render\s*\{/.test(line)) {
+          ast.render = readCmds();
+        } else if ((m = line.match(/^on_combo\s+(\d+)\s*\{/))) {
+          ast.events.push({ kind: "combo", arg: +m[1], cmds: readCmds() });
+        } else if ((m = line.match(/^on_miss\s+(\d+)\s*\{/))) {
+          ast.events.push({ kind: "miss", arg: +m[1], cmds: readCmds() });
+        } else if (/^on_note_judged\s*\{/.test(line)) {
+          ast.events.push({ kind: "judged", cmds: readCmds() });
+        } else if (/^on_game_start\s*\{/.test(line)) {
+          ast.events.push({ kind: "start", cmds: readCmds() });
+        } else if (/^on_game_end\s*\{/.test(line)) {
+          ast.events.push({ kind: "end", cmds: readCmds() });
+        }
+        // 元信息行（name/id/author/version）等忽略
+      }
+      return ast;
+    }
+
+    // ---------- 表达式 / 条件求值 ----------
+    var vars = { score: 0, combo: 0, max_combo: 0, accuracy: 1.0, progress: 0, note_result: "" };
+    function evalVal(expr) {
+      expr = expr.trim();
+      if (/^".*"$/.test(expr)) return expr.slice(1, -1);
+      if (/^-?\d+(\.\d+)?$/.test(expr)) return +expr;
+      if (vars[expr] !== undefined) return vars[expr];
+      return expr;
+    }
+    function evalExpr(expr) {
+      return expr.split("+").map(evalVal).join("");
+    }
+    function evalCond(cond) {
+      var m = cond.match(/^(.+?)\s*(>=|<=|==|!=|>|<)\s*(.+)$/);
+      if (!m) return false;
+      var l = evalVal(m[1]), r = evalVal(m[3]);
+      if (typeof l === "number" && typeof r === "number") {
+        switch (m[2]) {
+          case ">": return l > r;
+          case "<": return l < r;
+          case ">=": return l >= r;
+          case "<=": return l <= r;
+          case "==": return l === r;
+          case "!=": return l !== r;
+        }
+      }
+      l = String(l); r = String(r);
+      return m[2] === "==" ? l === r : m[2] === "!=" ? l !== r : false;
+    }
+
+    // ---------- 模拟状态 ----------
+    var JUDGE_Y = 252;
+    var DUR = 26000;
+    var ast = null, running = false, rafId = 0;
+    var simTime = 0, lastTs = 0, speedFactor = 1;
+    var notes = [], nextJudge = 0;
+    var combo = 0, maxCombo = 0, score = 0, perf = 0, great = 0, miss = 0;
+    var judgedTotal = 0, accSum = 0;
+    var drawColor = [255, 255, 255];
+    var lastJudgeX = W / 2;
+    var fx = {
+      shakeUntil: 0, shakeI: 0,
+      flashA: 0, flashC: [255, 255, 255],
+      msg: "", msgUntil: 0,
+      bursts: [], rings: [], texts: [],
+    };
+    var firedEvents = {}; // 已触发的阈值事件（避免重复）
+    var started = false, ended = false;
+
+    function judgeWin() {
+      if (ast && ast.judgment) {
+        if (ast.judgment.name === "wide")
+          return { perfect: ast.judgment.params.perfect || 105, great: ast.judgment.params.great || 225 };
+        if (ast.judgment.name === "strict")
+          return { perfect: ast.judgment.params.perfect || 50, great: ast.judgment.params.great || 100 };
+      }
+      return { perfect: 70, great: 150 };
+    }
+
+    function fireEvents(kind) {
+      (ast ? ast.events : []).forEach(function (ev) {
+        var hit = ev.kind === kind;
+        if (ev.kind === "combo" && kind === "combo" && combo === ev.arg && !firedEvents["c" + ev.arg]) {
+          firedEvents["c" + ev.arg] = true;
+          hit = true;
+        }
+        if (ev.kind === "miss" && kind === "miss" && miss === ev.arg && !firedEvents["m" + ev.arg]) {
+          firedEvents["m" + ev.arg] = true;
+          hit = true;
+        }
+        if (hit) execCmds(ev.cmds);
+      });
+    }
+
+    function execCmds(cmds) {
+      if (!cmds) return;
+      cmds.forEach(function (c) {
+        try {
+          if (c.t === "if") {
+            if (evalCond(c.cond)) execCmds(c.body);
+          } else if (c.t === "trigger") {
+            var p = c.params || {};
+            if (c.name === "shake") {
+              fx.shakeUntil = simTime + (p.duration || 1) * 1000;
+              fx.shakeI = p.intensity || 0.5;
+            } else if (c.name === "flash") {
+              fx.flashA = 0.9;
+              fx.flashC = p.color || [255, 255, 255];
+            } else if (c.name === "message") {
+              fx.msg = p.text || "";
+              fx.msgUntil = simTime + 2500;
+            }
+          } else if (c.t === "effect") {
+            var pp = c.params || {};
+            var n = (pp.count || 12) | 0;
+            for (var k = 0; k < n; k++)
+              fx.bursts.push({
+                x: lastJudgeX, y: JUDGE_Y,
+                vx: (Math.random() * 2 - 1) * (pp.speed || 2) * 1.6,
+                vy: (Math.random() * 2 - 1) * (pp.speed || 2) * 1.6 - 0.6,
+                life: 34, color: pp.color || [255, 255, 255],
+              });
+          } else if (c.t === "text") {
+            ctx.fillStyle = "rgb(" + drawColor.join(",") + ")";
+            ctx.font = "15px system-ui, sans-serif";
+            ctx.fillText(evalExpr(c.expr), c.x, c.y);
+          } else if (c.t === "log") {
+            pushLog(evalExpr(c.expr), "lg-ok");
+          } else if (c.t === "color") {
+            drawColor = c.rgb;
+          } else if (c.t === "rect") {
+            ctx.fillStyle = "rgb(" + drawColor.join(",") + ")";
+            ctx.fillRect(c.x, c.y, c.w, c.h);
+          }
+        } catch (e) {
+          pushLog("执行出错：" + e.message, "lg-err");
+        }
+      });
+    }
+
+    // ---------- 渲染 ----------
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = "#14161a";
+      ctx.fillRect(0, 0, W, H);
+
+      // 屏幕震动偏移
+      var sx = 0, sy = 0;
+      if (simTime < fx.shakeUntil) {
+        var k = fx.shakeI * 9;
+        sx = (Math.random() * 2 - 1) * k;
+        sy = (Math.random() * 2 - 1) * k;
+      }
+      ctx.save();
+      if (sx || sy) ctx.translate(sx, sy);
+
+      // 轨道
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.lineWidth = 1;
+      for (var i = 1; i < 4; i++) {
+        var lx = W * i / 4;
+        ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, H); ctx.stroke();
+      }
+      // 判定线
+      ctx.strokeStyle = "rgba(255,255,255,0.35)";
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(0, JUDGE_Y + 0.5); ctx.lineTo(W, JUDGE_Y + 0.5); ctx.stroke();
+
+      // 音符
+      var win = judgeWin();
+      notes.forEach(function (n) {
+        var span = 2200;
+        var p = (simTime - (n.judge - span)) / span;
+        if (p < 0 || p > 1) return;
+        var x = W * (n.lane + 0.5) / 4;
+        var y = -20 + p * (JUDGE_Y + 20);
+        var h = 10 + (win.perfect / 70) * 6;
+        ctx.fillStyle = n.judged ? "rgba(255,255,255,0.15)" : "#e8eaee";
+        ctx.fillRect(x - 22, y, 44, h);
+      });
+
+      // 原版 HUD（hud 模板可覆盖样式）
+      var hudConf = (ast && ast.hud) || null;
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#fff";
+      ctx.font = "13px system-ui";
+      ctx.fillText("SCORE " + fmt(score), 14, 26);
+      ctx.fillStyle = hudConf && hudConf.name === "combo" ? "rgb(" + (hudConf.params.color || [255, 255, 255]).join(",") + ")" : "#fff";
+      ctx.font = (hudConf && hudConf.name === "combo" && hudConf.params.font_size ? hudConf.params.font_size : 30) + "px system-ui";
+      ctx.textAlign = "center";
+      ctx.fillText(String(combo), W / 2, 48);
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#9aa3b0";
+      ctx.font = "13px system-ui";
+      ctx.fillText((vars.accuracy * 100).toFixed(2) + "%", W - 14, 26);
+      ctx.textAlign = "left";
+      // hud progress → 底部进度条
+      if (hudConf && hudConf.name === "progress") {
+        var pcol = hudConf.params.color || [255, 255, 255];
+        var pw = Math.max(0, (simTime / DUR)) * (W - 40);
+        ctx.fillStyle = "rgba(255,255,255,0.15)";
+        ctx.fillRect(20, H - 16, W - 40, 6);
+        ctx.fillStyle = "rgb(" + pcol.join(",") + ")";
+        ctx.fillRect(20, H - 16, pw, 6);
+      }
+
+      // on_render 每帧脚本绘制
+      execCmds(ast ? ast.render : []);
+
+      // 特效：粒子 / 消息
+      ctx.fillStyle = "#fff";
+      fx.bursts.forEach(function (b) {
+        ctx.globalAlpha = Math.max(0, b.life / 34);
+        ctx.fillStyle = "rgb(" + b.color.join(",") + ")";
+        ctx.fillRect(b.x - 1.5, b.y - 1.5, 3, 3);
+        ctx.globalAlpha = 1;
+      });
+      if (simTime < fx.msgUntil) {
+        ctx.font = "bold 26px system-ui";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#fff";
+        ctx.fillText(fx.msg, W / 2, H / 2);
+        ctx.textAlign = "left";
+      }
+      ctx.restore();
+
+      // 滤镜（叠加全屏）
+      (ast ? ast.filters : []).forEach(function (f) {
+        var p = f.params || {}, n = f.name;
+        try {
+          if (n === "glitch") {
+            var it = p.intensity || 0.4;
+            for (var k = 0; k < 5 * it; k++) {
+              ctx.fillStyle = "rgba(" + [0, 255, 200, 255][k % 4] + "," + Math.random() * 255 + "," + Math.random() * 255 + ",0.22)";
+              ctx.fillRect(Math.random() * W, Math.random() * H, Math.random() * 50 + 8, Math.random() * 4 + 2);
+            }
+            ctx.fillStyle = "rgba(255,255,255,0.10)";
+            ctx.fillRect(0, (simTime / 40) % H, W, 5);
+          } else if (n === "monochrome") {
+            var amt = p.amount || 1;
+            ctx.fillStyle = "rgba(128,128,128," + (0.62 * amt).toFixed(2) + ")";
+            ctx.fillRect(0, 0, W, H);
+          } else if (n === "vignette") {
+            var rad = p.radius || 0.35, dark = p.darkness || 0.6;
+            var g = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * rad, W / 2, H / 2, Math.max(W, H) * 0.72);
+            g.addColorStop(0, "rgba(0,0,0,0)");
+            g.addColorStop(1, "rgba(0,0,0," + dark + ")");
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, H);
+          } else if (n === "blur") {
+            var str = p.strength || 1;
+            ctx.filter = "blur(" + (str * 2) + "px)";
+            ctx.drawImage(canvas, 0, 0);
+            ctx.filter = "none";
+          } else if (n === "scanline") {
+            var opa = p.opacity || 0.3;
+            ctx.fillStyle = "rgba(0,0,0," + opa + ")";
+            for (var y = 0; y < H; y += 3) ctx.fillRect(0, y, W, 1);
+          }
+        } catch (e) { /* 滤镜出错忽略，保持宽容 */ }
+      });
+
+      // 全屏闪白
+      if (fx.flashA > 0.01) {
+        ctx.fillStyle = "rgba(" + fx.flashC.join(",") + "," + fx.flashA.toFixed(2) + ")";
+        ctx.fillRect(0, 0, W, H);
+        fx.flashA *= 0.9;
+      }
+    }
+
+    // ---------- 模拟循环 ----------
+    function judgeNote(n) {
+      var win = judgeWin();
+      var off = n.off;
+      var result;
+      if (Math.abs(off) <= win.perfect) result = "perfect";
+      else if (Math.abs(off) <= win.great) result = "great";
+      else result = "miss";
+      n.judged = true;
+      n.result = result;
+      judgedTotal++;
+      if (result === "perfect") { perf++; combo++; score += 1000; accSum += 1; }
+      else if (result === "great") { great++; combo++; score += 500; accSum += 0.6; }
+      else { miss++; combo = 0; accSum += 0; }
+      maxCombo = Math.max(maxCombo, combo);
+      vars.score = score; vars.combo = combo; vars.max_combo = maxCombo;
+      vars.accuracy = judgedTotal ? accSum / judgedTotal : 1;
+      vars.progress = simTime / DUR;
+      vars.note_result = result;
+      lastJudgeX = W * (n.lane + 0.5) / 4;
+      if (result !== "miss") pushLog("判定 " + result.toUpperCase() + "  combo=" + combo, "lg-ok");
+      else pushLog("判定 MISS", "lg-warn");
+      fireEvents("judged");
+      fireEvents("combo");
+      fireEvents("miss");
+    }
+
+    function tick(ts) {
+      if (!running) return;
+      var dt = lastTs ? ts - lastTs : 16;
+      lastTs = ts;
+      simTime += dt * speedFactor;
+      vars.progress = Math.min(1, simTime / DUR);
+
+      // 生成音符
+      if (simTime + 900 > nextJudge && simTime < DUR) {
+        notes.push({ lane: (Math.random() * 4) | 0, judge: nextJudge, judged: false, off: (Math.random() * 2 - 1) * 80 });
+        nextJudge += 620;
+      }
+      // 判定
+      notes.forEach(function (n) {
+        if (!n.judged && simTime >= n.judge && simTime - n.judge < 300) judgeNote(n);
+      });
+      // 粒子推进
+      fx.bursts.forEach(function (b) { b.x += b.vx; b.y += b.vy; b.life--; });
+      fx.bursts = fx.bursts.filter(function (b) { return b.life > 0; });
+
+      if (!started) {
+        started = true;
+        fireEvents("start");
+      }
+      if (!ended && simTime >= DUR) {
+        ended = true;
+        fireEvents("end");
+        pushLog("游玩结束，触发 on_game_end", "lg-warn");
+        runBtn.textContent = "重播";
+      }
+      draw();
+      rafId = requestAnimationFrame(tick);
+    }
+
+    // ---------- 日志 ----------
+    function pushLog(txt, cls) {
+      var d = el("div", cls || "", txt);
+      logEl.appendChild(d);
+      while (logEl.children.length > 40) logEl.removeChild(logEl.firstChild);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    // ---------- 构建 UI ----------
+    var body = el("div", "demo-body");
+
+    // 预设按钮
+    var presetRow = el("div", "play-row");
+    presetRow.appendChild(el("span", "", "预设示例："));
+    PRESETS.forEach(function (p) {
+      presetRow.appendChild(btn(p.name, "", function () {
+        ta.value = p.src;
+        reset();
+        run();
+      }));
+    });
+    body.appendChild(presetRow);
+
+    // 左右两栏
+    var wrap = el("div", "ths-play");
+    var paneL = el("div", "play-pane");
+    var paneR = el("div", "play-pane");
+
+    var ta = el("textarea");
+    ta.spellcheck = false;
+    ta.value = PRESETS[0].src;
+    paneL.appendChild(ta);
+
+    var row = el("div", "play-row");
+    var runBtn = btn("运行", "on", function () { run(); });
+    var pauseBtn = btn("暂停", "", function () {
+      if (running) { running = false; cancelAnimationFrame(rafId); pauseBtn.textContent = "继续"; }
+      else { running = true; lastTs = 0; pauseBtn.textContent = "暂停"; rafId = requestAnimationFrame(tick); }
+    });
+    var resetBtn = btn("重置", "", function () { reset(); });
+    row.appendChild(runBtn);
+    row.appendChild(pauseBtn);
+    row.appendChild(resetBtn);
+    paneL.appendChild(row);
+
+    var logEl = el("div", "play-log");
+    paneL.appendChild(logEl);
+
+    paneR.appendChild(canvas);
+    var hint = el("div", "play-hint",
+      "右侧是简易游玩模拟：音符下落、判定与计分都在实时运行。" +
+      "修改左侧脚本后点「运行」即可看到滤镜 / HUD / 特效 / 触发器的实际效果。");
+    paneR.appendChild(hint);
+
+    wrap.appendChild(paneL);
+    wrap.appendChild(paneR);
+    body.appendChild(wrap);
+    box.appendChild(body);
+
+    // ---------- 控制 ----------
+    function reset() {
+      running = false;
+      cancelAnimationFrame(rafId);
+      simTime = 0; lastTs = 0; notes = []; nextJudge = 700;
+      combo = 0; maxCombo = 0; score = 0; perf = 0; great = 0; miss = 0;
+      judgedTotal = 0; accSum = 0; started = false; ended = false;
+      fx.shakeUntil = 0; fx.flashA = 0; fx.msgUntil = 0; fx.bursts = []; fx.rings = [];
+      firedEvents = {};
+      vars.score = 0; vars.combo = 0; vars.max_combo = 0; vars.accuracy = 1; vars.progress = 0; vars.note_result = "";
+      logEl.innerHTML = "";
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
+      draw();
+    }
+    function run() {
+      cancelAnimationFrame(rafId);
+      reset();
+      try {
+        ast = parseTHS(ta.value);
+        pushLog("脚本解析成功，共 " + (ast.filters.length + ast.events.length) + " 个模板/事件", "lg-ok");
+        var jw = judgeWin();
+        pushLog("判定窗口 perfect=" + jw.perfect + "ms great=" + jw.great + "ms", "lg-warn");
+      } catch (e) {
+        ast = { filters: [], judgment: null, hud: null, events: [], render: [] };
+        pushLog("脚本解析出错：" + e.message, "lg-err");
+        pushLog("请检查括号是否配对、参数是否写成 key = value 形式", "lg-warn");
+      }
+      running = true;
+      lastTs = 0;
+      pauseBtn.textContent = "暂停";
+      rafId = requestAnimationFrame(tick);
+    }
+
+    reset();
+  });
+
   /* ---------------- 首页快速上手折叠 ---------------- */
 
   document.addEventListener("DOMContentLoaded", function () {
