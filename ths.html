@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THS 简易语言开发文档 · SEECMD 模组文档</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand-group">
+    <a class="brand" href="index.html">SEECMD</a>
+    <div class="doc-switcher">
+      <button class="switcher-btn" onclick="toggleMenu(event)">THS简易语言开发 ▾</button>
+      <div class="switcher-menu" id="switcherMenu">
+        <a href="index.html" >标准Java模组开发文档</a>
+        <a href="ths.html" class="active">THS简易语言开发文档</a>
+      </div>
+    </div>
+    <button class="nav-toggle" onclick="toggleNav()" aria-label="菜单">&#9776;</button>
+  </div>
+  <nav>
+    <a href="index.html">快速上手</a>
+    <a href="guide.html">开发指南</a>
+    <a href="api.html">API 参考</a>
+    <a href="design.html">架构设计</a>
+  </nav>
+  <span class="version">v2 · @Experimental</span>
+</header>
+<div class="layout">
+<aside class="sidebar"><div class="toc-title">本页目录</div><nav class="toc"><ul><li class="l2"><a href="#什么是-ths">什么是 THS？</a></li><li class="l2"><a href="#快速开始">快速开始</a></li><li class="l3"><a href="#1-创建文件">1. 创建文件</a></li><li class="l3"><a href="#2-写模板">2. 写模板</a></li><li class="l3"><a href="#3-添加效果">3. 添加效果</a></li><li class="l3"><a href="#4-在游戏里启用">4. 在游戏里启用</a></li><li class="l2"><a href="#语法">语法</a></li><li class="l3"><a href="#注释">注释</a></li><li class="l3"><a href="#元信息">元信息</a></li><li class="l3"><a href="#模板配置">模板配置</a></li><li class="l3"><a href="#事件">事件</a></li><li class="l3"><a href="#基本绘制">基本绘制</a></li><li class="l2"><a href="#模板列表">模板列表</a></li><li class="l3"><a href="#滤镜模板">滤镜模板</a></li><li class="l3"><a href="#判定模板">判定模板</a></li><li class="l3"><a href="#hud-模板">HUD 模板</a></li><li class="l3"><a href="#特效模板">特效模板</a></li><li class="l3"><a href="#触发器模板">触发器模板</a></li><li class="l2"><a href="#事件列表">事件列表</a></li><li class="l2"><a href="#命令参考">命令参考</a></li><li class="l2"><a href="#完整示例">完整示例</a></li></ul></nav></aside>
+<main class="content">
+<h1>THS 简易语言开发文档</h1>
+<p class="doc-sub">面向零基础，用简单脚本就能做出游戏模组</p>
+<h2 id="什么是-ths">什么是 THS？</h2>
+<p>THS 是一种简单的脚本语言，专门为 SEECMD 游戏设计。你不需要学习 Java 就能用 THS 做出自己的模组。</p>
+<p>THS 能做什么：</p>
+<ul><li>给画面加滤镜效果（花屏、黑白、暗角）</li><li>自定义连击显示</li><li>调整判定宽容度</li><li>在音符判定时放特效</li><li>检测特定的游戏事件并触发效果</li></ul>
+<hr>
+<h2 id="快速开始">快速开始</h2>
+<h3 id="1-创建文件">1. 创建文件</h3>
+<p>在游戏目录的 <code>mods</code> 文件夹中，创建一个以 <code>.ths</code> 结尾的文件。</p>
+<h3 id="2-写模板">2. 写模板</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code># 这是我的第一个 THS 模组
+name &quot;我的第一个模组&quot;
+id &quot;my_first_mod&quot;
+author &quot;你的名字&quot;
+version &quot;1.0&quot;</code></pre></div>
+<h3 id="3-添加效果">3. 添加效果</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code># 启用花屏滤镜
+set_filter &quot;glitch&quot; {
+    intensity = 0.5
+    speed = 1.0
+}</code></pre></div>
+<h3 id="4-在游戏里启用">4. 在游戏里启用</h3>
+<ol><li>启动游戏，进入主菜单的"模组管理"</li><li>找到你的模组，启用它</li><li>进入游玩，效果就出现了</li></ol>
+<hr>
+<h2 id="语法">语法</h2>
+<h3 id="注释">注释</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code># 这是一行注释</code></pre></div>
+<h3 id="元信息">元信息</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>name &quot;模组名&quot;
+id &quot;模组标识&quot;
+author &quot;作者&quot;
+version &quot;1.0&quot;</code></pre></div>
+<h3 id="模板配置">模板配置</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>set_filter &quot;模板名&quot; {
+    参数名 = 值
+}</code></pre></div>
+<p>不同模板关键字：</p>
+<ul><li><code>set_filter</code> - 滤镜</li><li><code>hud</code> - 自定义 HUD</li><li><code>set_judgment</code> - 判定调整</li></ul>
+<h3 id="事件">事件</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>on_combo 50 {
+    trigger &quot;flash&quot; {
+        color = &quot;255 255 255&quot;
+        duration = 0.5
+    }
+}</code></pre></div>
+<h3 id="基本绘制">基本绘制</h3>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>on_render {
+    color 255 255 255
+    text &quot;Hello&quot; 100 100
+    rect 50 50 200 30
+    line 0 0 100 100
+}</code></pre></div>
+<hr>
+<h2 id="模板列表">模板列表</h2>
+<h3 id="滤镜模板">滤镜模板</h3>
+<table><thead><tr><th>模板名</th><th>参数</th><th>效果</th></tr></thead><tbody><tr><td><code>glitch</code></td><td><code>intensity</code> (0-1), <code>speed</code> (0-2)</td><td>花屏噪点</td></tr><tr><td><code>monochrome</code></td><td><code>amount</code> (0-1)</td><td>黑白去色</td></tr><tr><td><code>vignette</code></td><td><code>radius</code> (0-0.5), <code>darkness</code> (0-1)</td><td>边缘暗角</td></tr></tbody></table>
+<h3 id="判定模板">判定模板</h3>
+<table><thead><tr><th>模板名</th><th>参数</th><th>效果</th></tr></thead><tbody><tr><td><code>wide</code></td><td><code>perfect</code> (毫秒), <code>great</code> (毫秒)</td><td>放宽判定</td></tr></tbody></table>
+<h3 id="hud-模板">HUD 模板</h3>
+<table><thead><tr><th>模板名</th><th>参数</th><th>效果</th></tr></thead><tbody><tr><td><code>combo</code></td><td><code>position</code> (top/center/bottom), <code>color</code> (R G B), <code>font_size</code></td><td>自定义连击显示</td></tr></tbody></table>
+<h3 id="特效模板">特效模板</h3>
+<table><thead><tr><th>模板名</th><th>参数</th><th>说明</th></tr></thead><tbody><tr><td><code>burst</code></td><td><code>count</code>, <code>speed</code>, <code>color</code></td><td>粒子爆发</td></tr></tbody></table>
+<h3 id="触发器模板">触发器模板</h3>
+<table><thead><tr><th>模板名</th><th>参数</th><th>效果</th></tr></thead><tbody><tr><td><code>shake</code></td><td><code>duration</code> (秒), <code>intensity</code></td><td>画面抖动</td></tr><tr><td><code>flash</code></td><td><code>color</code> (R G B), <code>duration</code> (秒)</td><td>全屏闪白</td></tr></tbody></table>
+<hr>
+<h2 id="事件列表">事件列表</h2>
+<table><thead><tr><th>事件</th><th>示例</th><th>说明</th></tr></thead><tbody><tr><td><code>on_combo N</code></td><td><code>on_combo 50 { ... }</code></td><td>连击数达到 N 时触发</td></tr><tr><td><code>on_miss_count N</code></td><td><code>on_miss_count 3 { ... }</code></td><td>连续 Miss N 次时触发</td></tr><tr><td><code>on_miss</code></td><td><code>on_miss { ... }</code></td><td>每次 Miss 时触发</td></tr><tr><td><code>on_game_start</code></td><td><code>on_game_start { ... }</code></td><td>游戏开始时触发</td></tr><tr><td><code>on_game_end</code></td><td><code>on_game_end { ... }</code></td><td>游戏结束时触发</td></tr><tr><td><code>on_render</code></td><td><code>on_render { ... }</code></td><td>每帧触发，可绘制内容</td></tr><tr><td><code>on_note_judged</code></td><td><code>on_note_judged { ... }</code></td><td>音符被判定时触发</td></tr></tbody></table>
+<hr>
+<h2 id="命令参考">命令参考</h2>
+<table><thead><tr><th>命令</th><th>用法</th><th>说明</th></tr></thead><tbody><tr><td><code>log</code></td><td><code>log &quot;文字&quot;</code></td><td>输出日志</td></tr><tr><td><code>color</code></td><td><code>color 255 255 255</code></td><td>设置绘制颜色</td></tr><tr><td><code>text</code></td><td><code>text &quot;文字&quot; x y</code></td><td>绘制文本</td></tr><tr><td><code>rect</code></td><td><code>rect x y w h</code></td><td>绘制矩形</td></tr><tr><td><code>line</code></td><td><code>line x1 y1 x2 y2</code></td><td>绘制线条</td></tr><tr><td><code>if</code></td><td><code>if score &gt; 900000 { ... }</code></td><td>条件判断</td></tr><tr><td><code>let</code></td><td><code>let x = 5</code></td><td>赋值变量</td></tr><tr><td><code>trigger</code></td><td><code>trigger &quot;shake&quot; { duration = 2.0 }</code></td><td>触发效果</td></tr><tr><td><code>effect</code></td><td><code>effect &quot;burst&quot; { count = 10 }</code></td><td>播放特效</td></tr></tbody></table>
+<hr>
+<h2 id="完整示例">完整示例</h2>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code># 综合示例
+name &quot;我的综合模组&quot;
+id &quot;my_ultimate_mod&quot;
+author &quot;你的名字&quot;
+version &quot;1.0&quot;
+
+# 启用花屏和暗角滤镜
+set_filter &quot;glitch&quot; {
+    intensity = 0.3
+    speed = 0.8
+}
+
+set_filter &quot;vignette&quot; {
+    radius = 0.3
+    darkness = 0.5
+}
+
+# 自定义连击显示
+hud &quot;combo&quot; {
+    position = &quot;top&quot;
+    color = &quot;0 255 200&quot;
+    font_size = 48
+}
+
+# 放宽判定
+set_judgment &quot;wide&quot; {
+    perfect = 80
+    great = 150
+}
+
+# 连击到 100 触发闪白庆祝
+on_combo 100 {
+    trigger &quot;flash&quot; {
+        color = &quot;255 255 255&quot;
+        duration = 0.5
+    }
+}
+
+# 每帧绘制分数
+on_render {
+    color 255 255 255
+    text &quot;Score: &quot; + score 20 20
+}</code></pre></div>
+</main>
+</div>
+<footer class="site-foot">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</footer>
+<script>
+function toggleMenu(e) {
+  e.stopPropagation();
+  var menu = document.getElementById("switcherMenu");
+  if (menu) menu.classList.toggle("open");
+}
+document.addEventListener("click", function() {
+  var menu = document.getElementById("switcherMenu");
+  if (menu) menu.classList.remove("open");
+});
+function toggleNav() {
+  document.querySelector(".site-header nav").classList.toggle("open");
+}
+</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

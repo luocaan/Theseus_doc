@@ -9,7 +9,17 @@
 <body>
 
 <header class="site-header">
-  <a class="brand" href="index.html">SEECMD 模组文档</a>
+  <div class="brand-group">
+    <a class="brand" href="index.html">SEECMD</a>
+    <div class="doc-switcher">
+      <button class="switcher-btn" onclick="toggleMenu(event)">标准Java模组开发 ▾</button>
+      <div class="switcher-menu" id="switcherMenu">
+        <a href="index.html" class="active">标准Java模组开发文档</a>
+        <a href="ths.html" >THS简易语言开发文档</a>
+      </div>
+    </div>
+    <button class="nav-toggle" onclick="toggleNav()" aria-label="菜单">&#9776;</button>
+  </div>
   <nav>
     <a href="index.html">快速上手</a>
     <a href="guide.html">开发指南</a>
@@ -113,6 +123,20 @@ noteType.render(canvas, renderCtx);    // 渲染 → 定义对象决定怎么画
 </main>
 </div>
 <footer class="site-foot">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</footer>
+<script>
+function toggleMenu(e) {
+  e.stopPropagation();
+  var menu = document.getElementById("switcherMenu");
+  if (menu) menu.classList.toggle("open");
+}
+document.addEventListener("click", function() {
+  var menu = document.getElementById("switcherMenu");
+  if (menu) menu.classList.remove("open");
+});
+function toggleNav() {
+  document.querySelector(".site-header nav").classList.toggle("open");
+}
+</script>
 <script src="assets/app.js"></script>
 </body>
 </html>
