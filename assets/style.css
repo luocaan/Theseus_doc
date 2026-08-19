@@ -741,10 +741,46 @@ pre code {
 
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; padding: 16px 14px 60px; }
-  .sidebar { display: none; }
   .cards { grid-template-columns: 1fr; }
   .hero h1 { font-size: 30px; }
   .content table { display: block; }
+
+  /* 顶部导航在移动端隐藏，汉堡按钮改为打开本页目录 */
+  .site-header nav { display: none; }
+  .nav-toggle {
+    display: block;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--fg);
+    font-size: 18px;
+    padding: 4px 10px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .nav-toggle:hover {
+    background: #f0f2f5;
+  }
+
+  /* 本页目录改为移动端抽屉（带背景，避免透明覆盖正文） */
+  .sidebar {
+    display: none;
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    bottom: 0;
+    width: min(280px, 82vw);
+    max-height: none;
+    background: var(--bg-elev);
+    border-right: 1px solid var(--line-strong);
+    box-shadow: var(--shadow);
+    z-index: 40;
+    padding: 16px 14px 24px;
+    overflow-y: auto;
+  }
+  .sidebar.open {
+    display: flex;
+  }
 }
 
 /* ================= 手机适配 ================= */
@@ -765,42 +801,8 @@ pre code {
     font-size: 14px;
     white-space: nowrap;
   }
-  .site-header nav {
-    display: none;
-    width: 100%;
-    flex-direction: column;
-    gap: 0;
-    border-top: 1px solid var(--line);
-    padding-top: 8px;
-    margin-top: 4px;
-  }
-  .site-header nav.open {
-    display: flex;
-  }
-  .site-header nav a {
-    padding: 8px 0;
-    font-size: 14px;
-    border-bottom: 1px solid var(--line);
-  }
-  .site-header nav a:last-child {
-    border-bottom: none;
-  }
   .site-header .version {
     display: none;
-  }
-  .nav-toggle {
-    display: block;
-    background: none;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    color: var(--fg);
-    font-size: 18px;
-    padding: 4px 10px;
-    cursor: pointer;
-    line-height: 1;
-  }
-  .nav-toggle:hover {
-    background: #f0f2f5;
   }
 
   /* 文档切换下拉菜单 */

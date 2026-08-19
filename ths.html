@@ -21,10 +21,10 @@
     <button class="nav-toggle" onclick="toggleNav()" aria-label="菜单">&#9776;</button>
   </div>
   <nav>
-    <a href="index.html">快速上手</a>
-    <a href="guide.html">开发指南</a>
-    <a href="api.html">API 参考</a>
-    <a href="design.html">架构设计</a>
+    <a href="ths.html#快速开始">快速开始</a>
+    <a href="ths.html#模板列表">模板列表</a>
+    <a href="ths.html#事件列表">事件列表</a>
+    <a href="ths.html#命令参考">命令参考</a>
   </nav>
   <span class="version">v2 · @Experimental</span>
 </header>
@@ -161,8 +161,16 @@ document.addEventListener("click", function() {
   if (menu) menu.classList.remove("open");
 });
 function toggleNav() {
-  document.querySelector(".site-header nav").classList.toggle("open");
+  // 移动端：汉堡按钮打开本页目录（sidebar TOC）
+  var sb = document.querySelector(".sidebar");
+  if (sb) sb.classList.toggle("open");
 }
+document.addEventListener("click", function(e) {
+  var sb = document.querySelector(".sidebar");
+  if (sb && sb.classList.contains("open") && !sb.contains(e.target) && !e.target.classList.contains("nav-toggle")) {
+    sb.classList.remove("open");
+  }
+});
 </script>
 <script src="assets/app.js"></script>
 </body>

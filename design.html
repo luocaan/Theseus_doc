@@ -134,8 +134,16 @@ document.addEventListener("click", function() {
   if (menu) menu.classList.remove("open");
 });
 function toggleNav() {
-  document.querySelector(".site-header nav").classList.toggle("open");
+  // 移动端：汉堡按钮打开本页目录（sidebar TOC）
+  var sb = document.querySelector(".sidebar");
+  if (sb) sb.classList.toggle("open");
 }
+document.addEventListener("click", function(e) {
+  var sb = document.querySelector(".sidebar");
+  if (sb && sb.classList.contains("open") && !sb.contains(e.target) && !e.target.classList.contains("nav-toggle")) {
+    sb.classList.remove("open");
+  }
+});
 </script>
 <script src="assets/app.js"></script>
 </body>
