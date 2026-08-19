@@ -16,6 +16,7 @@
       <div class="switcher-menu" id="switcherMenu">
         <a href="index.html" class="active">标准Java模组开发文档</a>
         <a href="ths.html" >THS简易语言开发文档</a>
+        <a href="assets.html" >资源制作指南</a>
       </div>
     </div>
     <button class="nav-toggle" onclick="toggleNav()" aria-label="菜单">&#9776;</button>
@@ -40,7 +41,7 @@
 <hr>
 <h2 id="0-接口状态约定">0. 接口状态约定</h2>
 <p>本文档中所有接口标注 <code>@Experimental</code>（实现中，可能调整）。</p>
-<table><thead><tr><th>状态</th><th>含义</th></tr></thead><tbody><tr><td> 可用</td><td>接口已实现，签名以本文为准</td></tr><tr><td> 受限</td><td>接口已实现，可注册/查询/遍历，但核心循环尚未切换到定义对象派发</td></tr><tr><td>� 已定义</td><td>接口已定义，但宿主尚未注入实现，运行期调用返回空或不生效</td></tr></tbody></table>
+<table><thead><tr><th>状态</th><th>含义</th></tr></thead><tbody><tr><td> 可用</td><td>接口已实现并接入核心循环，签名以本文为准</td></tr><tr><td> 受限</td><td>接口已实现，可注册/查询/遍历，但核心循环对其回调的派发尚不完整（如 <code>NoteTypeDefinition</code> 的判定 / 渲染回调未接入）</td></tr><tr><td>� 已定义</td><td>接口已定义，但宿主尚未注入实现，运行期调用返回空或不生效</td></tr></tbody></table>
 <hr>
 <h2 id="1-包结构">1. 包结构</h2>
 <h3 id="11-包布局">1.1 包布局</h3>
@@ -119,7 +120,7 @@ com.seecmd.mod.api.spi                 # 供给侧注册骨架
 <ul><li>所有注册项 <code>id()</code> 使用命名空间格式 <code>&lt;modId&gt;:&lt;name&gt;</code>（如 <code>seecmd:hold</code>、<code>mymod:slide</code>）。</li><li>注册时机：进程级，在 <code>Mod.onLoad(ModContext)</code> 中注册一次。</li><li>重复注册被忽略并告警。</li><li>每个回调方法独立异常隔离。</li></ul>
 <h3 id="32-notetypedefinition--notetyperegistry">3.2 <code>NoteTypeDefinition</code> + <code>NoteTypeRegistry</code></h3>
 <p>包：<code>com.seecmd.mod.api.spi</code>。 可用。</p>
-<blockquote><p> 核心循环（谱面解析 / 判定引擎 / 轨道渲染）当前仍按内置音符类型派发，<strong>尚未切换到定义对象派发</strong>；本注册表可注册 / 查询 / 遍历。</p></blockquote>
+<blockquote><p> <strong>接入程度差异</strong>：谱面解析已接入（加载时按序列化 key 注入 <code>typeDef</code>），音符行为判断（<code>isBarrier/isHold/isExploit/isPayload</code>）已委托给定义对象；<strong>判定与渲染回调尚未接入</strong>——<code>onJudge()</code> 与 <code>render()</code> 未被核心循环调用。自定义类型的判定走统一判定引擎；<strong>外观已支持按类型定制</strong>——皮肤系统可为其提供专属槽位（图片皮肤放 <code>&lt;类型key&gt;.png</code>、字符皮肤在 note.json 加 <code>custom</code> 映射，见资源制作指南），未提供专属外观时回退到行为分类对应槽位。</p></blockquote>
 <p><strong>配套类型</strong>（<code>NoteTypeDefinition</code> 引用的输入/上下文接口）：</p>
 <div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>/** 运行时音符基类（api 侧）。自定义音符类型继承此类，不可直接依赖内核模型。 */
 public abstract class NoteData {
