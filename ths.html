@@ -29,7 +29,7 @@
   <span class="version">v2 · @Experimental</span>
 </header>
 <div class="layout">
-<aside class="sidebar"><div class="toc-title">本页目录</div><nav class="toc"><ul><li class="l2"><a href="#什么是-ths">什么是 THS？</a></li><li class="l2"><a href="#快速开始">快速开始</a></li><li class="l3"><a href="#1-创建文件">1. 创建文件</a></li><li class="l3"><a href="#2-写模板">2. 写模板</a></li><li class="l3"><a href="#3-添加效果">3. 添加效果</a></li><li class="l3"><a href="#4-在游戏里启用">4. 在游戏里启用</a></li><li class="l2"><a href="#在线体验">在线体验</a></li><li class="l2"><a href="#语法">语法</a></li><li class="l3"><a href="#注释">注释</a></li><li class="l3"><a href="#元信息">元信息</a></li><li class="l3"><a href="#模板配置">模板配置</a></li><li class="l3"><a href="#事件">事件</a></li><li class="l3"><a href="#基本绘制">基本绘制</a></li><li class="l2"><a href="#模板列表">模板列表</a></li><li class="l3"><a href="#滤镜模板">滤镜模板</a></li><li class="l3"><a href="#判定模板">判定模板</a></li><li class="l3"><a href="#hud-模板">HUD 模板</a></li><li class="l3"><a href="#特效模板">特效模板</a></li><li class="l3"><a href="#触发器模板">触发器模板</a></li><li class="l2"><a href="#事件列表">事件列表</a></li><li class="l2"><a href="#命令参考">命令参考</a></li><li class="l2"><a href="#完整示例">完整示例</a></li></ul></nav></aside>
+<aside class="sidebar"><div class="toc-title">本页目录</div><nav class="toc"><ul><li class="l2"><a href="#什么是-ths">什么是 THS？</a></li><li class="l2"><a href="#快速开始">快速开始</a></li><li class="l3"><a href="#1-创建文件">1. 创建文件</a></li><li class="l3"><a href="#2-写模板">2. 写模板</a></li><li class="l3"><a href="#3-添加效果">3. 添加效果</a></li><li class="l3"><a href="#4-在游戏里启用">4. 在游戏里启用</a></li><li class="l2"><a href="#在线体验">在线体验</a></li><li class="l2"><a href="#语法">语法</a></li><li class="l3"><a href="#注释">注释</a></li><li class="l3"><a href="#元信息">元信息</a></li><li class="l3"><a href="#模板配置">模板配置</a></li><li class="l3"><a href="#事件">事件</a></li><li class="l3"><a href="#基本绘制">基本绘制</a></li><li class="l2"><a href="#模板列表">模板列表</a></li><li class="l3"><a href="#滤镜模板">滤镜模板</a></li><li class="l3"><a href="#判定模板">判定模板</a></li><li class="l3"><a href="#hud-模板">HUD 模板</a></li><li class="l3"><a href="#特效模板">特效模板</a></li><li class="l3"><a href="#触发器模板">触发器模板</a></li><li class="l2"><a href="#事件列表">事件列表</a></li><li class="l2"><a href="#命令参考">命令参考</a></li><li class="l2"><a href="#完整示例">完整示例</a></li><li class="l2"><a href="#连续-miss-提醒示例">连续 Miss 提醒示例</a></li></ul></nav></aside>
 <main class="content">
 <h1>THS 简易语言开发文档</h1>
 <p class="doc-sub">面向零基础，用简单脚本就能做出游戏模组</p>
@@ -99,10 +99,10 @@ version &quot;1.0&quot;</code></pre></div>
 <h3 id="特效模板">特效模板</h3>
 <table><thead><tr><th>模板名</th><th>参数</th><th>说明</th></tr></thead><tbody><tr><td><code>burst</code></td><td><code>count</code>, <code>speed</code>, <code>color</code></td><td>粒子爆发</td></tr></tbody></table>
 <h3 id="触发器模板">触发器模板</h3>
-<table><thead><tr><th>模板名</th><th>参数</th><th>效果</th></tr></thead><tbody><tr><td><code>shake</code></td><td><code>duration</code> (秒), <code>intensity</code></td><td>画面抖动</td></tr><tr><td><code>flash</code></td><td><code>color</code> (R G B), <code>duration</code> (秒)</td><td>全屏闪白</td></tr></tbody></table>
+<table><thead><tr><th>模板名</th><th>参数</th><th>效果</th></tr></thead><tbody><tr><td><code>shake</code></td><td><code>duration</code> (秒), <code>intensity</code></td><td>画面抖动</td></tr><tr><td><code>flash</code></td><td><code>color</code> (R G B), <code>duration</code> (秒)</td><td>全屏闪白，<code>duration</code> 秒后淡出结束</td></tr><tr><td><code>message</code></td><td><code>text</code>, <code>color</code> (R G B), <code>opacity</code> (0-1), <code>duration</code> (秒), <code>text_color</code>, <code>font_size</code></td><td>全屏提示层 + 居中文字，<code>duration</code> 秒后自动消失</td></tr></tbody></table>
 <hr>
 <h2 id="事件列表">事件列表</h2>
-<table><thead><tr><th>事件</th><th>示例</th><th>说明</th></tr></thead><tbody><tr><td><code>on_combo N</code></td><td><code>on_combo 50 { ... }</code></td><td>连击数达到 N 时触发</td></tr><tr><td><code>on_miss_count N</code></td><td><code>on_miss_count 3 { ... }</code></td><td>连续 Miss N 次时触发</td></tr><tr><td><code>on_miss</code></td><td><code>on_miss { ... }</code></td><td>每次 Miss 时触发</td></tr><tr><td><code>on_game_start</code></td><td><code>on_game_start { ... }</code></td><td>游戏开始时触发</td></tr><tr><td><code>on_game_end</code></td><td><code>on_game_end { ... }</code></td><td>游戏结束时触发</td></tr><tr><td><code>on_render</code></td><td><code>on_render { ... }</code></td><td>每帧触发，可绘制内容</td></tr><tr><td><code>on_note_judged</code></td><td><code>on_note_judged { ... }</code></td><td>音符被判定时触发</td></tr></tbody></table>
+<table><thead><tr><th>事件</th><th>示例</th><th>说明</th></tr></thead><tbody><tr><td><code>on_combo N</code></td><td><code>on_combo 50 { ... }</code></td><td>连击数达到 N 时触发</td></tr><tr><td><code>on_miss_count N</code></td><td><code>on_miss_count 3 { ... }</code></td><td>连续 Miss N 次时触发（中途命中会清零重新计数）</td></tr><tr><td><code>on_miss</code></td><td><code>on_miss { ... }</code></td><td>每次 Miss 时触发</td></tr><tr><td><code>on_game_start</code></td><td><code>on_game_start { ... }</code></td><td>游戏开始时触发</td></tr><tr><td><code>on_game_end</code></td><td><code>on_game_end { ... }</code></td><td>游戏结束时触发</td></tr><tr><td><code>on_render</code></td><td><code>on_render { ... }</code></td><td>每帧触发，可绘制内容</td></tr><tr><td><code>on_note_judged</code></td><td><code>on_note_judged { ... }</code></td><td>音符被判定时触发</td></tr></tbody></table>
 <hr>
 <h2 id="命令参考">命令参考</h2>
 <table><thead><tr><th>命令</th><th>用法</th><th>说明</th></tr></thead><tbody><tr><td><code>log</code></td><td><code>log &quot;文字&quot;</code></td><td>输出日志</td></tr><tr><td><code>color</code></td><td><code>color 255 255 255</code></td><td>设置绘制颜色</td></tr><tr><td><code>text</code></td><td><code>text &quot;文字&quot; x y</code></td><td>绘制文本</td></tr><tr><td><code>rect</code></td><td><code>rect x y w h</code></td><td>绘制矩形</td></tr><tr><td><code>line</code></td><td><code>line x1 y1 x2 y2</code></td><td>绘制线条</td></tr><tr><td><code>if</code></td><td><code>if score &gt; 900000 { ... }</code></td><td>条件判断</td></tr><tr><td><code>let</code></td><td><code>let x = 5</code></td><td>赋值变量</td></tr><tr><td><code>trigger</code></td><td><code>trigger &quot;shake&quot; { duration = 2.0 }</code></td><td>触发效果</td></tr><tr><td><code>effect</code></td><td><code>effect &quot;burst&quot; { count = 10 }</code></td><td>播放特效</td></tr></tbody></table>
@@ -151,6 +151,24 @@ on_render {
     color 255 255 255
     text &quot;Score: &quot; + score 20 20
 }</code></pre></div>
+<hr>
+<h2 id="连续-miss-提醒示例">连续 Miss 提醒示例</h2>
+<p>连续 Miss 3 次时，在屏幕上叠加一层白色提示层，同时显示警示文字，1.5 秒后自动消失。中途只要命中一次，连续计数就会清零重新开始。</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code># 连续 Miss 提醒
+name &quot;连续 Miss 提醒&quot;
+id &quot;miss_streak_demo&quot;
+author &quot;你的名字&quot;
+version &quot;1.0&quot;
+
+on_miss_count 3 {
+    trigger &quot;message&quot; {
+        text = &quot;注意节奏！&quot;
+        color = 255 255 255
+        opacity = 0.85
+        duration = 1.5
+    }
+}</code></pre></div>
+<ul><li><code>on_miss_count 3</code> 只统计连续 Miss，连续 3 次未命中才触发</li><li><code>message</code> 模板的 <code>color</code> 是提示层颜色（这里为白色）、<code>opacity</code> 是层的不透明度、<code>duration</code> 是显示时长</li><li>不想要提示层、只显示文字时，去掉 <code>color</code> 和 <code>opacity</code> 两个参数即可</li><li>在「在线体验」中选择预设「连续 Miss 提醒」即可直接试玩这个效果</li></ul>
 </main>
 </div>
 <footer class="site-foot">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</footer>

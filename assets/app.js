@@ -1126,6 +1126,15 @@
              '# 结算时显示一句鼓励\n' +
               'on_game_end {\n    trigger "message" {\n        text = "太棒了！"\n    }\n}',
       },
+      {
+        name: "连续 Miss 提醒",
+        src: '# THS 示例：连续 Miss 3 次时全屏白色层 + 警示文字，1.5 秒后自动消失\n' +
+             'name "连续 Miss 提醒"\nid "miss_streak_demo"\nauthor "THS"\nversion "1.0"\n\n' +
+             '# 演示需要：把判定窗口调小，模拟里才容易出现 Miss（游戏里是玩家失误触发）\n' +
+             'set_judgment "strict" {\n    perfect = 20\n    great = 40\n}\n\n' +
+             '# 连续 Miss 3 次（中途命中会清零重新计数）\n' +
+             'on_miss_count 3 {\n    trigger "message" {\n        text = "注意节奏！"\n        color = 255 255 255\n        opacity = 0.85\n        duration = 1.5\n    }\n}',
+      },
     ];
 
     // ---------- THS 解析器（支持文档中的子集语法） ----------
@@ -1196,8 +1205,12 @@
           ast.render = readCmds();
         } else if ((m = line.match(/^on_combo\s+(\d+)\s*\{/))) {
           ast.events.push({ kind: "combo", arg: +m[1], cmds: readCmds() });
+        } else if ((m = line.match(/^on_miss_count\s+(\d+)\s*\{/))) {
+          ast.events.push({ kind: "miss_count", arg: +m[1], cmds: readCmds() });
         } else if ((m = line.match(/^on_miss\s+(\d+)\s*\{/))) {
           ast.events.push({ kind: "miss", arg: +m[1], cmds: readCmds() });
+        } else if (/^on_miss\s*\{/.test(line)) {
+          ast.events.push({ kind: "miss", arg: 0, cmds: readCmds() });
         } else if (/^on_note_judged\s*\{/.test(line)) {
           ast.events.push({ kind: "judged", cmds: readCmds() });
         } else if (/^on_game_start\s*\{/.test(line)) {
@@ -1247,13 +1260,14 @@
     var simTime = 0, lastTs = 0, speedFactor = 1;
     var notes = [], nextJudge = 0;
     var combo = 0, maxCombo = 0, score = 0, perf = 0, great = 0, miss = 0;
+    var missStreak = 0; // 连续 miss 计数（命中清零），供 on_miss_count N 使用
     var judgedTotal = 0, accSum = 0;
     var drawColor = [255, 255, 255];
     var lastJudgeX = W / 2;
     var fx = {
       shakeUntil: 0, shakeI: 0,
-      flashA: 0, flashC: [255, 255, 255],
-      msg: "", msgUntil: 0,
+      flashA: 0, flashC: [255, 255, 255], flashDecay: 0.9,
+      msg: "", msgUntil: 0, msgLayerA: 0, msgLayerC: [255, 255, 255],
       bursts: [], rings: [], texts: [],
     };
     var firedEvents = {}; // 已触发的阈值事件（避免重复）
@@ -1276,8 +1290,20 @@
           firedEvents["c" + ev.arg] = true;
           hit = true;
         }
-        if (ev.kind === "miss" && kind === "miss" && miss === ev.arg && !firedEvents["m" + ev.arg]) {
-          firedEvents["m" + ev.arg] = true;
+        if (ev.kind === "miss" && kind === "miss") {
+          if (ev.arg > 0) {
+            // on_miss N：累计 Miss 达到 N 时触发一次
+            if (miss === ev.arg && !firedEvents["m" + ev.arg]) {
+              firedEvents["m" + ev.arg] = true;
+              hit = true;
+            }
+          } else {
+            // on_miss：每次 Miss 都触发
+            hit = true;
+          }
+        }
+        // on_miss_count N：连续 Miss 恰好达到 N 时触发（中途命中会清零，可多次触发，不去重）
+        if (ev.kind === "miss_count" && kind === "miss_count" && missStreak === ev.arg) {
           hit = true;
         }
         if (hit) execCmds(ev.cmds);
@@ -1298,9 +1324,13 @@
             } else if (c.name === "flash") {
               fx.flashA = 0.9;
               fx.flashC = p.color || [255, 255, 255];
+              var fd = p.duration || 0.15;
+              fx.flashDecay = Math.pow(0.01, 16 / (fd * 1000));
             } else if (c.name === "message") {
               fx.msg = p.text || "";
-              fx.msgUntil = simTime + 2500;
+              fx.msgUntil = simTime + (p.duration || 1) * 1000;
+              fx.msgLayerA = p.opacity != null ? p.opacity : 0;
+              fx.msgLayerC = p.color || [255, 255, 255];
             }
           } else if (c.t === "effect") {
             var pp = c.params || {};
@@ -1408,9 +1438,13 @@
         ctx.globalAlpha = 1;
       });
       if (simTime < fx.msgUntil) {
+        if (fx.msgLayerA > 0) {
+          ctx.fillStyle = "rgba(" + fx.msgLayerC.join(",") + "," + fx.msgLayerA.toFixed(2) + ")";
+          ctx.fillRect(0, 0, W, H);
+        }
         ctx.font = "bold 26px system-ui";
         ctx.textAlign = "center";
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = fx.msgLayerA > 0 ? "#111" : "#fff";
         ctx.fillText(fx.msg, W / 2, H / 2);
         ctx.textAlign = "left";
       }
@@ -1456,7 +1490,7 @@
       if (fx.flashA > 0.01) {
         ctx.fillStyle = "rgba(" + fx.flashC.join(",") + "," + fx.flashA.toFixed(2) + ")";
         ctx.fillRect(0, 0, W, H);
-        fx.flashA *= 0.9;
+        fx.flashA *= fx.flashDecay;
       }
     }
 
@@ -1471,9 +1505,9 @@
       n.judged = true;
       n.result = result;
       judgedTotal++;
-      if (result === "perfect") { perf++; combo++; score += 1000; accSum += 1; }
-      else if (result === "great") { great++; combo++; score += 500; accSum += 0.6; }
-      else { miss++; combo = 0; accSum += 0; }
+      if (result === "perfect") { perf++; combo++; score += 1000; accSum += 1; missStreak = 0; }
+      else if (result === "great") { great++; combo++; score += 500; accSum += 0.6; missStreak = 0; }
+      else { miss++; combo = 0; missStreak++; accSum += 0; }
       maxCombo = Math.max(maxCombo, combo);
       vars.score = score; vars.combo = combo; vars.max_combo = maxCombo;
       vars.accuracy = judgedTotal ? accSum / judgedTotal : 1;
@@ -1485,6 +1519,7 @@
       fireEvents("judged");
       fireEvents("combo");
       fireEvents("miss");
+      fireEvents("miss_count");
     }
 
     function tick(ts) {
@@ -1586,8 +1621,9 @@
       cancelAnimationFrame(rafId);
       simTime = 0; lastTs = 0; notes = []; nextJudge = 700;
       combo = 0; maxCombo = 0; score = 0; perf = 0; great = 0; miss = 0;
+      missStreak = 0;
       judgedTotal = 0; accSum = 0; started = false; ended = false;
-      fx.shakeUntil = 0; fx.flashA = 0; fx.msgUntil = 0; fx.bursts = []; fx.rings = [];
+      fx.shakeUntil = 0; fx.flashA = 0; fx.flashDecay = 0.9; fx.msgUntil = 0; fx.msgLayerA = 0; fx.bursts = []; fx.rings = [];
       firedEvents = {};
       vars.score = 0; vars.combo = 0; vars.max_combo = 0; vars.accuracy = 1; vars.progress = 0; vars.note_result = "";
       logEl.innerHTML = "";
