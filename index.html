@@ -17,6 +17,7 @@
         <a href="index.html" class="active">标准Java模组开发文档</a>
         <a href="ths.html" >THS简易语言开发文档</a>
         <a href="assets.html" >资源制作指南</a>
+        <a href="resources.html" >资源集合</a>
       </div>
     </div>
     <button class="nav-toggle" onclick="toggleNav()" aria-label="菜单">&#9776;</button>
@@ -30,43 +31,19 @@
   <span class="version">v2 · @Experimental</span>
 </header>
 <div class="layout">
-<aside class="sidebar"><div class="toc-title">本页目录</div><nav class="toc"><ul><li class="l2"><a href="#什么是-seecmd-模组">什么是 SEECMD 模组</a></li><li class="l2"><a href="#前置条件">前置条件</a></li><li class="l2"><a href="#1-创建项目">1. 创建项目</a></li><li class="l3"><a href="#包依赖说明">包依赖说明</a></li><li class="l2"><a href="#2-编写最小模组">2. 编写最小模组</a></li><li class="l3"><a href="#关键点">关键点</a></li><li class="l2"><a href="#3-打包">3. 打包</a></li><li class="l2"><a href="#4-加载到游戏">4. 加载到游戏</a></li><li class="l3"><a href="#模组-id-命名规范">模组 id 命名规范</a></li><li class="l2"><a href="#下一步">下一步</a></li></ul></nav></aside>
+<aside class="sidebar"><div class="toc-title">本页目录</div><nav class="toc"><ul><li class="l2"><a href="#什么是-seecmd-模组">什么是 SEECMD 模组</a></li><li class="l2"><a href="#最快路径官方模板推荐">最快路径：官方模板（推荐）</a></li><li class="l2"><a href="#验证模组已加载">验证模组已加载</a></li><li class="l2"><a href="#进阶手工搭建工程">进阶：手工搭建工程</a></li><li class="l2"><a href="#加载到游戏">加载到游戏</a></li><li class="l3"><a href="#模组-id-命名规范">模组 id 命名规范</a></li><li class="l2"><a href="#下一步">下一步</a></li></ul></nav></aside>
 <main class="content">
 <h1>快速上手</h1>
 <p class="doc-sub">从零开始：创建项目 → 编写最小模组 → 打包 → 加载到游戏</p>
 <h2 id="什么是-seecmd-模组">什么是 SEECMD 模组</h2>
 <p>SEECMD 模组系统允许你用 Java 为游戏编写扩展。模组可以：</p>
-<ul><li><strong>注册新内容</strong>：自定义音符类型、游戏模式、判定等级、谱面扩展段</li><li><strong>覆盖渲染</strong>：隐藏原版 HUD 组件并在画面上自绘</li><li><strong>修改判定</strong>：调整判定窗口、改写判定结果、注册新的判定等级</li><li><strong>监听事件</strong>：订阅游玩事件（判定、连击、开始/结束）与全局事件</li><li><strong>控制游戏状态</strong>：暂停/恢复/变速/跳转、压入自定义场景、播放音效</li></ul>
+<ul><li><strong>注册新内容</strong>：自定义音符类型、游戏模式、判定等级、谱面扩展段</li><li><strong>覆盖渲染</strong>：隐藏原版 HUD 组件并在画面上自绘</li><li><strong>修改判定</strong>：调整判定窗口、改写判定结果、注册新的判定等级</li><li><strong>监听事件</strong>：订阅游玩事件（判定、连击、开始/结束）与全局事件</li><li><strong>控制游戏状态</strong>：暂停/恢复/变速/跳转、压入自定义场景、播放音效</li><li><strong>与玩家交互</strong>：向玩家展示提示 / 弹窗信息、解锁收集品、注册自定义音频</li></ul>
 <p>所有 API 位于 <code>com.seecmd.mod.api</code> 包中，标注 <code>@Experimental</code>（实现中，可能调整）。</p>
-<h2 id="前置条件">前置条件</h2>
-<ul><li><strong>JDK 17+</strong></li><li><strong>Maven 或 Gradle</strong></li><li><strong>mod-api jar</strong>：从 <a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mod-api-0.6.7.jar" rel="noopener">Theseus 文档站</a> 直接下载，安装到本地 Maven 仓库后按坐标引用（见下文）</li></ul>
-<h2 id="1-创建项目">1. 创建项目</h2>
-<p>创建一个标准 Java 项目，引入 mod-api 依赖。</p>
-<blockquote><p><strong>重要</strong>：依赖 scope 必须为 <code>provided</code>（Maven）或 <code>compileOnly</code>（Gradle）。API 由宿主在运行期提供，模组 jar 不得把宿主类打进去。</p></blockquote>
-<p>Maven 示例：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">xml</span></div><pre><code>&lt;dependencies&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;com.seecmd&lt;/groupId&gt;
-        &lt;artifactId&gt;mod-api&lt;/artifactId&gt;
-        &lt;version&gt;0.6.7&lt;/version&gt;
-        &lt;scope&gt;provided&lt;/scope&gt;
-    &lt;/dependency&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
-        &lt;artifactId&gt;gson&lt;/artifactId&gt;
-        &lt;version&gt;2.10.1&lt;/version&gt;
-        &lt;scope&gt;provided&lt;/scope&gt;
-    &lt;/dependency&gt;
-&lt;/dependencies&gt;</code></pre></div>
-<p>Gradle 示例：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">groovy</span></div><pre><code>dependencies {
-    compileOnly 'com.seecmd:mod-api:0.6.7'
-    compileOnly 'com.google.code.gson:gson:2.10.1'
-}</code></pre></div>
-<h3 id="包依赖说明">包依赖说明</h3>
-<p>模组编译期仅依赖 <code>com.seecmd:mod-api</code> 瘦身 jar，该 jar 仅含 <code>com.seecmd.mod.api.*</code> 与 <code>com.seecmd.mod.api.spi.*</code>，从物理上隔离了 API 与宿主/内核。<code>java.awt.Color</code> 作为纯值对象允许使用；绘制统一走抽象 <code>RenderCanvas</code>，不接触任何平台图形 API。</p>
-<h2 id="2-编写最小模组">2. 编写最小模组</h2>
-<p>最小模组只需实现 <code>Mod</code> 接口，提供 <code>info()</code> 元信息，并按需覆写 <code>onLoad(ModContext)</code>。</p>
+<h2 id="最快路径官方模板推荐">最快路径：官方模板（推荐）</h2>
+<p>不需要从零搭工程、不需要装 Maven、不需要配置依赖——<strong>下载模板，解压即用</strong>。</p>
+<ol><li>下载 <a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mods-template-0.1.0.zip" rel="noopener">mods-template-0.1.0.zip</a>（已内含 <code>mod-api</code> jar 与 <code>build.bat</code>）并解压。</li><li>编辑 <code>build.bat</code> 顶部的 4 个变量：<code>MOD_ID</code>、<code>MOD_NAME</code>、<code>MOD_VERSION</code>、<code>MOD_CLASS</code>（指向你的入口类）。</li><li>在 <code>src\main\java</code> 下写你的模组代码（参考模板里的 <code>ExampleMod</code>），资源放 <code>src\main\resources</code>。</li><li>双击 <code>build.bat</code>，产物在 <code>target\&lt;MOD_ID&gt;-&lt;MOD_VERSION&gt;.jar</code>。</li><li>把 jar 复制到游戏的 <code>mods\</code> 目录，启动游戏，模组即被加载。</li></ol>
+<p><strong>你唯一需要的环境是 JDK 17+</strong>（安装时勾选「加入 PATH」即可）。其余全部由模板代劳。</p>
+<p>最小模组只需实现 <code>Mod</code> 接口：</p>
 <div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>package com.example.helloworld;
 
 import com.seecmd.mod.api.Mod;
@@ -92,13 +69,42 @@ public class HelloWorldMod implements Mod {
     public void onLoad(ModContext ctx) {
         // 模组被启用时调用一次
         ctx.getLogger().info(&quot;Hello World 模组已加载&quot;);
-        ctx.getLogger().info(&quot;数据目录: &quot; + ctx.getDataDir());
+        // 向玩家展示提示：toast 数秒后自动消失；重要信息可用 ctx.notifier().dialog(&quot;...&quot;, 5000)
+        ctx.notifier().info(&quot;Hello World 模组已加载&quot;);
     }
 }</code></pre></div>
-<h3 id="关键点">关键点</h3>
-<ul><li><code>Mod.info()</code> 是唯一必须实现的方法，返回模组的 id、名称、版本、作者、描述。</li><li><code>onLoad(ModContext)</code> 在模组被启用时调用一次，可读取配置、初始化资源、注册内容。</li><li><code>ModContext</code> 是模组的「工具箱」：读取日志（<code>getLogger()</code>）、数据目录（<code>getDataDir()</code>）、配置（<code>config()</code>）、注册表（<code>noteTypes()</code> / <code>gameModes()</code> / <code>judgmentKinds()</code> / <code>chartExtensions()</code>）、能力（<code>capabilities()</code>）。</li><li>需要参与游玩（覆盖渲染 / 修改判定 / 监听事件）时，改实现 <code>GameplayMod</code> 接口（继承自 <code>Mod</code>）。</li></ul>
-<h2 id="3-打包">3. 打包</h2>
-<p>模组编译后打包为标准 jar，<strong>必须包含 <code>META-INF/MANIFEST.MF</code></strong>。<code>Seecmd-Mod-Class</code> 声明入口类，游戏加载器据此实例化模组。</p>
+<blockquote><p><code>Mod.info()</code> 是唯一必须实现的方法。需要参与游玩（覆盖渲染 / 修改判定 / 监听事件）时，改实现 <code>GameplayMod</code> 接口（继承自 <code>Mod</code>）。<code>ModContext</code> 是模组的「工具箱」：日志、数据目录、配置、四大注册表、能力注入、用户通知等，见 <a href="api.html">API 参考</a>。</p></blockquote>
+<h2 id="验证模组已加载">验证模组已加载</h2>
+<p>模组加载成功时，控制台会打印模组日志（<code>[com_example_helloworld] Hello World 模组已加载</code>），游戏内也会弹出你通过 <code>notifier()</code> 发送的提示。若什么都没发生：</p>
+<ul><li>确认 jar 放在 <code>mods\</code> 目录（与游戏 <code>data\</code> 同级）。</li><li>确认 jar 的 <code>META-INF/MANIFEST.MF</code> 含 <code>Seecmd-Mod-Class</code>（模板已自动生成，改类名时记得同步 <code>build.bat</code> 的 <code>MOD_CLASS</code>）。</li><li>查看游戏日志是否有模组加载报错。</li></ul>
+<h2 id="进阶手工搭建工程">进阶：手工搭建工程</h2>
+<p>如果你已有自己的构建体系（Maven / Gradle / IDE），也可以手工引入依赖。</p>
+<blockquote><p><strong>重要</strong>：依赖 scope 必须为 <code>provided</code>（Maven）或 <code>compileOnly</code>（Gradle）。API 由宿主在运行期提供，模组 jar 不得把宿主类打进去。</p></blockquote>
+<p><strong>第一步：安装 mod-api 到本地仓库（只需一次）</strong></p>
+<p>从 <a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mod-api-0.6.7.jar" rel="noopener">这里</a> 下载 jar，执行：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>mvn install:install-file -Dfile=mod-api-0.6.7.jar -DgroupId=com.seecmd -DartifactId=mod-api -Dversion=0.6.7 -Dpackaging=jar</code></pre></div>
+<p><strong>第二步：声明依赖</strong></p>
+<p>Maven 示例：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">xml</span></div><pre><code>&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.seecmd&lt;/groupId&gt;
+        &lt;artifactId&gt;mod-api&lt;/artifactId&gt;
+        &lt;version&gt;0.6.7&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+        &lt;artifactId&gt;gson&lt;/artifactId&gt;
+        &lt;version&gt;2.10.1&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre></div>
+<p>Gradle 示例：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-lang">groovy</span></div><pre><code>dependencies {
+    compileOnly 'com.seecmd:mod-api:0.6.7'
+    compileOnly 'com.google.code.gson:gson:2.10.1'
+}</code></pre></div>
+<p><strong>打包</strong>：编译后打包为标准 jar，manifest 必须包含以下条目：</p>
 <div class="code-wrap"><div class="code-head"><span class="code-lang">manifest</span></div><pre><code>Manifest-Version: 1.0
 Seecmd-Mod-Id: com_example_helloworld
 Seecmd-Mod-Class: com.example.helloworld.HelloWorldMod
@@ -106,33 +112,13 @@ Seecmd-Mod-Name: Hello World
 Seecmd-Mod-Version: 0.1.0
 Seecmd-Mod-Authors: Alice
 Seecmd-Mod-Description: 一个示例模组，演示 SEECMD 模组 API 基础用法</code></pre></div>
-<p>Maven 打包配置：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">xml</span></div><pre><code>&lt;build&gt;
-    &lt;plugins&gt;
-        &lt;plugin&gt;
-            &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
-            &lt;configuration&gt;
-                &lt;archive&gt;
-                    &lt;manifestEntries&gt;
-                        &lt;Seecmd-Mod-Id&gt;com_example_helloworld&lt;/Seecmd-Mod-Id&gt;
-                        &lt;Seecmd-Mod-Class&gt;com.example.helloworld.HelloWorldMod&lt;/Seecmd-Mod-Class&gt;
-                        &lt;Seecmd-Mod-Name&gt;Hello World&lt;/Seecmd-Mod-Name&gt;
-                        &lt;Seecmd-Mod-Version&gt;0.1.0&lt;/Seecmd-Mod-Version&gt;
-                        &lt;Seecmd-Mod-Authors&gt;Alice&lt;/Seecmd-Mod-Authors&gt;
-                        &lt;Seecmd-Mod-Description&gt;一个示例模组，演示 SEECMD 模组 API 基础用法&lt;/Seecmd-Mod-Description&gt;
-                    &lt;/manifestEntries&gt;
-                &lt;/archive&gt;
-            &lt;/configuration&gt;
-        &lt;/plugin&gt;
-    &lt;/plugins&gt;
-&lt;/build&gt;</code></pre></div>
-<p>打包时注意：<strong>不要把宿主类打进模组 jar</strong>（依赖 scope 用 <code>provided</code>）。模组自身的资源文件（图片、配置模板等）正常打入 jar resources 即可。</p>
-<h2 id="4-加载到游戏">4. 加载到游戏</h2>
+<p>完整配置参考模板中的 <code>pom.xml</code>（已配置好 maven-jar-plugin 的 manifest 生成）。</p>
+<h2 id="加载到游戏">加载到游戏</h2>
 <ol><li>把打包好的 <code>xxx.jar</code> 放进游戏工作目录下的 <code>mods/</code> 文件夹（与 <code>data/</code> 同级）。</li><li>启动游戏，加载器自动扫描 <code>mods/</code> 目录，读取 manifest 定位入口类并注册。</li><li>模组数据目录在 <code>data/mods/&lt;modId&gt;/</code>（首次访问自动创建）。</li><li>启用状态持久化在 <code>data/settings.json</code> 的 <code>enabledMods</code>，也可用外置工具 <code>mods/mod-manager.jar</code> 管理。</li></ol>
 <h3 id="模组-id-命名规范">模组 id 命名规范</h3>
 <ul><li>小写下划线，如 <code>com_example_helloworld</code>。</li><li>不得以 <code>builtin_</code> 开头（保留给内置模组）。</li><li>建议使用反向域名前缀避免冲突。</li></ul>
 <h2 id="下一步">下一步</h2>
-<ul><li><strong><a href="guide.html">开发指南</a></strong>：完整的核心示例——替换进度条 HUD、MISS 触发自定义场景、注册新音符类型、判定修改、事件监听，每个示例都带实时预览。</li><li><strong><a href="api.html">API 参考</a></strong>：全部接口的签名定义与行为契约，含 RenderCanvas 绘制沙盒预览。</li><li><strong><a href="design.html">架构设计</a></strong>：能力原语、内容注册表、RenderCanvas 抽象与 api / spi / host 分层。</li><li><strong><a href="assets.html">资源制作</a></strong>：不用写代码，制作自定义音符皮肤（图片皮肤 / 字符皮肤）并应用到游戏。</li><li><strong><a href="ths.html">THS 简易语言</a></strong>：无需 Java 基础，用简单脚本就能做出游戏模组，适合零基础入门。</li></ul>
+<ul><li><strong><a href="guide.html">开发指南</a></strong>：完整的核心示例——替换进度条 HUD、MISS 触发自定义场景、注册新音符类型、判定修改、事件监听，每个示例都带实时预览。</li><li><strong><a href="api.html">API 参考</a></strong>：全部接口的签名定义与行为契约，含 RenderCanvas 绘制沙盒预览。</li><li><strong><a href="resources.html">资源集合</a></strong>：文档站提供的全部资源一览（模板、API jar、各文档页面）。</li><li><strong><a href="design.html">架构设计</a></strong>：能力原语、内容注册表、RenderCanvas 抽象与 api / spi / host 分层。</li><li><strong><a href="assets.html">资源制作</a></strong>：不用写代码，制作自定义音符皮肤（图片皮肤 / 字符皮肤）并应用到游戏。</li><li><strong><a href="ths.html">THS 简易语言</a></strong>：无需 Java 基础，用简单脚本就能做出游戏模组，适合零基础入门。</li></ul>
 </main>
 </div>
 <footer class="site-foot">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</footer>
