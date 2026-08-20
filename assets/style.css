@@ -1,6 +1,6 @@
 /* ============================================================
    SEECMD 模组文档站 — 共享样式
-   设计语言（提炼自 rainmorime 个人站，应用于文档场景）：
+   设计语言（提炼自 rainmorime 个人站，应用于文档场景），非常好网站，值得一品：www.rainmorime.com：
    · 色彩极简：近黑底 #141416，唯一强调色为低饱和绿
    · 层级靠透明度：主文 0.92 / 次文 0.55 / 弱化 0.38 / 线 0.10
    · 强调色只出现在"有信息含义"处：链接、active、状态、代码高亮
@@ -37,6 +37,22 @@
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
+
+/* 自定义滚动条（全站统一，暗色细条，与整体风格协调） */
+* { scrollbar-width: thin; scrollbar-color: rgba(230, 230, 230, 0.22) rgba(230, 230, 230, 0.04); }
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-track { background: rgba(230, 230, 230, 0.04); }
+*::-webkit-scrollbar-thumb {
+  background: rgba(230, 230, 230, 0.22);
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(230, 230, 230, 0.38);
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-corner { background: transparent; }
 
 body {
   margin: 0;
@@ -353,13 +369,16 @@ pre code {
 .content blockquote p:last-child { margin-bottom: 0; }
 
 /* 表格 */
+.content .table-scroll {
+  overflow-x: auto;
+  margin: 0 0 20px;
+  border-radius: var(--radius);
+}
 .content table {
   width: 100%;
   border-collapse: collapse;
-  margin: 0 0 20px;
+  margin: 0;
   font-size: 13.5px;
-  display: block;
-  overflow-x: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius);
   background: var(--panel);
