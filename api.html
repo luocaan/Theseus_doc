@@ -8,31 +8,27 @@
 </head>
 <body>
 
+
 <header class="site-header">
   <div class="brand-group">
-    <a class="brand" href="index.html">SEECMD</a>
-    <div class="doc-switcher">
-      <button class="switcher-btn" onclick="toggleMenu(event)">标准Java模组开发 ▾</button>
-      <div class="switcher-menu" id="switcherMenu">
-        <a href="index.html" class="active">标准Java模组开发文档</a>
-        <a href="ths.html" >THS简易语言开发文档</a>
-        <a href="assets.html" >资源制作指南</a>
-        <a href="resources.html" >资源集合</a>
-      </div>
-    </div>
+    <a class="brand" href="index.html">SEECMD<span class="brand-caret"></span></a>
     <button class="nav-toggle" onclick="toggleNav()" aria-label="菜单">&#9776;</button>
   </div>
-  <nav>
-    <a href="index.html">快速上手</a>
-    <a href="guide.html">开发指南</a>
-    <a href="api.html" class="active">API 参考</a>
-    <a href="design.html">架构设计</a>
+  <nav class="main-nav">
+    <div class="nav-group"><span class="nav-group-label">入门</span><a href="index.html">快速上手</a><a href="ths.html">THS 简易语言</a></div>
+    <div class="nav-group"><span class="nav-group-label">开发</span><a href="guide.html">开发指南</a><a href="api.html" class="active">API 参考</a></div>
+    <div class="nav-group"><span class="nav-group-label">资源</span><a href="assets.html">资源制作</a><a href="resources.html">资源集合</a></div>
+    <div class="nav-group"><span class="nav-group-label">架构</span><a href="design.html">架构设计</a></div>
   </nav>
-  <span class="version">v2 · @Experimental</span>
+  <div class="header-hud">
+    <span class="hud-clock mono">--:--:--</span>
+    <span class="version">v2 &#183; @Experimental</span>
+  </div>
 </header>
 <div class="layout">
-<aside class="sidebar"><div class="toc-title">本页目录</div><nav class="toc"><ul><li class="l2"><a href="#0-接口状态约定">0. 接口状态约定</a></li><li class="l2"><a href="#1-包结构">1. 包结构</a></li><li class="l3"><a href="#11-包布局">1.1 包布局</a></li><li class="l3"><a href="#12-包依赖说明">1.2 包依赖说明</a></li><li class="l2"><a href="#2-入口接口">2. 入口接口</a></li><li class="l3"><a href="#21-mod">2.1 Mod</a></li><li class="l3"><a href="#22-gameplaymod">2.2 GameplayMod</a></li><li class="l3"><a href="#23-modinfo">2.3 ModInfo</a></li><li class="l3"><a href="#24-modcontext">2.4 ModContext</a></li><li class="l3"><a href="#25-modconfig">2.5 ModConfig</a></li><li class="l3"><a href="#26-collectibleregistry-与收集品">2.6 CollectibleRegistry 与收集品</a></li><li class="l3"><a href="#27-notifier">2.7 Notifier</a></li><li class="l2"><a href="#3-注册表">3. 注册表</a></li><li class="l3"><a href="#31-通用约定">3.1 通用约定</a></li><li class="l3"><a href="#32-notetypedefinition--notetyperegistry">3.2 NoteTypeDefinition + NoteTypeRegistry</a></li><li class="l3"><a href="#33-gamemodedefinition--gamemoderegistry">3.3 GameModeDefinition + GameModeRegistry</a></li><li class="l3"><a href="#34-judgmentkinddefinition--judgmentkindregistry">3.4 JudgmentKindDefinition + JudgmentKindRegistry</a></li><li class="l3"><a href="#35-chartextensionparser--chartextensionregistry">3.5 ChartExtensionParser + ChartExtensionRegistry</a></li><li class="l2"><a href="#4-能力接口">4. 能力接口</a></li><li class="l3"><a href="#41-gameplayhud">4.1 GameplayHud</a></li><li class="l3"><a href="#42-gamestateaccess">4.2 GameStateAccess</a></li><li class="l3"><a href="#43-scenehost">4.3 SceneHost</a></li><li class="l3"><a href="#44-audioaccess">4.4 AudioAccess</a></li><li class="l3"><a href="#45-inputaccess">4.5 InputAccess</a></li><li class="l3"><a href="#46-storyaccess">4.6 StoryAccess</a></li><li class="l3"><a href="#47-modmanageraccess">4.7 ModManagerAccess</a></li><li class="l2"><a href="#5-渲染上下文">5. 渲染上下文</a></li><li class="l3"><a href="#51-rendercanvas">5.1 RenderCanvas</a></li><li class="l3"><a href="#52-renderresources">5.2 RenderResources</a></li><li class="l3"><a href="#53-filterframe">5.3 FilterFrame</a></li><li class="l3"><a href="#54-renderfilter">5.4 RenderFilter</a></li><li class="l3"><a href="#55-renderfilterregistry">5.5 RenderFilterRegistry</a></li><li class="l3"><a href="#56-hiteffectstyle打击特效">5.6 HitEffectStyle（打击特效）</a></li><li class="l2"><a href="#6-上下文视图">6. 上下文视图</a></li><li class="l3"><a href="#61-gameplaycontext">6.1 GameplayContext</a></li><li class="l3"><a href="#62-noteview">6.2 NoteView</a></li><li class="l3"><a href="#63-laneview">6.3 LaneView</a></li><li class="l3"><a href="#64-hudvalues--chartview">6.4 HudValues / ChartView</a></li><li class="l2"><a href="#7-事件目录">7. 事件目录</a></li><li class="l3"><a href="#71-modeventbus--subscription">7.1 ModEventBus / Subscription</a></li><li class="l3"><a href="#72-游玩事件">7.2 游玩事件</a></li><li class="l3"><a href="#73-全局事件-可用">7.3 全局事件（ 可用）</a></li><li class="l2"><a href="#8-判定扩展">8. 判定扩展</a></li><li class="l3"><a href="#81-judgmentpolicy">8.1 JudgmentPolicy</a></li><li class="l3"><a href="#82-judgmentpolicyregistry">8.2 JudgmentPolicyRegistry</a></li><li class="l3"><a href="#83-judgmentadjuster">8.3 JudgmentAdjuster</a></li><li class="l3"><a href="#84-judgeresult--judgeresults">8.4 JudgeResult / JudgeResults</a></li><li class="l2"><a href="#9-速查表">9. 速查表</a></li><li class="l3"><a href="#可用"> 可用</a></li><li class="l3"><a href="#v2-新增"> v2 新增</a></li><li class="l3"><a href="#规划中"> 规划中</a></li><li class="l2"><a href="#附录-a默认判定窗口">附录 A：默认判定窗口</a></li><li class="l2"><a href="#附录-b版本与兼容性">附录 B：版本与兼容性</a></li></ul></nav></aside>
+<aside class="sidebar"><div class="toc-title">// 本页目录</div><nav class="toc"><ul><li class="l2"><a href="#0-接口状态约定">0. 接口状态约定</a></li><li class="l2"><a href="#1-包结构">1. 包结构</a></li><li class="l3"><a href="#11-包布局">1.1 包布局</a></li><li class="l3"><a href="#12-包依赖说明">1.2 包依赖说明</a></li><li class="l2"><a href="#2-入口接口">2. 入口接口</a></li><li class="l3"><a href="#21-mod">2.1 Mod</a></li><li class="l3"><a href="#22-gameplaymod">2.2 GameplayMod</a></li><li class="l3"><a href="#23-modinfo">2.3 ModInfo</a></li><li class="l3"><a href="#24-modcontext">2.4 ModContext</a></li><li class="l3"><a href="#25-modconfig">2.5 ModConfig</a></li><li class="l3"><a href="#26-collectibleregistry-与收集品">2.6 CollectibleRegistry 与收集品</a></li><li class="l3"><a href="#27-notifier">2.7 Notifier</a></li><li class="l2"><a href="#3-注册表">3. 注册表</a></li><li class="l3"><a href="#31-通用约定">3.1 通用约定</a></li><li class="l3"><a href="#32-notetypedefinition--notetyperegistry">3.2 NoteTypeDefinition + NoteTypeRegistry</a></li><li class="l3"><a href="#33-gamemodedefinition--gamemoderegistry">3.3 GameModeDefinition + GameModeRegistry</a></li><li class="l3"><a href="#34-judgmentkinddefinition--judgmentkindregistry">3.4 JudgmentKindDefinition + JudgmentKindRegistry</a></li><li class="l3"><a href="#35-chartextensionparser--chartextensionregistry">3.5 ChartExtensionParser + ChartExtensionRegistry</a></li><li class="l2"><a href="#4-能力接口">4. 能力接口</a></li><li class="l3"><a href="#41-gameplayhud">4.1 GameplayHud</a></li><li class="l3"><a href="#42-gamestateaccess">4.2 GameStateAccess</a></li><li class="l3"><a href="#43-scenehost">4.3 SceneHost</a></li><li class="l3"><a href="#44-audioaccess">4.4 AudioAccess</a></li><li class="l3"><a href="#45-inputaccess">4.5 InputAccess</a></li><li class="l3"><a href="#46-storyaccess">4.6 StoryAccess</a></li><li class="l3"><a href="#47-modmanageraccess">4.7 ModManagerAccess</a></li><li class="l2"><a href="#5-渲染上下文">5. 渲染上下文</a></li><li class="l3"><a href="#51-rendercanvas">5.1 RenderCanvas</a></li><li class="l3"><a href="#52-renderresources">5.2 RenderResources</a></li><li class="l3"><a href="#53-filterframe">5.3 FilterFrame</a></li><li class="l3"><a href="#54-renderfilter">5.4 RenderFilter</a></li><li class="l3"><a href="#55-renderfilterregistry">5.5 RenderFilterRegistry</a></li><li class="l3"><a href="#56-backgroundrenderer--backgroundrendererregistry">5.6 BackgroundRenderer + BackgroundRendererRegistry</a></li><li class="l3"><a href="#57-hiteffectstyle打击特效">5.7 HitEffectStyle（打击特效）</a></li><li class="l2"><a href="#6-上下文视图">6. 上下文视图</a></li><li class="l3"><a href="#61-gameplaycontext">6.1 GameplayContext</a></li><li class="l3"><a href="#62-noteview">6.2 NoteView</a></li><li class="l3"><a href="#63-laneview">6.3 LaneView</a></li><li class="l3"><a href="#64-hudvalues--chartview">6.4 HudValues / ChartView</a></li><li class="l2"><a href="#7-事件目录">7. 事件目录</a></li><li class="l3"><a href="#71-modeventbus--subscription">7.1 ModEventBus / Subscription</a></li><li class="l3"><a href="#72-游玩事件">7.2 游玩事件</a></li><li class="l3"><a href="#73-全局事件-可用">7.3 全局事件（ 可用）</a></li><li class="l2"><a href="#8-判定扩展">8. 判定扩展</a></li><li class="l3"><a href="#81-judgmentpolicy">8.1 JudgmentPolicy</a></li><li class="l3"><a href="#82-judgmentpolicyregistry">8.2 JudgmentPolicyRegistry</a></li><li class="l3"><a href="#83-judgmentadjuster">8.3 JudgmentAdjuster</a></li><li class="l3"><a href="#84-judgeresult--judgeresults">8.4 JudgeResult / JudgeResults</a></li><li class="l2"><a href="#9-速查表">9. 速查表</a></li><li class="l3"><a href="#可用"> 可用</a></li><li class="l3"><a href="#v2-新增"> v2 新增</a></li><li class="l3"><a href="#规划中"> 规划中</a></li><li class="l2"><a href="#附录-a默认判定窗口">附录 A：默认判定窗口</a></li><li class="l2"><a href="#附录-b版本与兼容性">附录 B：版本与兼容性</a></li></ul></nav><div class="sidebar-path"><span class="prompt">C:\</span>SEECMD::DOC /API-REF<span class="cursor">&#9612;</span></div></aside>
 <main class="content">
+<div class="page-path"><span class="prompt">&gt;</span> SEECMD::DOC /API-REF</div>
 <h1>模组 API 参考</h1>
 <p class="doc-sub">com.seecmd.mod.api 全部接口的签名定义与行为契约（唯一权威签名）</p>
 <blockquote><p><strong>适用版本</strong>：v2（当前实现）
@@ -42,11 +38,11 @@
 <hr>
 <h2 id="0-接口状态约定">0. 接口状态约定</h2>
 <p>本文档中所有接口标注 <code>@Experimental</code>（实现中，可能调整）。</p>
-<table><thead><tr><th>状态</th><th>含义</th></tr></thead><tbody><tr><td> 可用</td><td>接口已实现并接入核心循环，签名以本文为准</td></tr><tr><td> 受限</td><td>接口已实现，可注册/查询/遍历，但核心循环对其回调的派发尚不完整（如 <code>GameModeDefinition</code> 的部分回调）</td></tr><tr><td>� 已定义</td><td>接口已定义，但宿主尚未注入实现，运行期调用返回空或不生效</td></tr></tbody></table>
+<table><thead><tr><th>状态</th><th>含义</th></tr></thead><tbody><tr><td> 可用</td><td>接口已实现并接入核心循环，签名以本文为准</td></tr><tr><td> 受限</td><td>接口已实现，可注册/查询/遍历，但核心循环对其回调的派发尚不完整（当前版本无此类接口；如未来出现将在此标注）</td></tr><tr><td>� 已定义</td><td>接口已定义，但宿主尚未注入实现，运行期调用返回空或不生效</td></tr></tbody></table>
 <hr>
 <h2 id="1-包结构">1. 包结构</h2>
 <h3 id="11-包布局">1.1 包布局</h3>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>com.seecmd.mod.api                     # 消费侧接口
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>com.seecmd.mod.api                     # 消费侧接口
 ├── Mod / GameplayMod / ModInfo / ModContext / ModConfig
 ├── Notifier                            # 用户通知（toast / 弹窗）
 ├── ModLoadStatus / MissingDependencyException / Experimental
@@ -59,8 +55,9 @@
 │   └── HudContext
 ├── render/                            # 渲染扩展
 │   ├── RenderCanvas / RenderImage / RenderResources
-│   ├── RenderFilter / FilterFrame
-│   └── RenderFilterRegistry / BackgroundRenderer / HitEffectStyle
+│   ├── RenderFilter / FilterFrame / RenderFilterRegistry
+│   ├── BackgroundRenderer / BackgroundRendererRegistry
+│   └── HitEffectStyle / HitEffectStyleProvider / HitEffectStyleRegistry / HitEffectStyles
 ├── capability/                        # 能力接口
 │   ├── GameplayHud
 │   ├── GameStateAccess
@@ -74,8 +71,7 @@
 │   └── InputEvent
 ├── judge/                             # 判定扩展
 │   ├── JudgmentPolicy / JudgmentPolicyRegistry
-│   ├── JudgmentAdjuster / JudgeResult / JudgeResults
-│   └── JudgmentKindRegistry / JudgmentKindDefinition
+│   └── JudgmentAdjuster / JudgeResult / JudgeResults
 ├── event/                             # 事件
 │   ├── ModEventBus / Subscription / GameplayEvent
 │   ├── (7 个游玩事件)
@@ -96,7 +92,7 @@ com.seecmd.mod.api.spi                 # 供给侧注册骨架
 <blockquote><p>� <code>registerCollectibles</code> 当前参数 <code>CollectItem</code> 为内核类，后续版本将改为 api 侧收集品抽象，届时签名调整。</p></blockquote>
 <h3 id="22-gameplaymod">2.2 <code>GameplayMod</code></h3>
 <p> 可用。包：<code>com.seecmd.mod.api</code>。继承 <code>Mod</code>。</p>
-<table><thead><tr><th>方法签名</th><th>说明</th></tr></thead><tbody><tr><td><code>default void registerRenderFilters(RenderFilterRegistry registry)</code></td><td>注册渲染滤镜（签名已迁移至 <code>RenderCanvas</code>，见 5.4 节）</td></tr><tr><td><code>default void registerBackgroundRenderers(BackgroundRendererRegistry registry)</code></td><td>注册背景渲染器（签名已迁移至 <code>RenderCanvas</code>，绘制模式见 5.4 节）</td></tr><tr><td><code>default void registerHitEffectStyles(HitEffectStyleRegistry registry)</code></td><td>注册打击特效样式 provider（ 已实现）</td></tr><tr><td><code>default boolean replacesDisorderProgressBar()</code></td><td>是否接管无序模式进度条（� 后续版本由 <code>GameplayHud</code> 覆盖机制吸收，见 4.1 节）</td></tr><tr><td><code>default void registerJudgmentPolicy(JudgmentPolicyRegistry registry)</code></td><td>注册判定策略</td></tr><tr><td><code>default void registerJudgmentAdjuster(JudgmentPolicyRegistry registry)</code></td><td>注册判定调整器（通过 <code>registry.registerAdjuster</code>）</td></tr><tr><td><code>default void registerEvents(ModEventBus bus)</code></td><td>注册事件订阅</td></tr></tbody></table>
+<table><thead><tr><th>方法签名</th><th>说明</th></tr></thead><tbody><tr><td><code>default void registerRenderFilters(RenderFilterRegistry registry)</code></td><td>注册渲染滤镜（签名已迁移至 <code>RenderCanvas</code>，见 5.4 节）</td></tr><tr><td><code>default void registerBackgroundRenderers(BackgroundRendererRegistry registry)</code></td><td>注册背景渲染器（签名见 5.6 节）</td></tr><tr><td><code>default void registerHitEffectStyles(HitEffectStyleRegistry registry)</code></td><td>注册打击特效样式 provider（ 已实现）</td></tr><tr><td><code>default boolean replacesDisorderProgressBar()</code></td><td>是否接管无序模式进度条。返回 <code>true</code> 时游戏隐藏内置无序进度条，由模组经 <code>GameplayHud</code> 自绘（� 该钩子后续由 <code>GameplayHud</code> 覆盖机制吸收，见 4.1 节）</td></tr><tr><td><code>default void registerJudgmentPolicy(JudgmentPolicyRegistry registry)</code></td><td>注册判定策略</td></tr><tr><td><code>default void registerJudgmentAdjuster(JudgmentPolicyRegistry registry)</code></td><td>注册判定调整器（通过 <code>registry.registerAdjuster</code>）</td></tr><tr><td><code>default void registerEvents(ModEventBus bus)</code></td><td>注册事件订阅</td></tr></tbody></table>
 <blockquote><p>能力接口的注册入口为 <code>ModContext.capabilities()</code>（进程级，在 <code>onLoad</code> 中注册），详见第 4 节。</p><p>� <code>registerBackgroundRenderers</code> / <code>registerHitEffectStyles</code> / <code>replacesDisorderProgressBar</code> 三个钩子后续将逐步迁移至 <code>RenderCanvas</code> 和 <code>GameplayHud</code> 覆盖机制。当前版本保留以兼容现有模组。</p></blockquote>
 <h3 id="23-modinfo">2.3 <code>ModInfo</code></h3>
 <p> 可用。包：<code>com.seecmd.mod.api</code>。不可变 <code>record</code>。</p>
@@ -113,14 +109,14 @@ com.seecmd.mod.api.spi                 # 供给侧注册骨架
 <h3 id="26-collectibleregistry-与收集品">2.6 <code>CollectibleRegistry</code> 与收集品</h3>
 <p> 可用。包：<code>com.seecmd.mod.api.collect</code>。</p>
 <p>收集品（模组自带收藏内容）通过 <code>Mod.registerCollectibles(CollectibleRegistry)</code> 钩子注册，运行时用 <code>ModContext.unlockCollect(id)</code> 主动解锁：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface CollectibleRegistry {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface CollectibleRegistry {
     void register(CollectItem item);   // 参数为内核类 com.seecmd.model.CollectItem
 }</code></pre></div>
 <blockquote><p>� <code>CollectItem</code> 为内核模型类，后续版本将改为 api 侧收集品抽象，届时签名调整。</p></blockquote>
 <h3 id="27-notifier">2.7 <code>Notifier</code></h3>
 <p> 可用。包：<code>com.seecmd.mod.api</code>。经 <code>ModContext.notifier()</code> 获取，向玩家展示信息。所有方法<strong>可在任意线程调用</strong>（仅入队后立即返回），渲染由游戏线程统一完成。</p>
 <table><thead><tr><th>方法签名</th><th>说明</th></tr></thead><tbody><tr><td><code>void info(String message)</code></td><td>显示普通提示（toast，约 4 秒后自动消失）</td></tr><tr><td><code>void warning(String message)</code></td><td>显示警告（toast，约 4 秒后自动消失）</td></tr><tr><td><code>void error(String message)</code></td><td>显示错误（toast，约 4 秒后自动消失）</td></tr><tr><td><code>void dialog(String message, int timeoutMs)</code></td><td>显示屏幕中央的定时弹窗，到期自动关闭。同一时刻宿主只显示一个，后调用的覆盖先前的</td></tr></tbody></table>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>// 在 onLoad 或任意事件回调中
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>// 在 onLoad 或任意事件回调中
 ctx.notifier().info(&quot;模组已加载&quot;);
 ctx.notifier().warning(&quot;检测到旧版配置文件&quot;);
 ctx.notifier().error(&quot;音频资源缺失&quot;);
@@ -134,7 +130,7 @@ ctx.notifier().dialog(&quot;本模组需要游戏 v0.6.7+&quot;, 5000);</code></
 <p>包：<code>com.seecmd.mod.api.spi</code>。 可用。</p>
 <blockquote><p> <strong>接入程度差异</strong>：谱面解析已接入（加载时按序列化 key 注入 <code>typeDef</code>），音符行为判断（<code>isBarrier/isHold/isExploit/isPayload</code>）已委托给定义对象；<strong>判定与渲染回调已接入核心循环</strong>——音符被判定时宿主调用 <code>onJudge()</code>，定义对象可通过 <code>sink.accept(kind, time)</code> 产出自定义判定等级；渲染时宿主对自定义类型调用 <code>render()</code> 由其自绘（内置类型不派发，保持内核渲染不变）。回调抛异常会被宿主捕获并回退内置逻辑，不影响游玩。<strong>外观已支持按类型定制</strong>——皮肤系统可为其提供专属槽位（图片皮肤放 <code>&lt;类型key&gt;.png</code>、字符皮肤在 note.json 加 <code>custom</code> 映射，见资源制作指南），未提供专属外观时回退到行为分类对应槽位。</p></blockquote>
 <p><strong>配套类型</strong>（<code>NoteTypeDefinition</code> 引用的输入/上下文接口）：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>/** 运行时音符基类（api 侧）。自定义音符类型继承此类，不可直接依赖内核模型。 */
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>/** 运行时音符基类（api 侧）。自定义音符类型继承此类，不可直接依赖内核模型。 */
 public abstract class NoteData {
     // --- 读取（运行时只读） ---
     /** 音符时间（毫秒）。 */
@@ -202,7 +198,7 @@ public interface NoteRenderContext {
     /** 是否为长音符结尾。 */
     boolean isHoldEnd();
 }</code></pre></div>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface NoteTypeDefinition {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface NoteTypeDefinition {
     /** 唯一标识（命名空间格式，如 &quot;mymod:slide&quot;）。 */
     String id();
 
@@ -257,7 +253,7 @@ public interface NoteTypeRegistry {
 }</code></pre></div>
 <h3 id="33-gamemodedefinition--gamemoderegistry">3.3 <code>GameModeDefinition</code> + <code>GameModeRegistry</code></h3>
 <p>包：<code>com.seecmd.mod.api.spi</code>。 可用。</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface GameModeDefinition {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface GameModeDefinition {
     /** 唯一标识。 */
     String id();
 
@@ -283,6 +279,14 @@ public interface NoteTypeRegistry {
     default void renderOverlay(RenderCanvas canvas, GameModeContext ctx) {}
 }
 
+/** 模式回调上下文（模式生命周期钩子的入参）。只含原语读取；模式需要改变游戏状态时，通过能力接口（见第 4 节）完成。 */
+public interface GameModeContext {
+    /** 当前音乐时间（毫秒）。 */
+    long musicTimeMs();
+    /** 是否处于暂停。 */
+    boolean isPaused();
+}
+
 /** 游戏模式注册表入口。 */
 public interface GameModeRegistry {
     void register(GameModeDefinition def);
@@ -291,7 +295,7 @@ public interface GameModeRegistry {
 }</code></pre></div>
 <h3 id="34-judgmentkinddefinition--judgmentkindregistry">3.4 <code>JudgmentKindDefinition</code> + <code>JudgmentKindRegistry</code></h3>
 <p>包：<code>com.seecmd.mod.api.spi</code>。 可用。</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface JudgmentKindDefinition {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface JudgmentKindDefinition {
     /** 唯一标识（如 &quot;seecmd:perfect&quot;）。 */
     String id();
 
@@ -343,9 +347,9 @@ public interface JudgmentKindRegistry {
 }</code></pre></div>
 <h3 id="35-chartextensionparser--chartextensionregistry">3.5 <code>ChartExtensionParser</code> + <code>ChartExtensionRegistry</code></h3>
 <p>包：<code>com.seecmd.mod.api.spi</code>。 可用。</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>/** 谱面解析上下文（extensions 段解析时传入）。 */
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>/** 谱面解析上下文（extensions 段解析时传入）。 */
 public interface ChartParseContext {
-    /** 谱面 JSON 顶层对象（可读取 title/bpm/lanes 等）。 */
+    /** 谱面 JSON 顶层对象（可读取 title/bpm/lanes 等）。类型为 {@code com.google.gson.JsonObject}（模组依赖中声明 gson，scope 为 provided）。 */
     JsonObject chartJson();
     /** 总轨道数。 */
     int totalLanes();
@@ -381,7 +385,7 @@ public interface ChartExtensionRegistry {
 <p>所有能力接口位于 <code>com.seecmd.mod.api.capability</code>。每个接口按「读数据 / 改状态 / 渲染覆盖」三件套组织。能力实例在 <code>Mod.onLoad</code> 中通过 <code>ModContext.capabilities()</code> 注册。</p>
 <blockquote><p>� <strong>接入状态</strong>：<code>GameplayHud</code> / <code>GameStateAccess</code> / <code>SceneHost</code> / <code>AudioAccess</code> / <code>InputAccess</code> / <code>StoryAccess</code> / <code>ModManagerAccess</code> 均已接入主循环，<code>capabilities().get(Xxx.class)</code> 返回可用实例。其中前 6 个能力仅游玩场景内可用，<code>ModManagerAccess</code> 为进程级能力（任何场景、任意时刻可用）。</p></blockquote>
 <p><strong>能力注入注册表 <code>CapabilityRegistry</code></strong>（包：<code>com.seecmd.mod.api.capability</code>。 可用）：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>/** 能力注入注册表入口。 */
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>/** 能力注入注册表入口。 */
 public interface CapabilityRegistry {
     /** 注册能力实例（如 GameplayHud、GameStateAccess）。 */
     &lt;T&gt; void register(Class&lt;T&gt; type, T instance);
@@ -393,7 +397,7 @@ public interface CapabilityRegistry {
 <h3 id="41-gameplayhud">4.1 <code>GameplayHud</code></h3>
 <p> 可用。游玩 HUD 控制。覆盖语义：宿主先查 <code>setXxxVisible(false)</code>，被覆盖则不画原版。</p>
 <blockquote><p>包归属：<code>GameplayHud</code> 位于 <code>com.seecmd.mod.api.capability</code>；其配套类型 <code>HudValues</code> / <code>HudContext</code> 位于 <code>com.seecmd.mod.api.context</code>，<code>RenderLayer</code> 枚举位于 <code>com.seecmd.mod.api.capability</code>。</p></blockquote>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface GameplayHud {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface GameplayHud {
     /** 读取 HUD 数值。 */
     HudValues values();
 
@@ -422,7 +426,7 @@ enum RenderLayer {
 
 // 模组内容的叠放不限于 0-5：RenderFilter / BackgroundRenderer 的 zOrder()
 // 接受任意整数层号，越大越靠上（如 -99 压到最底、99 提到最顶），
-// 只在各自插槽（背景 / 滤镜）内排序。详见 5.4 节。
+// 只在各自插槽（背景 / 滤镜）内排序。详见 5.4 节与 5.6 节。
 
 /** HUD 数值只读视图。 */
 public interface HudValues {
@@ -444,7 +448,7 @@ public interface HudContext {
 }</code></pre></div>
 <h3 id="42-gamestateaccess">4.2 <code>GameStateAccess</code></h3>
 <p> 可用。游玩状态机控制。</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface GameStateAccess {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface GameStateAccess {
     // --- 读数据 ---
     long musicTimeMs();
     boolean isPaused();
@@ -461,7 +465,7 @@ public interface HudContext {
 <h3 id="43-scenehost">4.3 <code>SceneHost</code></h3>
 <p> 可用。场景栈控制。</p>
 <p><strong>API 场景抽象</strong>（包：<code>com.seecmd.mod.api.scene</code>。 可用）：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>/** 模组可实现的场景抽象（host 内部桥接到内核 SceneManager）。 */
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>/** 模组可实现的场景抽象（host 内部桥接到内核 SceneManager）。 */
 public interface Scene {
     /** 场景唯一标识。 */
     String id();
@@ -480,7 +484,7 @@ public interface SceneInfo {
     String id();
     String name();
 }</code></pre></div>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface SceneHost {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface SceneHost {
     /** 当前场景信息。 */
     SceneInfo current();
 
@@ -495,7 +499,7 @@ public interface SceneInfo {
 }</code></pre></div>
 <h3 id="44-audioaccess">4.4 <code>AudioAccess</code></h3>
 <p> 可用。音频控制。</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface AudioAccess {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface AudioAccess {
     /** 播放音效（不可重叠，相同 soundId 会中断前一个）。 */
     void playSound(String soundId, double volume);
 
@@ -514,7 +518,7 @@ public interface SceneInfo {
 <h3 id="45-inputaccess">4.5 <code>InputAccess</code></h3>
 <p> 可用。输入控制。</p>
 <p><strong>输入事件</strong>（包：<code>com.seecmd.mod.api.scene</code>。接口已定义）：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>/** 输入事件抽象（host 将内核输入转换为该事件）。 */
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>/** 输入事件抽象（host 将内核输入转换为该事件）。 */
 public interface InputEvent {
     /** 键码（与 java.awt.event.KeyEvent 键码一致）。 */
     int keyCode();
@@ -523,7 +527,7 @@ public interface InputEvent {
 }
 
 enum InputType { KEY_PRESSED, KEY_RELEASED, KEY_HELD }</code></pre></div>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface InputAccess {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface InputAccess {
     /** 查询按键状态。 */
     boolean isKeyDown(int keyCode);
 
@@ -539,7 +543,7 @@ enum InputType { KEY_PRESSED, KEY_RELEASED, KEY_HELD }</code></pre></div>
 <h3 id="46-storyaccess">4.6 <code>StoryAccess</code></h3>
 <p> 可用。剧情 / TriggerManager 控制。<code>currentNode()</code> 返回当前剧情节点（未在剧情场景中返回 <code>null</code>），<code>trigger(nodeId, context)</code> 切换至剧情场景并触发指定节点，<code>skip()</code> 跳过当前剧情。</p>
 <p><strong>配套类型</strong>（接口已定义）：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>/** 剧情节点只读视图。 */
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>/** 剧情节点只读视图。 */
 public interface StoryNode {
     String id();
     String title();
@@ -551,7 +555,7 @@ public interface StoryContext {
     /** 触发来源标识（如 &quot;miss&quot;）。 */
     String source();
 }</code></pre></div>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface StoryAccess {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface StoryAccess {
     /** 当前剧情节点。 */
     StoryNode currentNode();
 
@@ -563,7 +567,7 @@ public interface StoryContext {
 }</code></pre></div>
 <h3 id="47-modmanageraccess">4.7 <code>ModManagerAccess</code></h3>
 <p> 可用。模组管理能力，供第三方开发「模组菜单」类模组使用。与其它能力不同，它是<strong>进程级</strong>能力：在 <code>onLoad</code> 中经 <code>capabilities().get(ModManagerAccess.class)</code> 取用后，任意场景、任意时刻均可查询已注册模组的状态，或运行时启用 / 停用模组（立即生效并持久化，与内置模组管理界面行为一致）。</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface ModManagerAccess {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface ModManagerAccess {
     /** 所有已注册模组（含未启用）的元信息。 */
     List&lt;ModInfo&gt; registeredMods();
 
@@ -594,7 +598,7 @@ public interface StoryContext {
 <div class="demo" data-demo="render-canvas"><div class="demo-head"><span class="play-ic"></span><span class="demo-title">实时预览</span><span class="demo-cap">实时预览：RenderCanvas 绘制沙盒（在下方画布上拖拽试试）</span></div><div class="demo-body-placeholder"></div></div>
 <h3 id="51-rendercanvas">5.1 <code>RenderCanvas</code></h3>
 <p>包：<code>com.seecmd.mod.api.render</code>。 可用。模组唯一允许的绘制入口。</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface RenderCanvas {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface RenderCanvas {
     // --- 基本绘制 ---
     void fillRect(double x, double y, double w, double h);
     void drawRect(double x, double y, double w, double h);
@@ -645,7 +649,7 @@ public interface RenderImage {
 }</code></pre></div>
 <h3 id="52-renderresources">5.2 <code>RenderResources</code></h3>
 <p> 可用。渲染资源入口，经 <code>ModContext.renderResources()</code> 获取（见 2.4 节）。</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface RenderResources {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface RenderResources {
     /** 加载图像资源（从模组 jar 内或 data/mods/&lt;id&gt;/）。 */
     RenderImage loadImage(String path);
 }</code></pre></div>
@@ -654,7 +658,7 @@ public interface RenderImage {
 <table><thead><tr><th>方法签名</th><th>返回类型</th><th>说明</th></tr></thead><tbody><tr><td><code>width()</code></td><td><code>int</code></td><td>帧宽度（像素）</td></tr><tr><td><code>height()</code></td><td><code>int</code></td><td>帧高度（像素）</td></tr><tr><td><code>musicTimeMs()</code></td><td><code>long</code></td><td>当前音乐时间（毫秒）</td></tr><tr><td><code>progress()</code></td><td><code>double</code></td><td>游玩进度（0-1）</td></tr><tr><td><code>canvas()</code></td><td><code>RenderCanvas</code></td><td>本帧唯一的绘制入口</td></tr><tr><td><code>context()</code></td><td><code>GameplayContext</code></td><td>当前游玩上下文快照</td></tr><tr><td><code>layer()</code></td><td><code>RenderLayer</code></td><td>当前渲染阶段（背景 = BACKGROUND，滤镜 = FULLSCREEN）</td></tr><tr><td><code>zOrder()</code></td><td><code>int</code></td><td>当前内容的层号（z 顺序），越大越靠上</td></tr></tbody></table>
 <h3 id="54-renderfilter">5.4 <code>RenderFilter</code></h3>
 <p> 可用。包：<code>com.seecmd.mod.api.render</code>。</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>/** 本滤镜的层号（z 顺序），任意整数，默认 0。数字越大越靠上。 */
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>/** 本滤镜的层号（z 顺序），任意整数，默认 0。数字越大越靠上。 */
 default int zOrder() { return 0; }
 
 /** 对当前帧应用后处理（叠加在游玩内容之上绘制）。 */
@@ -663,10 +667,27 @@ void apply(RenderCanvas canvas, FilterFrame frame);</code></pre></div>
 <h3 id="55-renderfilterregistry">5.5 <code>RenderFilterRegistry</code></h3>
 <p> 可用。</p>
 <table><thead><tr><th>方法签名</th><th>返回类型</th><th>说明</th></tr></thead><tbody><tr><td><code>register(RenderFilter filter)</code></td><td><code>void</code></td><td>注册一个渲染滤镜</td></tr></tbody></table>
-<h3 id="56-hiteffectstyle打击特效">5.6 <code>HitEffectStyle</code>（打击特效）</h3>
+<h3 id="56-backgroundrenderer--backgroundrendererregistry">5.6 <code>BackgroundRenderer</code> + <code>BackgroundRendererRegistry</code></h3>
+<p> 可用。包：<code>com.seecmd.mod.api.render</code>。背景渲染器在游玩内容绘制到画布<strong>之前</strong>执行（绘制在轨道 / 音符之下），与 <code>RenderFilter</code>（后处理，绘制在游玩内容之上）方向相反。</p>
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface BackgroundRenderer {
+    /** 唯一标识。 */
+    String id();
+
+    /** 本渲染器的层号（z 顺序），任意整数，默认 0。多个背景渲染器按层号从小到大排序执行：数字小先绘制（在下）、数字大后绘制（在上），层号相同按注册顺序。 */
+    default int zOrder() { return 0; }
+
+    /** 在背景层绘制当前帧内容（画布位于游玩内容之下）。 */
+    void render(RenderCanvas canvas, FilterFrame frame);
+}
+
+public interface BackgroundRendererRegistry {
+    void register(BackgroundRenderer renderer);
+}</code></pre></div>
+<p>注册入口：<code>GameplayMod.registerBackgroundRenderers(BackgroundRendererRegistry registry)</code>（见 2.2 节）。</p>
+<h3 id="57-hiteffectstyle打击特效">5.7 <code>HitEffectStyle</code>（打击特效）</h3>
 <p> 可用。包：<code>com.seecmd.mod.api.render</code>。经 <code>GameplayMod.registerHitEffectStyles</code> 注册 provider，判定时宿主按注册顺序取第一个非 null 的样式并渲染。支持文本与图片序列两种效果，本次版本新增两种能力：</p>
 <ul><li><strong>自动帧时长</strong>：不写每帧时长，只写总持续时间 <code>durationMs()</code>，每帧长度 = <code>durationMs / 帧数</code> 自动均分，适配帧数不固定的特效。</li><li><strong>精灵图拆帧</strong>：提供一张精灵图（sprite sheet）+ 每格分辨率（<code>cellWidth</code> / <code>cellHeight</code>），宿主按从左到右、从上到下的顺序将网格拆为播放帧，省去手动切图。</li></ul>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface HitEffectStyle {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface HitEffectStyle {
     /** 效果总时长（毫秒）。 */
     long durationMs();
 
@@ -698,6 +719,25 @@ void apply(RenderCanvas canvas, FilterFrame frame);</code></pre></div>
 <p>工厂方法见 <code>HitEffectStyles</code>（<code>com.seecmd.mod.api.render</code>）：</p>
 <table><thead><tr><th>方法</th><th>说明</th></tr></thead><tbody><tr><td><code>text(String text, long durationMs)</code></td><td>文本特效，默认 1.0 缩放</td></tr><tr><td><code>imageSequence(List&lt;RenderImage&gt; frames, long frameDurationMs)</code></td><td>图片序列，显式每帧时长</td></tr><tr><td><code>imageSequenceByDuration(List&lt;RenderImage&gt; frames, long durationMs)</code></td><td>图片序列，只写总时长，每帧自动均分</td></tr><tr><td><code>imageSheet(RenderImage sheet, int cellWidth, int cellHeight, long durationMs)</code></td><td>精灵图拆帧，每帧自动均分</td></tr></tbody></table>
 <blockquote><p>� 以上每个工厂另有带 <code>loop</code> / <code>scale</code> 参数的重载。拆帧顺序固定为从左到右、从上到下。</p></blockquote>
+<h4 id="工厂方法完整签名">工厂方法完整签名</h4>
+<p>所有重载与默认值如下（参数非法时抛出 <code>IllegalArgumentException</code>：时长必须为正、帧列表非空、<code>scale</code> 必须为正）：</p>
+<table><thead><tr><th>方法</th><th>返回类型</th><th>默认值</th></tr></thead><tbody><tr><td><code>text(String text, long durationMs)</code></td><td><code>HitEffectStyle</code></td><td><code>scale = 1.0f</code></td></tr><tr><td><code>text(String text, long durationMs, float scale)</code></td><td><code>HitEffectStyle</code></td><td>—</td></tr><tr><td><code>textByIntensity(String[] texts, long durationMs[, float scale])</code></td><td><code>HitEffectStyle</code></td><td>按判定强度（0~1）线性选取对应文本；<code>scale</code> 默认 1.0f</td></tr><tr><td><code>imageSequence(List&lt;RenderImage&gt; frames, long frameDurationMs, boolean loop, long durationMs[, float scale])</code></td><td><code>HitEffectStyle</code></td><td>显式每帧时长；<code>scale</code> 默认 1.0f</td></tr><tr><td><code>imageSequenceByDuration(List&lt;RenderImage&gt; frames, long durationMs[, boolean loop][, float scale])</code></td><td><code>HitEffectStyle</code></td><td><code>loop = false</code>、<code>scale = 1.0f</code></td></tr><tr><td><code>imageSheet(RenderImage sheet, int cellWidth, int cellHeight, long durationMs[, boolean loop][, float scale])</code></td><td><code>HitEffectStyle</code></td><td><code>loop = false</code>、<code>scale = 1.0f</code></td></tr></tbody></table>
+<h4 id="provider-与注册表">Provider 与注册表</h4>
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>/** 样式提供者：判定时引擎按注册顺序遍历，第一个返回非 null 样式的 provider 生效；全部返回 null 时使用游戏默认文字特效。 */
+public interface HitEffectStyleProvider {
+    /** 返回指定触发上下文的特效样式；返回 null 表示不接管该情况。 */
+    HitEffectStyle getStyle(HitEffectContext ctx);
+}
+
+/** 打击特效样式注册表（注册入口见 2.2 节）。 */
+public interface HitEffectStyleRegistry {
+    void register(HitEffectStyleProvider provider);
+}</code></pre></div>
+<p><strong>触发上下文 <code>HitEffectContext</code></strong>（包：<code>com.seecmd.mod.api.render</code>）：</p>
+<table><thead><tr><th>方法签名</th><th>返回类型</th><th>说明</th></tr></thead><tbody><tr><td><code>grade()</code></td><td><code>JudgmentKindDefinition</code></td><td>本次判定的等级（如 PERFECT / GREAT / MISS）</td></tr><tr><td><code>noteType()</code></td><td><code>HitEffectNoteType</code></td><td>音符类型分类，取值 <code>TAP</code> / <code>HOLD_HEAD</code> / <code>HOLD_PULSE</code> / <code>HOLD_END</code> / <code>BARRIER</code> / <code>EXPLOIT</code> / <code>PAYLOAD</code></td></tr><tr><td><code>lane()</code></td><td><code>int</code></td><td>触发判定所在轨道编号</td></tr></tbody></table>
+<h4 id="图片规格">图片规格</h4>
+<table><thead><tr><th>项目</th><th>规格</th></tr></thead><tbody><tr><td>格式</td><td>PNG（保留透明通道）；经 <code>RenderResources.loadImage(path)</code> 加载，<code>path</code> 相对模组数据目录或 jar 内资源</td></tr><tr><td>尺寸</td><td><strong>无固定分辨率限制</strong>。绘制大小 = 图片分辨率 × <code>scale()</code>；分辨率越高画面越精细，但请控制总像素量（特效每帧都要绘制）</td></tr><tr><td>锚点</td><td>以<strong>判定点为中心</strong>水平居中：<code>绘制X = 轨道中心 − 绘制宽/2</code>，<code>绘制Y = 判定线 − 绘制高/2</code></td></tr><tr><td>透明度</td><td>整体透明度 = 判定强度（0~1），并随生命周期淡出。图片自身 alpha 通道参与合成</td></tr><tr><td>播放</td><td>非循环播完停最后一帧；循环则重复播放。帧时长 = <code>autoFrameDuration()</code> ? <code>max(1, durationMs / 帧数)</code> : <code>max(1, frameDurationMs())</code></td></tr><tr><td>精灵图切片</td><td>网格宽高为 <code>cellWidth</code> / <code>cellHeight</code>，按从左到右、从上到下拆帧；<strong>不满一格的多余像素被忽略</strong>；单格尺寸不得超过整图</td></tr><tr><td>精灵图加载失败</td><td>回退到显式帧列表；帧数取两者较小值</td></tr></tbody></table>
+<blockquote><p>� 图片不需要按轨道宽度设计——特效以固定分辨率绘制并整体缩放，与音符皮肤的「按轨道等比缩放」不同。</p></blockquote>
 <hr>
 <h2 id="6-上下文视图">6. 上下文视图</h2>
 <h3 id="61-gameplaycontext">6.1 <code>GameplayContext</code></h3>
@@ -714,8 +754,8 @@ void apply(RenderCanvas canvas, FilterFrame frame);</code></pre></div>
 <p> 可用。包：<code>com.seecmd.mod.api.context</code>。</p>
 <table><thead><tr><th>方法签名</th><th>返回类型</th><th>说明</th></tr></thead><tbody><tr><td><code>id()</code></td><td><code>String</code></td><td>轨道 ID（真轨道 <code>&quot;lane_N&quot;</code>，假轨道 <code>&quot;fake_{id}&quot;</code>）</td></tr><tr><td><code>x()</code></td><td><code>double</code></td><td>轨道左上角 x（canvas 坐标）</td></tr><tr><td><code>y()</code></td><td><code>double</code></td><td>轨道左上角 y</td></tr><tr><td><code>width()</code></td><td><code>double</code></td><td>轨道宽度</td></tr><tr><td><code>height()</code></td><td><code>double</code></td><td>轨道高度</td></tr><tr><td><code>angle()</code></td><td><code>double</code></td><td>旋转角度（弧度，真轨道恒为 0）</td></tr><tr><td><code>isFake()</code></td><td><code>boolean</code></td><td>是否为假轨道</td></tr></tbody></table>
 <h3 id="64-hudvalues--chartview">6.4 <code>HudValues</code> / <code>ChartView</code></h3>
-<p>见第 4.1 节 <code>HudValues</code>（ 可用）。<code>ChartView</code> 提供谱面元数据的只读视图（ 规划中）：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>public interface ChartView {
+<p><code>HudValues</code> 为 <code>GameplayHud</code>（第 4.1 节）的渲染数据视图（ 可用）。<code>ChartView</code> 提供谱面元数据的只读视图（ 规划中）：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>public interface ChartView {
     String title();
     String author();
     String difficulty();
@@ -760,9 +800,9 @@ void apply(RenderCanvas canvas, FilterFrame frame);</code></pre></div>
 <hr>
 <h2 id="9-速查表">9. 速查表</h2>
 <h3 id="可用"> 可用</h3>
-<table><thead><tr><th>类型</th><th>包</th><th>关键方法</th></tr></thead><tbody><tr><td><code>Mod</code></td><td><code>api</code></td><td><code>info()</code>, <code>onLoad(ModContext)</code>, <code>onUnload()</code>, <code>registerCollectibles</code></td></tr><tr><td><code>GameplayMod</code></td><td><code>api</code></td><td><code>registerRenderFilters</code>, <code>registerBackgroundRenderers</code>, <code>registerHitEffectStyles</code>, <code>replacesDisorderProgressBar</code>, <code>registerJudgmentPolicy</code>, <code>registerJudgmentAdjuster</code>, <code>registerEvents</code></td></tr><tr><td><code>ModInfo</code></td><td><code>api</code></td><td><code>id</code>, <code>name</code>, <code>version</code>, <code>authors</code>, <code>description</code>, <code>dependsOn</code></td></tr><tr><td><code>ModContext</code></td><td><code>api</code></td><td><code>getLogger()</code>, <code>getDataDir()</code>, <code>config()</code>, <code>unlockCollect</code>（另含 v2 新增方法，见下）</td></tr><tr><td><code>CollectibleRegistry</code></td><td><code>api.collect</code></td><td><code>register(CollectItem)</code>（参数为内核类，后续版本调整）</td></tr><tr><td><code>ModConfig</code></td><td><code>api</code></td><td><code>get</code>, <code>getInt</code>, <code>getBool</code>, <code>getDouble</code>, <code>set</code>, <code>getAll</code></td></tr><tr><td><code>ModLoadStatus</code></td><td><code>api</code></td><td><code>NOT_REGISTERED</code>, <code>REGISTERED</code>, <code>LOAD_FAILED</code>, <code>ACTIVE</code>, <code>UNLOADED</code></td></tr><tr><td><code>MissingDependencyException</code></td><td><code>api</code></td><td><code>getMissing()</code>, <code>getCircularChain()</code></td></tr><tr><td><code>RenderFilter</code></td><td><code>api.render</code></td><td><code>id()</code>, <code>zOrder()</code>（默认 0，任意整数层号）, <code>apply(RenderCanvas, FilterFrame)</code></td></tr><tr><td><code>FilterFrame</code></td><td><code>api.render</code></td><td><code>width</code>, <code>height</code>, <code>musicTimeMs</code>, <code>progress</code>, <code>canvas()</code>, <code>context()</code>, <code>layer()</code>, <code>zOrder()</code></td></tr><tr><td><code>RenderFilterRegistry</code></td><td><code>api.render</code></td><td><code>register(RenderFilter)</code></td></tr><tr><td><code>JudgmentPolicy</code></td><td><code>api.judge</code></td><td><code>perfectWindowMs</code>, <code>greatWindowMs</code>, <code>missWindowMs</code>, <code>holdEndWindowMs</code>, <code>lateCutoffMs</code></td></tr><tr><td><code>JudgmentPolicyRegistry</code></td><td><code>api.judge</code></td><td><code>registerPolicy</code>, <code>registerAdjuster</code></td></tr><tr><td><code>JudgmentAdjuster</code></td><td><code>api.judge</code></td><td><code>adjust(JudgeResult, GameplayContext)</code></td></tr><tr><td><code>JudgeResult</code></td><td><code>api.judge</code></td><td><code>note()</code>, <code>judgment()</code>（<code>JudgmentKindDefinition</code>）, <code>judgeTime()</code>, <code>isHoldEnd()</code></td></tr><tr><td><code>JudgeResults</code></td><td><code>api.judge</code></td><td><code>withJudgment</code>, <code>withJudgeTime</code>, <code>with</code></td></tr><tr><td><code>ModEventBus</code></td><td><code>api.event</code></td><td><code>subscribe(Class, Consumer)</code>, <code>publish</code></td></tr><tr><td><code>Subscription</code></td><td><code>api.event</code></td><td><code>unsubscribe()</code></td></tr><tr><td>7 个游玩事件</td><td><code>api.event</code></td><td><code>ChartLoadedEvent</code>, <code>GameplayStartEvent</code>, <code>NoteJudgedEvent</code>, <code>ComboBreakEvent</code>, <code>PauseEvent</code>, <code>ResumeEvent</code>, <code>GameplayEndEvent</code></td></tr><tr><td><code>GameplayContext</code></td><td><code>api.context</code></td><td><code>musicTimeMs</code>, <code>combo</code>, <code>score</code>, <code>perfects</code>, <code>greats</code>, <code>misses</code>, <code>maxCombo</code>, <code>paused</code>, <code>finished</code>, <code>progress</code>, <code>disorderActive</code>, <code>disorderRemainingRatio</code>, <code>disorderChargeRatio</code>, <code>disorderChargeBarVisible</code>, <code>disorderChargeBarFlashingOn</code>, <code>disorderEndingSoon</code>, <code>disorderRemainingTimeMs</code>, <code>chartTitle</code>, <code>chartAuthor</code>, <code>chartDifficulty</code>, <code>chartDurationMs</code>, <code>totalNoteCount</code>, <code>judgedNoteCount</code>, <code>remainingNoteCount</code>, <code>chartBpm</code>, <code>musicPositionRatio</code>, <code>accuracy</code>, <code>judgmentWindowMs</code>, <code>defaultJudgmentWindowMs</code>, <code>pendingNotes</code>, <code>nextNote</code>, <code>lanes</code></td></tr><tr><td><code>NoteView</code></td><td><code>api.context</code></td><td><code>time</code>, <code>lane</code>, <code>endTime</code>, <code>isHold</code>, <code>isBarrier</code>, <code>isExploit</code>, <code>isPayload</code></td></tr><tr><td><code>LaneView</code></td><td><code>api.context</code></td><td><code>id</code>, <code>x</code>, <code>y</code>, <code>width</code>, <code>height</code>, <code>angle</code>, <code>isFake</code></td></tr></tbody></table>
+<table><thead><tr><th>类型</th><th>包</th><th>关键方法</th></tr></thead><tbody><tr><td><code>Mod</code></td><td><code>api</code></td><td><code>info()</code>, <code>onLoad(ModContext)</code>, <code>onUnload()</code>, <code>registerCollectibles</code></td></tr><tr><td><code>GameplayMod</code></td><td><code>api</code></td><td><code>registerRenderFilters</code>, <code>registerBackgroundRenderers</code>, <code>registerHitEffectStyles</code>, <code>replacesDisorderProgressBar</code>, <code>registerJudgmentPolicy</code>, <code>registerJudgmentAdjuster</code>, <code>registerEvents</code></td></tr><tr><td><code>ModInfo</code></td><td><code>api</code></td><td><code>id</code>, <code>name</code>, <code>version</code>, <code>authors</code>, <code>description</code>, <code>dependsOn</code></td></tr><tr><td><code>ModContext</code></td><td><code>api</code></td><td><code>getLogger()</code>, <code>getDataDir()</code>, <code>config()</code>, <code>unlockCollect</code>（另含 v2 新增方法，见下）</td></tr><tr><td><code>CollectibleRegistry</code></td><td><code>api.collect</code></td><td><code>register(CollectItem)</code>（参数为内核类，后续版本调整）</td></tr><tr><td><code>ModConfig</code></td><td><code>api</code></td><td><code>get</code>, <code>getInt</code>, <code>getBool</code>, <code>getDouble</code>, <code>set</code>, <code>getAll</code></td></tr><tr><td><code>ModLoadStatus</code></td><td><code>api</code></td><td><code>NOT_REGISTERED</code>, <code>REGISTERED</code>, <code>LOAD_FAILED</code>, <code>ACTIVE</code>, <code>UNLOADED</code></td></tr><tr><td><code>MissingDependencyException</code></td><td><code>api</code></td><td><code>getMissing()</code>, <code>getCircularChain()</code></td></tr><tr><td><code>RenderFilter</code></td><td><code>api.render</code></td><td><code>id()</code>, <code>zOrder()</code>（默认 0，任意整数层号）, <code>apply(RenderCanvas, FilterFrame)</code></td></tr><tr><td><code>FilterFrame</code></td><td><code>api.render</code></td><td><code>width</code>, <code>height</code>, <code>musicTimeMs</code>, <code>progress</code>, <code>canvas()</code>, <code>context()</code>, <code>layer()</code>, <code>zOrder()</code></td></tr><tr><td><code>RenderFilterRegistry</code></td><td><code>api.render</code></td><td><code>register(RenderFilter)</code></td></tr><tr><td><code>BackgroundRenderer</code></td><td><code>api.render</code></td><td><code>id()</code>, <code>zOrder()</code>（默认 0）, <code>render(RenderCanvas, FilterFrame)</code></td></tr><tr><td><code>BackgroundRendererRegistry</code></td><td><code>api.render</code></td><td><code>register(BackgroundRenderer)</code></td></tr><tr><td><code>JudgmentPolicy</code></td><td><code>api.judge</code></td><td><code>perfectWindowMs</code>, <code>greatWindowMs</code>, <code>missWindowMs</code>, <code>holdEndWindowMs</code>, <code>lateCutoffMs</code></td></tr><tr><td><code>JudgmentPolicyRegistry</code></td><td><code>api.judge</code></td><td><code>registerPolicy</code>, <code>registerAdjuster</code></td></tr><tr><td><code>JudgmentAdjuster</code></td><td><code>api.judge</code></td><td><code>adjust(JudgeResult, GameplayContext)</code></td></tr><tr><td><code>JudgeResult</code></td><td><code>api.judge</code></td><td><code>note()</code>, <code>judgment()</code>（<code>JudgmentKindDefinition</code>）, <code>judgeTime()</code>, <code>isHoldEnd()</code></td></tr><tr><td><code>JudgeResults</code></td><td><code>api.judge</code></td><td><code>withJudgment</code>, <code>withJudgeTime</code>, <code>with</code></td></tr><tr><td><code>ModEventBus</code></td><td><code>api.event</code></td><td><code>subscribe(Class, Consumer)</code>, <code>publish</code></td></tr><tr><td><code>Subscription</code></td><td><code>api.event</code></td><td><code>unsubscribe()</code></td></tr><tr><td>7 个游玩事件</td><td><code>api.event</code></td><td><code>ChartLoadedEvent</code>, <code>GameplayStartEvent</code>, <code>NoteJudgedEvent</code>, <code>ComboBreakEvent</code>, <code>PauseEvent</code>, <code>ResumeEvent</code>, <code>GameplayEndEvent</code></td></tr><tr><td><code>GameplayContext</code></td><td><code>api.context</code></td><td><code>musicTimeMs</code>, <code>combo</code>, <code>score</code>, <code>perfects</code>, <code>greats</code>, <code>misses</code>, <code>maxCombo</code>, <code>paused</code>, <code>finished</code>, <code>progress</code>, <code>disorderActive</code>, <code>disorderRemainingRatio</code>, <code>disorderChargeRatio</code>, <code>disorderChargeBarVisible</code>, <code>disorderChargeBarFlashingOn</code>, <code>disorderEndingSoon</code>, <code>disorderRemainingTimeMs</code>, <code>chartTitle</code>, <code>chartAuthor</code>, <code>chartDifficulty</code>, <code>chartDurationMs</code>, <code>totalNoteCount</code>, <code>judgedNoteCount</code>, <code>remainingNoteCount</code>, <code>chartBpm</code>, <code>musicPositionRatio</code>, <code>accuracy</code>, <code>judgmentWindowMs</code>, <code>defaultJudgmentWindowMs</code>, <code>pendingNotes</code>, <code>nextNote</code>, <code>lanes</code></td></tr><tr><td><code>NoteView</code></td><td><code>api.context</code></td><td><code>time</code>, <code>lane</code>, <code>endTime</code>, <code>isHold</code>, <code>isBarrier</code>, <code>isExploit</code>, <code>isPayload</code></td></tr><tr><td><code>LaneView</code></td><td><code>api.context</code></td><td><code>id</code>, <code>x</code>, <code>y</code>, <code>width</code>, <code>height</code>, <code>angle</code>, <code>isFake</code></td></tr></tbody></table>
 <h3 id="v2-新增"> v2 新增</h3>
-<table><thead><tr><th>类型</th><th>包</th><th>关键方法</th><th>状态</th></tr></thead><tbody><tr><td><code>NoteTypeDefinition</code></td><td><code>api.spi</code></td><td><code>id()</code>, <code>displayName()</code>, <code>serializationKey()</code>, <code>deserialize()</code>, <code>onCreateRuntime()</code>, <code>onJudge()</code>, <code>render()</code>, <code>onJudged()</code>, <code>onRemoved()</code></td><td> 可用</td></tr><tr><td><code>NoteData</code></td><td><code>api.spi</code></td><td><code>time()</code>, <code>lane()</code>, <code>typeKey()</code>, <code>endTime()</code>, <code>isJudged()</code>, <code>extensionData()</code></td><td> 可用</td></tr><tr><td><code>JudgeInput</code></td><td><code>api.spi</code></td><td><code>noteTime()</code>, <code>judgeTime()</code>, <code>deltaMs()</code>, <code>lane()</code>, <code>isHoldEnd()</code>, <code>note()</code></td><td> 可用</td></tr><tr><td><code>JudgeSink</code></td><td><code>api.spi</code></td><td><code>accept(JudgmentKindDefinition, long)</code></td><td> 可用</td></tr><tr><td><code>NoteParseContext</code></td><td><code>api.spi</code></td><td><code>totalLanes()</code>, <code>bpm()</code>, <code>contentScale()</code></td><td> 可用</td></tr><tr><td><code>NoteRenderContext</code></td><td><code>api.spi</code></td><td><code>x()</code>, <code>y()</code>, <code>width()</code>, <code>musicTimeMs()</code>, <code>lane()</code>, <code>isHoldEnd()</code></td><td> 可用</td></tr><tr><td><code>NoteTypeRegistry</code></td><td><code>api.spi</code></td><td><code>register(NoteTypeDefinition)</code>, <code>get(id)</code>, <code>getAll()</code>, <code>bySerializationKey(key)</code></td><td> 可用</td></tr><tr><td><code>GameModeDefinition</code></td><td><code>api.spi</code></td><td><code>id()</code>, <code>displayName()</code>, <code>onEnter</code>, <code>onUpdate</code>, <code>onHandleInput</code>, <code>onExit</code>, <code>overridesJudgment</code>, <code>renderOverlay</code></td><td> 受限</td></tr><tr><td><code>GameModeRegistry</code></td><td><code>api.spi</code></td><td><code>register(GameModeDefinition)</code>, <code>get(id)</code>, <code>getAll()</code></td><td> 受限</td></tr><tr><td><code>JudgmentKindDefinition</code></td><td><code>api.spi</code></td><td><code>id()</code>, <code>displayName()</code>, <code>scoreValue()</code>, <code>accuracyWeight()</code>, <code>color()</code>, <code>comboBehavior()</code>, <code>render()</code></td><td> 可用</td></tr><tr><td><code>JudgedNoteRenderContext</code></td><td><code>api.spi</code></td><td><code>x()</code>, <code>y()</code>, <code>judgeTime()</code>, <code>note()</code></td><td> 可用</td></tr><tr><td><code>JudgmentKindRegistry</code></td><td><code>api.spi</code></td><td><code>register(JudgmentKindDefinition)</code>, <code>get(id)</code>, <code>getAll()</code></td><td> 可用</td></tr><tr><td><code>ChartExtensionParser</code></td><td><code>api.spi</code></td><td><code>key()</code>, <code>parse()</code>, <code>apply()</code></td><td> 受限</td></tr><tr><td><code>ChartParseContext</code></td><td><code>api.spi</code></td><td><code>chartJson()</code>, <code>totalLanes()</code></td><td> 受限</td></tr><tr><td><code>ChartRuntimeContext</code></td><td><code>api.spi</code></td><td><code>put(String, Object)</code>, <code>get(String)</code></td><td> 受限</td></tr><tr><td><code>ChartExtensionRegistry</code></td><td><code>api.spi</code></td><td><code>register(ChartExtensionParser)</code>, <code>get(key)</code>, <code>getAll()</code></td><td> 受限</td></tr><tr><td><code>RenderCanvas</code></td><td><code>api.render</code></td><td><code>fillRect</code>, <code>drawRect</code>, <code>drawLine</code>, <code>setColor</code>, <code>setAlpha</code>, <code>clip</code>, <code>save</code>, <code>restore</code>, <code>translate</code>, <code>scale</code>, <code>rotate</code>, <code>drawText</code>, <code>measureText</code>, <code>drawImage</code></td><td> 可用</td></tr><tr><td><code>RenderImage</code></td><td><code>api.render</code></td><td><code>width()</code>, <code>height()</code></td><td> 可用</td></tr><tr><td><code>RenderResources</code></td><td><code>api.render</code></td><td><code>loadImage(String path)</code></td><td> 可用</td></tr><tr><td><code>CapabilityRegistry</code></td><td><code>api.capability</code></td><td><code>register(Class&lt;T&gt;, T)</code>, <code>get(Class&lt;T&gt;)</code></td><td> 可用</td></tr><tr><td><code>GameplayHud</code></td><td><code>api.capability</code></td><td><code>values()</code>, <code>setProgressVisible</code>, <code>setComboVisible</code>, <code>setScoreVisible</code>, <code>setAccuracyVisible</code>, <code>renderOverlay</code></td><td> 可用</td></tr><tr><td><code>RenderLayer</code></td><td><code>api.capability</code></td><td><code>BACKGROUND(0)</code>, <code>NOTES(1)</code>, <code>JUDGE_FX(2)</code>, <code>HUD(3)</code>, <code>OVERLAY(4)</code>, <code>FULLSCREEN(5)</code>，<code>index()</code> 返回层编号</td><td> 可用</td></tr><tr><td><code>HudValues</code></td><td><code>api.context</code></td><td><code>progress()</code>, <code>combo()</code>, <code>maxCombo()</code>, <code>score()</code>, <code>accuracy()</code>, <code>musicTimeMs()</code>, <code>perfects()</code>, <code>greats()</code>, <code>misses()</code></td><td> 可用</td></tr><tr><td><code>HudContext</code></td><td><code>api.context</code></td><td><code>layer()</code>, <code>zOrder()</code></td><td> 可用</td></tr><tr><td><code>ModContext</code>（v2 新增方法）</td><td><code>api</code></td><td><code>noteTypes()</code>, <code>gameModes()</code>, <code>judgmentKinds()</code>, <code>chartExtensions()</code>, <code>capabilities()</code>, <code>globalEventBus()</code>, <code>renderResources()</code>, <code>registerSound()</code>, <code>registerMusic()</code>, <code>notifier()</code></td><td> 可用</td></tr><tr><td><code>GameStartupEvent</code></td><td><code>api.event</code></td><td>无额外数据</td><td> 可用</td></tr><tr><td><code>GameShutdownEvent</code></td><td><code>api.event</code></td><td>无额外数据</td><td> 可用</td></tr><tr><td><code>SceneChangedEvent</code></td><td><code>api.event</code></td><td><code>from()</code>, <code>to()</code></td><td> 可用</td></tr><tr><td><code>SettingsChangedEvent</code></td><td><code>api.event</code></td><td><code>changedKeys()</code></td><td> 可用</td></tr><tr><td><code>StoryAccess</code></td><td><code>api.capability</code></td><td><code>currentNode()</code>, <code>trigger()</code>, <code>skip()</code></td><td> 可用</td></tr><tr><td><code>StoryNode</code></td><td><code>api.capability</code></td><td><code>id()</code>, <code>title()</code>, <code>isActive()</code></td><td> 可用</td></tr><tr><td><code>StoryContext</code></td><td><code>api.capability</code></td><td><code>source()</code></td><td> 可用</td></tr><tr><td><code>ModManagerAccess</code></td><td><code>api.capability</code></td><td><code>registeredMods()</code>, <code>getModInfo()</code>, <code>enabledMods()</code>, <code>isEnabled()</code>, <code>isActive()</code>, <code>getLoadStatus()</code>, <code>getLoadError()</code>, <code>setEnabled()</code></td><td> 可用（进程级）</td></tr><tr><td><code>HitEffectStyle</code></td><td><code>api.render</code></td><td><code>durationMs()</code>, <code>frameDurationMs()</code>, <code>autoFrameDuration()</code>, <code>sheetImage()</code>, <code>cellWidth()</code>, <code>cellHeight()</code>, <code>frames()</code>, <code>loop()</code>, <code>scale()</code></td><td> 可用</td></tr><tr><td><code>HitEffectStyles</code></td><td><code>api.render</code></td><td><code>text()</code>, <code>imageSequence()</code>, <code>imageSequenceByDuration()</code>, <code>imageSheet()</code></td><td> 可用</td></tr></tbody></table>
+<table><thead><tr><th>类型</th><th>包</th><th>关键方法</th><th>状态</th></tr></thead><tbody><tr><td><code>NoteTypeDefinition</code></td><td><code>api.spi</code></td><td><code>id()</code>, <code>displayName()</code>, <code>serializationKey()</code>, <code>deserialize()</code>, <code>onCreateRuntime()</code>, <code>onJudge()</code>, <code>render()</code>, <code>onJudged()</code>, <code>onRemoved()</code></td><td> 可用</td></tr><tr><td><code>NoteData</code></td><td><code>api.spi</code></td><td><code>time()</code>, <code>lane()</code>, <code>typeKey()</code>, <code>endTime()</code>, <code>isJudged()</code>, <code>extensionData()</code></td><td> 可用</td></tr><tr><td><code>JudgeInput</code></td><td><code>api.spi</code></td><td><code>noteTime()</code>, <code>judgeTime()</code>, <code>deltaMs()</code>, <code>lane()</code>, <code>isHoldEnd()</code>, <code>note()</code></td><td> 可用</td></tr><tr><td><code>JudgeSink</code></td><td><code>api.spi</code></td><td><code>accept(JudgmentKindDefinition, long)</code></td><td> 可用</td></tr><tr><td><code>NoteParseContext</code></td><td><code>api.spi</code></td><td><code>totalLanes()</code>, <code>bpm()</code>, <code>contentScale()</code></td><td> 可用</td></tr><tr><td><code>NoteRenderContext</code></td><td><code>api.spi</code></td><td><code>x()</code>, <code>y()</code>, <code>width()</code>, <code>musicTimeMs()</code>, <code>lane()</code>, <code>isHoldEnd()</code></td><td> 可用</td></tr><tr><td><code>NoteTypeRegistry</code></td><td><code>api.spi</code></td><td><code>register(NoteTypeDefinition)</code>, <code>get(id)</code>, <code>getAll()</code>, <code>bySerializationKey(key)</code></td><td> 可用</td></tr><tr><td><code>GameModeDefinition</code></td><td><code>api.spi</code></td><td><code>id()</code>, <code>displayName()</code>, <code>onEnter</code>, <code>onUpdate</code>, <code>onHandleInput</code>, <code>onExit</code>, <code>overridesJudgment</code>, <code>renderOverlay</code></td><td> 可用</td></tr><tr><td><code>GameModeRegistry</code></td><td><code>api.spi</code></td><td><code>register(GameModeDefinition)</code>, <code>get(id)</code>, <code>getAll()</code></td><td> 可用</td></tr><tr><td><code>JudgmentKindDefinition</code></td><td><code>api.spi</code></td><td><code>id()</code>, <code>displayName()</code>, <code>scoreValue()</code>, <code>accuracyWeight()</code>, <code>color()</code>, <code>comboBehavior()</code>, <code>render()</code></td><td> 可用</td></tr><tr><td><code>JudgedNoteRenderContext</code></td><td><code>api.spi</code></td><td><code>x()</code>, <code>y()</code>, <code>judgeTime()</code>, <code>note()</code></td><td> 可用</td></tr><tr><td><code>JudgmentKindRegistry</code></td><td><code>api.spi</code></td><td><code>register(JudgmentKindDefinition)</code>, <code>get(id)</code>, <code>getAll()</code></td><td> 可用</td></tr><tr><td><code>ChartExtensionParser</code></td><td><code>api.spi</code></td><td><code>key()</code>, <code>parse()</code>, <code>apply()</code></td><td> 可用</td></tr><tr><td><code>ChartParseContext</code></td><td><code>api.spi</code></td><td><code>chartJson()</code>, <code>totalLanes()</code></td><td> 可用</td></tr><tr><td><code>ChartRuntimeContext</code></td><td><code>api.spi</code></td><td><code>put(String, Object)</code>, <code>get(String)</code></td><td> 可用</td></tr><tr><td><code>ChartExtensionRegistry</code></td><td><code>api.spi</code></td><td><code>register(ChartExtensionParser)</code>, <code>get(key)</code>, <code>getAll()</code></td><td> 可用</td></tr><tr><td><code>RenderCanvas</code></td><td><code>api.render</code></td><td><code>fillRect</code>, <code>drawRect</code>, <code>drawLine</code>, <code>setColor</code>, <code>setAlpha</code>, <code>clip</code>, <code>save</code>, <code>restore</code>, <code>translate</code>, <code>scale</code>, <code>rotate</code>, <code>drawText</code>, <code>measureText</code>, <code>drawImage</code></td><td> 可用</td></tr><tr><td><code>RenderImage</code></td><td><code>api.render</code></td><td><code>width()</code>, <code>height()</code></td><td> 可用</td></tr><tr><td><code>RenderResources</code></td><td><code>api.render</code></td><td><code>loadImage(String path)</code></td><td> 可用</td></tr><tr><td><code>CapabilityRegistry</code></td><td><code>api.capability</code></td><td><code>register(Class&lt;T&gt;, T)</code>, <code>get(Class&lt;T&gt;)</code></td><td> 可用</td></tr><tr><td><code>GameplayHud</code></td><td><code>api.capability</code></td><td><code>values()</code>, <code>setProgressVisible</code>, <code>setComboVisible</code>, <code>setScoreVisible</code>, <code>setAccuracyVisible</code>, <code>renderOverlay</code></td><td> 可用</td></tr><tr><td><code>RenderLayer</code></td><td><code>api.capability</code></td><td><code>BACKGROUND(0)</code>, <code>NOTES(1)</code>, <code>JUDGE_FX(2)</code>, <code>HUD(3)</code>, <code>OVERLAY(4)</code>, <code>FULLSCREEN(5)</code>，<code>index()</code> 返回层编号</td><td> 可用</td></tr><tr><td><code>HudValues</code></td><td><code>api.context</code></td><td><code>progress()</code>, <code>combo()</code>, <code>maxCombo()</code>, <code>score()</code>, <code>accuracy()</code>, <code>musicTimeMs()</code>, <code>perfects()</code>, <code>greats()</code>, <code>misses()</code></td><td> 可用</td></tr><tr><td><code>HudContext</code></td><td><code>api.context</code></td><td><code>layer()</code>, <code>zOrder()</code></td><td> 可用</td></tr><tr><td><code>ModContext</code>（v2 新增方法）</td><td><code>api</code></td><td><code>noteTypes()</code>, <code>gameModes()</code>, <code>judgmentKinds()</code>, <code>chartExtensions()</code>, <code>capabilities()</code>, <code>globalEventBus()</code>, <code>renderResources()</code>, <code>registerSound()</code>, <code>registerMusic()</code>, <code>notifier()</code></td><td> 可用</td></tr><tr><td><code>GameStartupEvent</code></td><td><code>api.event</code></td><td>无额外数据</td><td> 可用</td></tr><tr><td><code>GameShutdownEvent</code></td><td><code>api.event</code></td><td>无额外数据</td><td> 可用</td></tr><tr><td><code>SceneChangedEvent</code></td><td><code>api.event</code></td><td><code>from()</code>, <code>to()</code></td><td> 可用</td></tr><tr><td><code>SettingsChangedEvent</code></td><td><code>api.event</code></td><td><code>changedKeys()</code></td><td> 可用</td></tr><tr><td><code>StoryAccess</code></td><td><code>api.capability</code></td><td><code>currentNode()</code>, <code>trigger()</code>, <code>skip()</code></td><td> 可用</td></tr><tr><td><code>StoryNode</code></td><td><code>api.capability</code></td><td><code>id()</code>, <code>title()</code>, <code>isActive()</code></td><td> 可用</td></tr><tr><td><code>StoryContext</code></td><td><code>api.capability</code></td><td><code>source()</code></td><td> 可用</td></tr><tr><td><code>ModManagerAccess</code></td><td><code>api.capability</code></td><td><code>registeredMods()</code>, <code>getModInfo()</code>, <code>enabledMods()</code>, <code>isEnabled()</code>, <code>isActive()</code>, <code>getLoadStatus()</code>, <code>getLoadError()</code>, <code>setEnabled()</code></td><td> 可用（进程级）</td></tr><tr><td><code>HitEffectStyle</code></td><td><code>api.render</code></td><td><code>durationMs()</code>, <code>frameDurationMs()</code>, <code>autoFrameDuration()</code>, <code>sheetImage()</code>, <code>cellWidth()</code>, <code>cellHeight()</code>, <code>frames()</code>, <code>loop()</code>, <code>scale()</code></td><td> 可用</td></tr><tr><td><code>HitEffectStyleProvider</code></td><td><code>api.render</code></td><td><code>getStyle(HitEffectContext)</code>（返回 null 表示不接管）</td><td> 可用</td></tr><tr><td><code>HitEffectStyleRegistry</code></td><td><code>api.render</code></td><td><code>register(HitEffectStyleProvider)</code></td><td> 可用</td></tr><tr><td><code>HitEffectStyles</code></td><td><code>api.render</code></td><td><code>text()</code>, <code>textByIntensity()</code>, <code>imageSequence()</code>, <code>imageSequenceByDuration()</code>, <code>imageSheet()</code></td><td> 可用</td></tr></tbody></table>
 <h3 id="规划中"> 规划中</h3>
 <table><thead><tr><th>类型</th><th>包</th><th>关键方法</th></tr></thead><tbody><tr><td><code>GameplayContext.currentModeId()</code></td><td><code>api.context</code></td><td>当前激活的游戏模式 id</td></tr><tr><td><code>GameplayContext.chartView()</code></td><td><code>api.context</code></td><td>谱面元数据只读视图</td></tr><tr><td><code>ChartView</code></td><td><code>api.context</code></td><td><code>title()</code>, <code>author()</code>, <code>difficulty()</code>, <code>durationMs()</code>, <code>bpm()</code>, <code>totalNoteCount()</code>, <code>laneCount()</code>, <code>extensions()</code></td></tr></tbody></table>
 <hr>
@@ -775,17 +815,8 @@ void apply(RenderCanvas canvas, FilterFrame frame);</code></pre></div>
 <ul><li>本文档对应的 v2 实现为 <code>@Experimental</code> 预览版，后续版本将移除 <code>@Experimental</code> 标注。</li><li>「 规划中」接口为超前于代码的规划签名，后续版本实现时必须严格遵循本文定义。</li><li>模组应仅依赖 <code>com.seecmd.mod-api</code> 瘦身 jar（含 <code>com.seecmd.mod.api.*</code> 与 <code>com.seecmd.mod.api.spi.*</code>），标准库按需使用。</li><li>建议在 <code>onUnload</code> 中取消所有事件订阅、关闭所有打开的文件资源。</li></ul>
 </main>
 </div>
-<footer class="site-foot">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</footer>
+<footer class="site-foot"><span class="foot-line">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</span></footer>
 <script>
-function toggleMenu(e) {
-  e.stopPropagation();
-  var menu = document.getElementById("switcherMenu");
-  if (menu) menu.classList.toggle("open");
-}
-document.addEventListener("click", function() {
-  var menu = document.getElementById("switcherMenu");
-  if (menu) menu.classList.remove("open");
-});
 function toggleNav() {
   // 移动端：汉堡按钮打开本页目录（sidebar TOC）
   var sb = document.querySelector(".sidebar");

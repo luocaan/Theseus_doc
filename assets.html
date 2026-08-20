@@ -8,31 +8,27 @@
 </head>
 <body>
 
+
 <header class="site-header">
   <div class="brand-group">
-    <a class="brand" href="index.html">SEECMD</a>
-    <div class="doc-switcher">
-      <button class="switcher-btn" onclick="toggleMenu(event)">标准Java模组开发 ▾</button>
-      <div class="switcher-menu" id="switcherMenu">
-        <a href="index.html" >标准Java模组开发文档</a>
-        <a href="ths.html" >THS简易语言开发文档</a>
-        <a href="assets.html" class="active">资源制作指南</a>
-        <a href="resources.html" >资源集合</a>
-      </div>
-    </div>
+    <a class="brand" href="index.html">SEECMD<span class="brand-caret"></span></a>
     <button class="nav-toggle" onclick="toggleNav()" aria-label="菜单">&#9776;</button>
   </div>
-  <nav>
-    <a href="index.html">快速上手</a>
-    <a href="guide.html">开发指南</a>
-    <a href="api.html">API 参考</a>
-    <a href="design.html">架构设计</a>
+  <nav class="main-nav">
+    <div class="nav-group"><span class="nav-group-label">入门</span><a href="index.html">快速上手</a><a href="ths.html">THS 简易语言</a></div>
+    <div class="nav-group"><span class="nav-group-label">开发</span><a href="guide.html">开发指南</a><a href="api.html">API 参考</a></div>
+    <div class="nav-group"><span class="nav-group-label">资源</span><a href="assets.html" class="active">资源制作</a><a href="resources.html">资源集合</a></div>
+    <div class="nav-group"><span class="nav-group-label">架构</span><a href="design.html">架构设计</a></div>
   </nav>
-  <span class="version">v2 · @Experimental</span>
+  <div class="header-hud">
+    <span class="hud-clock mono">--:--:--</span>
+    <span class="version">v2 &#183; @Experimental</span>
+  </div>
 </header>
 <div class="layout">
-<aside class="sidebar"><div class="toc-title">本页目录</div><nav class="toc"><ul><li class="l2"><a href="#可导入资源总览">可导入资源总览</a></li><li class="l2"><a href="#音符皮肤">音符皮肤</a></li><li class="l3"><a href="#图片皮肤">图片皮肤</a></li><li class="l3"><a href="#字符皮肤">字符皮肤</a></li><li class="l3"><a href="#自定义音符类型的皮肤">自定义音符类型的皮肤</a></li><li class="l3"><a href="#在游戏中应用皮肤">在游戏中应用皮肤</a></li><li class="l3"><a href="#皮肤限制">皮肤限制</a></li><li class="l2"><a href="#谱面">谱面</a></li><li class="l3"><a href="#制作谱面">制作谱面</a></li><li class="l3"><a href="#导入谱面">导入谱面</a></li><li class="l3"><a href="#谱面-json-结构">谱面 JSON 结构</a></li><li class="l3"><a href="#官方章节谱面">官方章节谱面</a></li><li class="l3"><a href="#谱面热重载">谱面热重载</a></li><li class="l2"><a href="#剧情文件">剧情文件</a></li><li class="l3"><a href="#导入别人做的剧情">导入别人做的剧情</a></li><li class="l3"><a href="#文本文件格式">文本文件格式</a></li><li class="l3"><a href="#新建一个故事">新建一个故事</a></li><li class="l3"><a href="#界面文本">界面文本</a></li><li class="l2"><a href="#收藏品">收藏品</a></li><li class="l2"><a href="#音效与音乐">音效与音乐</a></li><li class="l3"><a href="#替换已有音频">替换已有音频</a></li><li class="l3"><a href="#新增音频">新增音频</a></li><li class="l3"><a href="#曲名显示">曲名显示</a></li><li class="l2"><a href="#窗口图标">窗口图标</a></li><li class="l2"><a href="#模组">模组</a></li><li class="l2"><a href="#通用注意事项">通用注意事项</a></li></ul></nav></aside>
+<aside class="sidebar"><div class="toc-title">// 本页目录</div><nav class="toc"><ul><li class="l2"><a href="#可导入资源总览">可导入资源总览</a></li><li class="l2"><a href="#音符皮肤">音符皮肤</a></li><li class="l3"><a href="#图片皮肤">图片皮肤</a></li><li class="l3"><a href="#字符皮肤">字符皮肤</a></li><li class="l3"><a href="#自定义音符类型的皮肤">自定义音符类型的皮肤</a></li><li class="l3"><a href="#在游戏中应用皮肤">在游戏中应用皮肤</a></li><li class="l3"><a href="#皮肤限制">皮肤限制</a></li><li class="l2"><a href="#谱面">谱面</a></li><li class="l3"><a href="#制作谱面">制作谱面</a></li><li class="l3"><a href="#导入谱面">导入谱面</a></li><li class="l3"><a href="#谱面-json-结构">谱面 JSON 结构</a></li><li class="l3"><a href="#官方章节谱面">官方章节谱面</a></li><li class="l3"><a href="#谱面热重载">谱面热重载</a></li><li class="l2"><a href="#剧情文件">剧情文件</a></li><li class="l3"><a href="#导入别人做的剧情">导入别人做的剧情</a></li><li class="l3"><a href="#文本文件格式">文本文件格式</a></li><li class="l3"><a href="#新建一个故事">新建一个故事</a></li><li class="l3"><a href="#界面文本">界面文本</a></li><li class="l2"><a href="#收藏品">收藏品</a></li><li class="l2"><a href="#音效与音乐">音效与音乐</a></li><li class="l3"><a href="#替换已有音频">替换已有音频</a></li><li class="l3"><a href="#新增音频">新增音频</a></li><li class="l3"><a href="#曲名显示">曲名显示</a></li><li class="l2"><a href="#窗口图标">窗口图标</a></li><li class="l2"><a href="#模组">模组</a></li><li class="l3"><a href="#打击特效图片模组">打击特效图片（模组）</a></li><li class="l2"><a href="#通用注意事项">通用注意事项</a></li></ul></nav><div class="sidebar-path"><span class="prompt">C:\</span>SEECMD::DOC /ASSETS<span class="cursor">&#9612;</span></div></aside>
 <main class="content">
+<div class="page-path"><span class="prompt">&gt;</span> SEECMD::DOC /ASSETS</div>
 <h1>资源制作指南</h1>
 <p class="doc-sub">音符皮肤等自定义资源的制作方法：图片皮肤 / 字符皮肤 / 模组图片加载</p>
 <p>本页汇总游戏所有可以<strong>从外部导入的自定义资源</strong>，以及每种资源的制作 / 使用方式。大多数资源不需要编程：把文件放到正确的位置，游戏就会识别。</p>
@@ -41,7 +37,7 @@
 <p>所有 JSON 文件均使用 <strong>UTF-8 编码</strong>，并建议保持多行缩进格式。放入文件前建议先备份原文件。</p>
 <h2 id="音符皮肤">音符皮肤</h2>
 <p>游戏启动时会扫描工作目录下的 <code>data/respack/</code> 文件夹，把其中<strong>每个子文件夹识别为一个皮肤</strong>。</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>data/
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>data/
 └── respack/
     ├── RE-OST1.0/     ← 图片皮肤示例
     └── neon/          ← 字符皮肤示例（含完整字段说明的 note.json）</code></pre></div>
@@ -57,7 +53,7 @@
 <p>4 张图片缺一不可——缺少任意一张，整个文件夹无法按图片皮肤加载。</p>
 <h4 id="hold-图片的三段式结构">Hold 图片的三段式结构</h4>
 <p>长按音符的 <code>hold.png</code> 高度是 1100px，自上而下分为三段：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>┌────────────────────────────┐
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>┌────────────────────────────┐
 │  0 ~ 100px   终点（判定线）  │  ← 音符落下的判定线处显示这一段
 ├────────────────────────────┤
 │  100 ~ 1000px  主体          │  ← 起点到终点之间的柱体，按长度伸缩
@@ -72,7 +68,7 @@
 <h3 id="字符皮肤">字符皮肤</h3>
 <p>字符皮肤用文本字符拼出音符，占用的资源极小，且能与游戏的「增强音符渲染」发光效果配合。你只需要在文件夹里写一份 <code>note.json</code>。</p>
 <h4 id="notejson-结构">note.json 结构</h4>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">json</span></div><pre><code>{
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">json</span></div><pre><code>{
   &quot;name&quot;: &quot;MySkin&quot;,
   &quot;normal&quot;:   { &quot;prefix&quot;: &quot;|&quot;, &quot;fill&quot;: &quot;-&quot;, &quot;core&quot;: &quot;+&quot;, &quot;suffix&quot;: &quot;|&quot;, &quot;color&quot;: &quot;#00FFFF&quot; },
   &quot;hold&quot;:     { &quot;prefix&quot;: &quot;[&quot;, &quot;fill&quot;: &quot;=&quot;, &quot;core&quot;: &quot;*&quot;, &quot;suffix&quot;: &quot;]&quot;, &quot;bodyChar&quot;: &quot;|&quot;,
@@ -92,14 +88,14 @@
 <h3 id="自定义音符类型的皮肤">自定义音符类型的皮肤</h3>
 <p>自定义音符类型（由模组注册，例如 <code>laser</code>、<code>slide</code>）默认复用其<strong>行为分类</strong>对应的外观槽位。想让它们拥有专属外观，只需在皮肤中按「类型 key」补充条目——类型 key 与谱面 JSON 中 <code>note.type</code> 字符串完全一致（区分大小写）。</p>
 <p><strong>图片皮肤</strong>：在皮肤文件夹内额外放一张 <code>&lt;类型key&gt;.png</code>。例如自定义类型 <code>laser</code> 就放 <code>laser.png</code>，原有的 4 张标准图保持不变：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>data/respack/MyImageSkin/
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>data/respack/MyImageSkin/
 ├── normal.png      ← 4 张标准图（缺一不可）
 ├── hold.png
 ├── exploit.png
 ├── payload.png
 └── laser.png       ← 自定义类型 &quot;laser&quot; 的专属图片（任意尺寸，按轨道宽度等比缩放）</code></pre></div>
 <p><strong>字符皮肤</strong>：在 <code>note.json</code> 中增加 <code>custom</code> 对象，每个 key 对应一个样式对象（字段与 <code>normal</code> / <code>hold</code> 等一致）：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">json</span></div><pre><code>{
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">json</span></div><pre><code>{
   &quot;name&quot;: &quot;MySkin&quot;,
   &quot;normal&quot;:  { &quot;prefix&quot;: &quot;|&quot;, &quot;fill&quot;: &quot;-&quot;, &quot;core&quot;: &quot;+&quot;, &quot;suffix&quot;: &quot;|&quot;, &quot;color&quot;: &quot;#00FFFF&quot; },
   &quot;hold&quot;:    { &quot;prefix&quot;: &quot;[&quot;, &quot;fill&quot;: &quot;=&quot;, &quot;core&quot;: &quot;*&quot;, &quot;suffix&quot;: &quot;]&quot;, &quot;color&quot;: &quot;#FF66CC&quot; },
@@ -125,7 +121,7 @@
 <ol><li>把 <code>.json</code> 谱面文件放入 <code>data/charts/</code> 目录。</li><li>把谱面引用的音乐文件放入 <code>data/audio/</code> 目录（谱面 <code>audio.file</code> 字段写文件名）。</li><li>进入游戏的<strong>文件夹谱面</strong>选择界面，谱面会按 <code>metadata.folder</code> 字段分组显示。</li></ol>
 <blockquote><p>注意 <code>folder_index.json</code> 是章节索引文件，不要改名或删除；游戏会把以 <code>folder_index</code> 开头的文件排除出自由游玩列表。</p></blockquote>
 <h3 id="谱面-json-结构">谱面 JSON 结构</h3>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">json</span></div><pre><code>{
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">json</span></div><pre><code>{
   &quot;version&quot;: 1,
   &quot;metadata&quot;: {
     &quot;title&quot;: &quot;太陽風。&quot;,
@@ -159,14 +155,14 @@
 <p>剧情由两部分组成：<strong>故事登记</strong>（<code>data/story.json</code>，决定故事何时触发、解锁什么）与<strong>文本内容</strong>（<code>data/sp_lang/story/</code>，决定显示什么文字）。</p>
 <h3 id="导入别人做的剧情">导入别人做的剧情</h3>
 <p>若对方提供的是剧情文本文件（<code>.json</code>），把它复制到 <code>data/sp_lang/story/</code> 目录即可：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>data/sp_lang/story/
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>data/sp_lang/story/
 ├── awakening_story_zh.json
 ├── daily_001_first_step_zh.json
 └── ...</code></pre></div>
 <p>文件命名规则：<code>&lt;故事ID&gt;_&lt;语言&gt;.json</code>，语言为 <code>zh</code> 或 <code>en</code>。</p>
 <h3 id="文本文件格式">文本文件格式</h3>
 <p>剧情文本是一个字符串键值对文件，每个键的格式为 <code>story.&lt;故事ID&gt;.t&lt;序号&gt;</code>：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">json</span></div><pre><code>{
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">json</span></div><pre><code>{
   &quot;story.daily_001_first_step.t0&quot;: &quot;&gt; 日志缓存 // 第一步&quot;,
   &quot;story.daily_001_first_step.t2&quot;: &quot;Aria走出飞船。靴子踩在碎石和野草上，发出细碎的声响。&quot;,
   &quot;story.daily_001_first_step.t9&quot;: &quot;「这真的是地球吗？」&quot;
@@ -178,7 +174,7 @@
 <p><code>data/lang/zh.json</code> 与 <code>data/lang/en.json</code> 存放全部界面文字（按钮、菜单、提示），同样为键值对。<code>data/sp_lang/tips/&lt;语言&gt;_menu_tips.json</code> 存放加载界面的提示语。</p>
 <h2 id="收藏品">收藏品</h2>
 <p><code>data/collect/</code> 下每个 JSON 文件对应一个收藏品（图鉴条目）：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">json</span></div><pre><code>{
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">json</span></div><pre><code>{
   &quot;id&quot;: &quot;collect_welcome&quot;,
   &quot;name&quot;: &quot;WELCOME_LOGO&quot;,
   &quot;source&quot;: &quot;System Default&quot;,
@@ -195,7 +191,7 @@
 <p>支持 <code>wav</code> / <code>ogg</code> / <code>mp3</code> 格式。</p>
 <h3 id="新增音频">新增音频</h3>
 <p>需要编辑注册配置 <code>data/audio_config.json</code>，在 <code>sounds</code> 或 <code>bgm</code> 数组中追加条目：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">json</span></div><pre><code>{
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">json</span></div><pre><code>{
   &quot;id&quot;: &quot;my_sound&quot;,
   &quot;path&quot;: &quot;data/sound_effects/my_sound.wav&quot;,
   &quot;type&quot;: &quot;sound&quot;,
@@ -212,21 +208,16 @@
 <p><code>data/ths.ico</code> 是游戏窗口图标。把同名的 <code>.ico</code> 文件替换掉即可。</p>
 <h2 id="模组">模组</h2>
 <p><code>data/mods/</code> 存放可加载的模组（Java jar 或 THS 脚本），模组还可拥有自己的数据目录 <code>data/mods/&lt;模组ID&gt;/</code>，用 <code>ModContext</code> 读写。这属于进阶内容，见 <a href="index.html">快速上手</a> 与 <a href="ths.html">THS 简易语言</a>。</p>
+<h3 id="打击特效图片模组">打击特效图片（模组）</h3>
+<p>判定命中时的视觉反馈（打击特效）图片由模组提供，经 <code>RenderResources.loadImage</code> 加载，无需配置 JSON：</p>
+<table><thead><tr><th>项目</th><th>规格</th></tr></thead><tbody><tr><td>存放位置</td><td>模组数据目录 <code>data/mods/&lt;模组ID&gt;/</code> 或 jar 内 <code>resources</code>（随模组分发）</td></tr><tr><td>格式</td><td>PNG，保留透明通道</td></tr><tr><td>尺寸</td><td>无固定分辨率限制；绘制大小 = 图片分辨率 × <code>scale</code>（模组代码指定）</td></tr><tr><td>锚点</td><td>以判定点为中心：水平居中于轨道中心、垂直居中于判定线</td></tr><tr><td>播放</td><td>非循环播完停最后一帧；循环则重复；整体透明度随判定强度（0~1）淡出</td></tr><tr><td>精灵图</td><td>一张图按网格切分（每格 <code>cellWidth</code> × <code>cellHeight</code>），从左到右、从上到下拆帧；不满一格的多余像素被忽略</td></tr></tbody></table>
+<p>制作方法与可复制示例见 <a href="guide.html#16-打击特效">开发指南</a> 的「打击特效」章节。</p>
 <h2 id="通用注意事项">通用注意事项</h2>
 <ul><li>所有 JSON 使用 <strong>UTF-8 编码</strong>，建议多行缩进书写。</li><li>大部分资源在启动时扫描 / 预加载，替换后需<strong>重启游戏</strong>生效；只有谱面与音频目录支持运行期热重载。</li><li>修改前备份原文件；格式错误的文件会被跳过并显示警告，不会导致游戏崩溃。</li><li>目录结构以当前版本为准，更新版本后建议重新查看本页。</li></ul>
 </main>
 </div>
-<footer class="site-foot">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</footer>
+<footer class="site-foot"><span class="foot-line">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</span></footer>
 <script>
-function toggleMenu(e) {
-  e.stopPropagation();
-  var menu = document.getElementById("switcherMenu");
-  if (menu) menu.classList.toggle("open");
-}
-document.addEventListener("click", function() {
-  var menu = document.getElementById("switcherMenu");
-  if (menu) menu.classList.remove("open");
-});
 function toggleNav() {
   // 移动端：汉堡按钮打开本页目录（sidebar TOC）
   var sb = document.querySelector(".sidebar");

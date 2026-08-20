@@ -8,31 +8,35 @@
 </head>
 <body>
 
+<div class="boot-screen" aria-hidden="true">
+  <div class="boot-logo">SEECMD</div>
+  <div class="boot-bar"></div>
+  <div class="boot-meta">
+    <span>SYS:// DOC SYSTEM v2.0</span>
+    <span>MODULES LOADED</span>
+  </div>
+</div>
+
 <header class="site-header">
   <div class="brand-group">
-    <a class="brand" href="index.html">SEECMD</a>
-    <div class="doc-switcher">
-      <button class="switcher-btn" onclick="toggleMenu(event)">标准Java模组开发 ▾</button>
-      <div class="switcher-menu" id="switcherMenu">
-        <a href="index.html" class="active">标准Java模组开发文档</a>
-        <a href="ths.html" >THS简易语言开发文档</a>
-        <a href="assets.html" >资源制作指南</a>
-        <a href="resources.html" >资源集合</a>
-      </div>
-    </div>
+    <a class="brand" href="index.html">SEECMD<span class="brand-caret"></span></a>
     <button class="nav-toggle" onclick="toggleNav()" aria-label="菜单">&#9776;</button>
   </div>
-  <nav>
-    <a href="index.html" class="active">快速上手</a>
-    <a href="guide.html">开发指南</a>
-    <a href="api.html">API 参考</a>
-    <a href="design.html">架构设计</a>
+  <nav class="main-nav">
+    <div class="nav-group"><span class="nav-group-label">入门</span><a href="index.html" class="active">快速上手</a><a href="ths.html">THS 简易语言</a></div>
+    <div class="nav-group"><span class="nav-group-label">开发</span><a href="guide.html">开发指南</a><a href="api.html">API 参考</a></div>
+    <div class="nav-group"><span class="nav-group-label">资源</span><a href="assets.html">资源制作</a><a href="resources.html">资源集合</a></div>
+    <div class="nav-group"><span class="nav-group-label">架构</span><a href="design.html">架构设计</a></div>
   </nav>
-  <span class="version">v2 · @Experimental</span>
+  <div class="header-hud">
+    <span class="hud-clock mono">--:--:--</span>
+    <span class="version">v2 &#183; @Experimental</span>
+  </div>
 </header>
 <div class="layout">
-<aside class="sidebar"><div class="toc-title">本页目录</div><nav class="toc"><ul><li class="l2"><a href="#什么是-seecmd-模组">什么是 SEECMD 模组</a></li><li class="l2"><a href="#最快路径官方模板推荐">最快路径：官方模板（推荐）</a></li><li class="l2"><a href="#验证模组已加载">验证模组已加载</a></li><li class="l2"><a href="#进阶手工搭建工程">进阶：手工搭建工程</a></li><li class="l2"><a href="#加载到游戏">加载到游戏</a></li><li class="l3"><a href="#模组-id-命名规范">模组 id 命名规范</a></li><li class="l2"><a href="#下一步">下一步</a></li></ul></nav></aside>
+<aside class="sidebar"><div class="toc-title">// 本页目录</div><nav class="toc"><ul><li class="l2"><a href="#什么是-seecmd-模组">什么是 SEECMD 模组</a></li><li class="l2"><a href="#最快路径官方模板推荐">最快路径：官方模板（推荐）</a></li><li class="l2"><a href="#验证模组已加载">验证模组已加载</a></li><li class="l2"><a href="#进阶手工搭建工程">进阶：手工搭建工程</a></li><li class="l2"><a href="#加载到游戏">加载到游戏</a></li><li class="l3"><a href="#模组-id-命名规范">模组 id 命名规范</a></li><li class="l2"><a href="#文档导览">文档导览</a></li></ul></nav><div class="sidebar-path"><span class="prompt">C:\</span>SEECMD::DOC /QUICKSTART<span class="cursor">&#9612;</span></div></aside>
 <main class="content">
+<div class="page-path"><span class="prompt">&gt;</span> SEECMD::DOC /QUICKSTART</div>
 <h1>快速上手</h1>
 <p class="doc-sub">从零开始：创建项目 → 编写最小模组 → 打包 → 加载到游戏</p>
 <h2 id="什么是-seecmd-模组">什么是 SEECMD 模组</h2>
@@ -44,7 +48,7 @@
 <ol><li>下载 <a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mods-template-0.1.0.zip" rel="noopener">mods-template-0.1.0.zip</a>（已内含 <code>mod-api</code> jar 与 <code>build.bat</code>）并解压。</li><li>编辑 <code>build.bat</code> 顶部的 4 个变量：<code>MOD_ID</code>、<code>MOD_NAME</code>、<code>MOD_VERSION</code>、<code>MOD_CLASS</code>（指向你的入口类）。</li><li>在 <code>src\main\java</code> 下写你的模组代码（参考模板里的 <code>ExampleMod</code>），资源放 <code>src\main\resources</code>。</li><li>双击 <code>build.bat</code>，产物在 <code>target\&lt;MOD_ID&gt;-&lt;MOD_VERSION&gt;.jar</code>。</li><li>把 jar 复制到游戏的 <code>mods\</code> 目录，启动游戏，模组即被加载。</li></ol>
 <p><strong>你唯一需要的环境是 JDK 17+</strong>（安装时勾选「加入 PATH」即可）。其余全部由模板代劳。</p>
 <p>最小模组只需实现 <code>Mod</code> 接口：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>package com.example.helloworld;
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>package com.example.helloworld;
 
 import com.seecmd.mod.api.Mod;
 import com.seecmd.mod.api.ModContext;
@@ -82,10 +86,10 @@ public class HelloWorldMod implements Mod {
 <blockquote><p><strong>重要</strong>：依赖 scope 必须为 <code>provided</code>（Maven）或 <code>compileOnly</code>（Gradle）。API 由宿主在运行期提供，模组 jar 不得把宿主类打进去。</p></blockquote>
 <p><strong>第一步：安装 mod-api 到本地仓库（只需一次）</strong></p>
 <p>从 <a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mod-api-0.6.7.jar" rel="noopener">这里</a> 下载 jar，执行：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>mvn install:install-file -Dfile=mod-api-0.6.7.jar -DgroupId=com.seecmd -DartifactId=mod-api -Dversion=0.6.7 -Dpackaging=jar</code></pre></div>
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>mvn install:install-file -Dfile=mod-api-0.6.7.jar -DgroupId=com.seecmd -DartifactId=mod-api -Dversion=0.6.7 -Dpackaging=jar</code></pre></div>
 <p><strong>第二步：声明依赖</strong></p>
 <p>Maven 示例：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">xml</span></div><pre><code>&lt;dependencies&gt;
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">xml</span></div><pre><code>&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.seecmd&lt;/groupId&gt;
         &lt;artifactId&gt;mod-api&lt;/artifactId&gt;
@@ -100,12 +104,12 @@ public class HelloWorldMod implements Mod {
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre></div>
 <p>Gradle 示例：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">groovy</span></div><pre><code>dependencies {
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">groovy</span></div><pre><code>dependencies {
     compileOnly 'com.seecmd:mod-api:0.6.7'
     compileOnly 'com.google.code.gson:gson:2.10.1'
 }</code></pre></div>
 <p><strong>打包</strong>：编译后打包为标准 jar，manifest 必须包含以下条目：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">manifest</span></div><pre><code>Manifest-Version: 1.0
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">manifest</span></div><pre><code>Manifest-Version: 1.0
 Seecmd-Mod-Id: com_example_helloworld
 Seecmd-Mod-Class: com.example.helloworld.HelloWorldMod
 Seecmd-Mod-Name: Hello World
@@ -117,21 +121,14 @@ Seecmd-Mod-Description: 一个示例模组，演示 SEECMD 模组 API 基础用�
 <ol><li>把打包好的 <code>xxx.jar</code> 放进游戏工作目录下的 <code>mods/</code> 文件夹（与 <code>data/</code> 同级）。</li><li>启动游戏，加载器自动扫描 <code>mods/</code> 目录，读取 manifest 定位入口类并注册。</li><li>模组数据目录在 <code>data/mods/&lt;modId&gt;/</code>（首次访问自动创建）。</li><li>启用状态持久化在 <code>data/settings.json</code> 的 <code>enabledMods</code>，也可用外置工具 <code>mods/mod-manager.jar</code> 管理。</li></ol>
 <h3 id="模组-id-命名规范">模组 id 命名规范</h3>
 <ul><li>小写下划线，如 <code>com_example_helloworld</code>。</li><li>不得以 <code>builtin_</code> 开头（保留给内置模组）。</li><li>建议使用反向域名前缀避免冲突。</li></ul>
-<h2 id="下一步">下一步</h2>
-<ul><li><strong><a href="guide.html">开发指南</a></strong>：完整的核心示例——替换进度条 HUD、MISS 触发自定义场景、注册新音符类型、判定修改、事件监听，每个示例都带实时预览。</li><li><strong><a href="api.html">API 参考</a></strong>：全部接口的签名定义与行为契约，含 RenderCanvas 绘制沙盒预览。</li><li><strong><a href="resources.html">资源集合</a></strong>：文档站提供的全部资源一览（模板、API jar、各文档页面）。</li><li><strong><a href="design.html">架构设计</a></strong>：能力原语、内容注册表、RenderCanvas 抽象与 api / spi / host 分层。</li><li><strong><a href="assets.html">资源制作</a></strong>：不用写代码，制作自定义音符皮肤（图片皮肤 / 字符皮肤）并应用到游戏。</li><li><strong><a href="ths.html">THS 简易语言</a></strong>：无需 Java 基础，用简单脚本就能做出游戏模组，适合零基础入门。</li></ul>
+<h2 id="文档导览">文档导览</h2>
+<table><thead><tr><th>入门</th><th>开发</th><th>资源</th><th>架构</th></tr></thead><tbody><tr><td><strong><a href="index.html">快速上手</a></strong><br>本页：从零创建最小模组</td><td><strong><a href="guide.html">开发指南</a></strong><br>核心示例：HUD、场景、音符类型、判定、事件</td><td><strong><a href="assets.html">资源制作指南</a></strong><br>不用写代码：音符皮肤、谱面、音频等</td><td><strong><a href="design.html">架构设计</a></strong><br>分层结构、能力原语与核心抽象</td></tr><tr><td><strong><a href="ths.html">THS 简易语言</a></strong><br>零基础脚本模组，无 Java 知识要求</td><td><strong><a href="api.html">API 参考</a></strong><br>全部接口的签名定义与行为契约</td><td><strong><a href="resources.html">资源集合</a></strong><br>模板 / API jar 下载与页面索引</td><td></td></tr></tbody></table>
+<p>按你的情况选择路径：</p>
+<ul><li><strong>想写 Java 模组</strong> → 从本页（快速上手）开始，然后进入 <a href="guide.html">开发指南</a> 按示例逐个实践。</li><li><strong>不想写代码</strong> → 先看 <a href="ths.html">THS 简易语言</a>；只做皮肤等替换资源，直接看 <a href="assets.html">资源制作指南</a>。</li><li><strong>需要精确签名</strong> → 以 <a href="api.html">API 参考</a> 为准（接口标注 <code>@Experimental</code>，可能调整）。</li></ul>
 </main>
 </div>
-<footer class="site-foot">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</footer>
+<footer class="site-foot"><span class="foot-line">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</span></footer>
 <script>
-function toggleMenu(e) {
-  e.stopPropagation();
-  var menu = document.getElementById("switcherMenu");
-  if (menu) menu.classList.toggle("open");
-}
-document.addEventListener("click", function() {
-  var menu = document.getElementById("switcherMenu");
-  if (menu) menu.classList.remove("open");
-});
 function toggleNav() {
   // 移动端：汉堡按钮打开本页目录（sidebar TOC）
   var sb = document.querySelector(".sidebar");

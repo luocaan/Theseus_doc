@@ -8,38 +8,34 @@
 </head>
 <body>
 
+
 <header class="site-header">
   <div class="brand-group">
-    <a class="brand" href="index.html">SEECMD</a>
-    <div class="doc-switcher">
-      <button class="switcher-btn" onclick="toggleMenu(event)">标准Java模组开发 ▾</button>
-      <div class="switcher-menu" id="switcherMenu">
-        <a href="index.html" class="active">标准Java模组开发文档</a>
-        <a href="ths.html" >THS简易语言开发文档</a>
-        <a href="assets.html" >资源制作指南</a>
-        <a href="resources.html" >资源集合</a>
-      </div>
-    </div>
+    <a class="brand" href="index.html">SEECMD<span class="brand-caret"></span></a>
     <button class="nav-toggle" onclick="toggleNav()" aria-label="菜单">&#9776;</button>
   </div>
-  <nav>
-    <a href="index.html">快速上手</a>
-    <a href="guide.html">开发指南</a>
-    <a href="api.html">API 参考</a>
-    <a href="design.html" class="active">架构设计</a>
+  <nav class="main-nav">
+    <div class="nav-group"><span class="nav-group-label">入门</span><a href="index.html">快速上手</a><a href="ths.html">THS 简易语言</a></div>
+    <div class="nav-group"><span class="nav-group-label">开发</span><a href="guide.html">开发指南</a><a href="api.html">API 参考</a></div>
+    <div class="nav-group"><span class="nav-group-label">资源</span><a href="assets.html">资源制作</a><a href="resources.html">资源集合</a></div>
+    <div class="nav-group"><span class="nav-group-label">架构</span><a href="design.html" class="active">架构设计</a></div>
   </nav>
-  <span class="version">v2 · @Experimental</span>
+  <div class="header-hud">
+    <span class="hud-clock mono">--:--:--</span>
+    <span class="version">v2 &#183; @Experimental</span>
+  </div>
 </header>
 <div class="layout">
-<aside class="sidebar"><div class="toc-title">本页目录</div><nav class="toc"><ul><li class="l2"><a href="#1-分层架构">1. 分层架构</a></li><li class="l3"><a href="#包边界强制规则">包边界强制规则</a></li><li class="l2"><a href="#2-内容注册表语义">2. 内容注册表语义</a></li><li class="l3"><a href="#21-通用语义">2.1 通用语义</a></li><li class="l3"><a href="#22-四个注册表">2.2 四个注册表</a></li><li class="l3"><a href="#23-核心循环分发">2.3 核心循环分发</a></li><li class="l2"><a href="#3-能力目录capabilities">3. 能力目录（capabilities）</a></li><li class="l3"><a href="#31-渲染覆盖模型">3.1 渲染覆盖模型</a></li><li class="l3"><a href="#32-跨域组合示例">3.2 跨域组合示例</a></li><li class="l2"><a href="#4-渲染上下文-rendercanvas-规格">4. 渲染上下文 RenderCanvas 规格</a></li><li class="l3"><a href="#41-定位">4.1 定位</a></li><li class="l3"><a href="#42-能力边界">4.2 能力边界</a></li><li class="l3"><a href="#43-颜色表示">4.3 颜色表示</a></li><li class="l2"><a href="#5-实现状态总览">5. 实现状态总览</a></li></ul></nav></aside>
+<aside class="sidebar"><div class="toc-title">// 本页目录</div><nav class="toc"><ul><li class="l2"><a href="#1-分层架构">1. 分层架构</a></li><li class="l3"><a href="#包边界强制规则">包边界强制规则</a></li><li class="l2"><a href="#2-内容注册表语义">2. 内容注册表语义</a></li><li class="l3"><a href="#21-通用语义">2.1 通用语义</a></li><li class="l3"><a href="#22-四个注册表">2.2 四个注册表</a></li><li class="l3"><a href="#23-核心循环分发">2.3 核心循环分发</a></li><li class="l2"><a href="#3-能力目录capabilities">3. 能力目录（capabilities）</a></li><li class="l3"><a href="#31-渲染覆盖模型">3.1 渲染覆盖模型</a></li><li class="l3"><a href="#32-跨域组合示例">3.2 跨域组合示例</a></li><li class="l2"><a href="#4-渲染上下文-rendercanvas-规格">4. 渲染上下文 RenderCanvas 规格</a></li><li class="l3"><a href="#41-定位">4.1 定位</a></li><li class="l3"><a href="#42-能力边界">4.2 能力边界</a></li><li class="l3"><a href="#43-颜色表示">4.3 颜色表示</a></li><li class="l2"><a href="#5-实现状态总览">5. 实现状态总览</a></li></ul></nav><div class="sidebar-path"><span class="prompt">C:\</span>SEECMD::DOC /DESIGN<span class="cursor">&#9612;</span></div></aside>
 <main class="content">
+<div class="page-path"><span class="prompt">&gt;</span> SEECMD::DOC /DESIGN</div>
 <h1>架构设计</h1>
 <p class="doc-sub">模组系统的分层结构与核心抽象（面向开发者的公开版）</p>
 <blockquote><p>本文介绍 SEECMD 模组系统的分层结构与关键抽象，帮助开发者理解「模组能做什么、为什么这样设计」。
 接口签名的唯一权威定义见 <a href="api.html">API 参考</a>；完整开发流程见 <a href="guide.html">开发指南</a>。</p></blockquote>
 <hr>
 <h2 id="1-分层架构">1. 分层架构</h2>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>┌──────────────────────────────────────────────────────────────┐
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>┌──────────────────────────────────────────────────────────────┐
 │  第三方模组 / 内置示例模组 (com.seecmd.mod.builtin)            │
 │  仅 import com.seecmd.mod.api.* 与 com.seecmd.mod.api.spi.*   │
 └───────────────▲──────────────────────────────────────────────┘
@@ -87,7 +83,7 @@
 <table><thead><tr><th>注册表</th><th>注册内容</th><th>解决的问题</th></tr></thead><tbody><tr><td><code>NoteTypeRegistry</code></td><td><code>NoteTypeDefinition</code></td><td>音符「类型」本身开放为内容：新增一种音符，定义其解析、判定与渲染方式</td></tr><tr><td><code>GameModeRegistry</code></td><td><code>GameModeDefinition</code></td><td>游戏模式开放为内容：定义模式专属的行为与规则</td></tr><tr><td><code>JudgmentKindRegistry</code></td><td><code>JudgmentKindDefinition</code></td><td>判定等级开放为内容：新增 PERFECT/GREAT/MISS 之外的判定等级，评分、统计、特效按注册表遍历</td></tr><tr><td><code>ChartExtensionRegistry</code></td><td><code>ChartExtensionParser</code></td><td>谱面 JSON 增加 <code>extensions</code> 扩展段解析机制，谱面可携带模组自定义数据</td></tr></tbody></table>
 <h3 id="23-核心循环分发">2.3 核心循环分发</h3>
 <p>核心循环只做一件事——把控制权交给内容定义对象：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">java</span></div><pre><code>noteType.onCreateRuntime(chartNote);   // 谱面解析 → 运行时音符
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>noteType.onCreateRuntime(chartNote);   // 谱面解析 → 运行时音符
 noteType.onJudge(input, sink);         // 判定 → 定义对象决定产出哪个判定等级
 noteType.render(canvas, renderCtx);    // 渲染 → 定义对象决定怎么画</code></pre></div>
 <blockquote><p>接入现状：解析、行为判断、判定（<code>onJudge</code>）与渲染（<code>render</code>）均已接入核心循环——自定义类型被判定时宿主调用 <code>onJudge</code> 派发判定等级，渲染时由定义对象自绘；内置类型不派发，回调异常由宿主捕获并回退内置逻辑。自定义类型的外观已可由皮肤系统按类型定制（见资源制作指南）。</p></blockquote>
@@ -98,14 +94,14 @@ noteType.render(canvas, renderCtx);    // 渲染 → 定义对象决定怎么画
 <blockquote><p>能力接口只含原语方法。例如「把进度条换成自定义风格」＝ <code>setProgressVisible(false)</code> + 读 <code>values().progress()</code> + <code>renderOverlay</code> 自绘，宿主不提供「进度条皮肤」概念。</p></blockquote>
 <h3 id="31-渲染覆盖模型">3.1 渲染覆盖模型</h3>
 <p>所有「替换原版渲染」的场景统一使用同一套覆盖机制，避免为每种组件发明新 API：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>① 开关：setXxxVisible(false)           —— 宿主在默认渲染该组件时检查开关，被覆盖则不画原版
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>① 开关：setXxxVisible(false)           —— 宿主在默认渲染该组件时检查开关，被覆盖则不画原版
 ② 读数：values() / context()           —— 模组读取被覆盖组件的底层数据
 ③ 覆盖：renderOverlay(canvas, hudCtx)  —— 宿主在覆盖渲染阶段调用，模组在 canvas 上自绘</code></pre></div>
 <p><strong>宿主先查覆盖、被覆盖则不画原版</strong>：<code>GameplayHud.renderOverlay</code> 只在有模组调用过 <code>setXxxVisible(false)</code> 时才被调用；同一 HUD 组件被多个模组覆盖时按注册顺序叠加，后注册的覆盖先绘制（位于上层）。</p>
 <p><strong>z 顺序约定</strong>（自底向上）：轨道/音符 → 判定特效 → 原版 HUD → <code>renderOverlay</code> 覆盖层 → 全屏覆盖层。模组在 <code>HudContext.layer()</code> 中可查询当前绘制阶段。</p>
 <h3 id="32-跨域组合示例">3.2 跨域组合示例</h3>
 <p>「miss 一次打开模组自带的 galgame」由能力接口自由组合即可实现，无需宿主提供任何专门钩子：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-lang">text</span></div><pre><code>NoteJudgedEvent (judgment == MISS)
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>NoteJudgedEvent (judgment == MISS)
   → GameStateAccess.pause()          // 改状态：暂停游玩
   → SceneHost.push(myGalgameScene)   // 改状态：压入自定义场景
   → AudioAccess.playSound(...)       // 改状态：播放自配音效
@@ -126,17 +122,8 @@ noteType.render(canvas, renderCtx);    // 渲染 → 定义对象决定怎么画
 <blockquote><p>相关文档：<a href="api.html">API 参考</a>（签名唯一权威）、<a href="guide.html">开发指南</a>（完整开发流程）。</p></blockquote>
 </main>
 </div>
-<footer class="site-foot">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</footer>
+<footer class="site-foot"><span class="foot-line">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</span></footer>
 <script>
-function toggleMenu(e) {
-  e.stopPropagation();
-  var menu = document.getElementById("switcherMenu");
-  if (menu) menu.classList.toggle("open");
-}
-document.addEventListener("click", function() {
-  var menu = document.getElementById("switcherMenu");
-  if (menu) menu.classList.remove("open");
-});
 function toggleNav() {
   // 移动端：汉堡按钮打开本页目录（sidebar TOC）
   var sb = document.querySelector(".sidebar");

@@ -8,31 +8,27 @@
 </head>
 <body>
 
+
 <header class="site-header">
   <div class="brand-group">
-    <a class="brand" href="index.html">SEECMD</a>
-    <div class="doc-switcher">
-      <button class="switcher-btn" onclick="toggleMenu(event)">标准Java模组开发 ▾</button>
-      <div class="switcher-menu" id="switcherMenu">
-        <a href="index.html" >标准Java模组开发文档</a>
-        <a href="ths.html" >THS简易语言开发文档</a>
-        <a href="assets.html" >资源制作指南</a>
-        <a href="resources.html" class="active">资源集合</a>
-      </div>
-    </div>
+    <a class="brand" href="index.html">SEECMD<span class="brand-caret"></span></a>
     <button class="nav-toggle" onclick="toggleNav()" aria-label="菜单">&#9776;</button>
   </div>
-  <nav>
-    <a href="index.html">快速上手</a>
-    <a href="guide.html">开发指南</a>
-    <a href="api.html">API 参考</a>
-    <a href="design.html">架构设计</a>
+  <nav class="main-nav">
+    <div class="nav-group"><span class="nav-group-label">入门</span><a href="index.html">快速上手</a><a href="ths.html">THS 简易语言</a></div>
+    <div class="nav-group"><span class="nav-group-label">开发</span><a href="guide.html">开发指南</a><a href="api.html">API 参考</a></div>
+    <div class="nav-group"><span class="nav-group-label">资源</span><a href="assets.html">资源制作</a><a href="resources.html" class="active">资源集合</a></div>
+    <div class="nav-group"><span class="nav-group-label">架构</span><a href="design.html">架构设计</a></div>
   </nav>
-  <span class="version">v2 · @Experimental</span>
+  <div class="header-hud">
+    <span class="hud-clock mono">--:--:--</span>
+    <span class="version">v2 &#183; @Experimental</span>
+  </div>
 </header>
 <div class="layout">
-<aside class="sidebar"><div class="toc-title">本页目录</div><nav class="toc"><ul><li class="l2"><a href="#可下载资源">可下载资源</a></li><li class="l2"><a href="#文档页面">文档页面</a></li><li class="l2"><a href="#推荐路径">推荐路径</a></li><li class="l2"><a href="#版本说明">版本说明</a></li></ul></nav></aside>
+<aside class="sidebar"><div class="toc-title">// 本页目录</div><nav class="toc"><ul><li class="l2"><a href="#可下载资源">可下载资源</a></li><li class="l2"><a href="#文档页面">文档页面</a></li><li class="l2"><a href="#推荐路径">推荐路径</a></li><li class="l2"><a href="#版本说明">版本说明</a></li></ul></nav><div class="sidebar-path"><span class="prompt">C:\</span>SEECMD::DOC /RESOURCES<span class="cursor">&#9612;</span></div></aside>
 <main class="content">
+<div class="page-path"><span class="prompt">&gt;</span> SEECMD::DOC /RESOURCES</div>
 <h1>资源集合</h1>
 <p class="doc-sub">文档站提供的全部资源一览：可下载的开发资源与文档页面，附用途说明与跳转</p>
 <p>本页汇总文档站提供的全部资源：<strong>可下载的开发资源</strong>与<strong>文档页面</strong>。每个资源都标明用途，并给出对应的详细文档跳转，方便按需取用。</p>
@@ -47,17 +43,8 @@
 <p>当前 API 版本为 <code>0.6.7</code>，接口标注 <code>@Experimental</code>（实现中，可能调整）。版本更新时，本页将同步更新下载链接与文档跳转。</p>
 </main>
 </div>
-<footer class="site-foot">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</footer>
+<footer class="site-foot"><span class="foot-line">SEECMD 模组文档 · 本地静态站点，可离线打开 · 内容与代码示例均为模拟演示，接口以 <a href="api.html">API 参考</a> 为准</span></footer>
 <script>
-function toggleMenu(e) {
-  e.stopPropagation();
-  var menu = document.getElementById("switcherMenu");
-  if (menu) menu.classList.toggle("open");
-}
-document.addEventListener("click", function() {
-  var menu = document.getElementById("switcherMenu");
-  if (menu) menu.classList.remove("open");
-});
 function toggleNav() {
   // 移动端：汉堡按钮打开本页目录（sidebar TOC）
   var sb = document.querySelector(".sidebar");

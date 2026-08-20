@@ -255,7 +255,7 @@
       if (d <= w.p) return { key: "perfect", name: "PERFECT", color: "#1f8a4c", score: 100, acc: 1.0 };
       if (d <= w.g) return { key: "great", name: "GREAT", color: "#c07a12", score: 60, acc: 0.6 };
       if (d <= w.m) return { key: "miss", name: "MISS", color: "#c0392b", score: 0, acc: 0 };
-      return { key: "none", name: "未判定", color: "#8a919c", score: 0, acc: 0 };
+      return { key: "none", name: "未判定", color: "rgba(230,230,230,0.5)", score: 0, acc: 0 };
     }
 
     var pointer = 30;
@@ -266,13 +266,13 @@
       var yTop = 24, yBot = 96, bandH = 30;
 
       // 时间轴
-      ctx.strokeStyle = "#c8ccd3";
+      ctx.strokeStyle = "rgba(160, 172, 190, 0.55)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(PAD, yBot); ctx.lineTo(W - PAD, yBot);
       ctx.stroke();
       // 判定线（音符时间 0）
-      ctx.strokeStyle = "#1c1e22";
+      ctx.strokeStyle = "rgba(140, 190, 120, 0.9)";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(W / 2, 10); ctx.lineTo(W / 2, yBot);
@@ -290,15 +290,15 @@
       }
 
       // 三层带：perfect ⊂ great ⊂ miss（自外向内绘制，内层覆盖）
-      band(-w.m, w.m, "#e7b6b0", 0.55);      // miss 外带
-      band(-w.g, w.g, "#f4d9a2", 0.6);       // great 中带
-      band(-w.p, w.p, "#b7e0c8", 0.85);      // perfect 内带
+      band(-w.m, w.m, "#e6786e", 0.12);      // miss 外带
+      band(-w.g, w.g, "#dcaa5a", 0.15);      // great 中带
+      band(-w.p, w.p, "rgba(140, 190, 120, 0.22)", 1); // perfect 内带
 
       // 迟到截断区（判定线右侧 +w.m .. +w.m+w.late）
-      band(w.m, w.m + w.late, "#c8ccd3", 0.5);
+      band(w.m, w.m + w.late, "rgba(230, 230, 230, 0.10)", 1);
 
       // 边界标签
-      ctx.fillStyle = "#5b626c";
+      ctx.fillStyle = "rgba(230, 230, 230, 0.5)";
       ctx.font = "10px monospace";
       ctx.fillText("-" + w.m, xOf(-w.m) - 14, yTop + bandH + 12);
       ctx.fillText("+" + w.m, xOf(w.m) + 2, yTop + bandH + 12);
@@ -306,22 +306,22 @@
       ctx.fillText("±" + w.g, xOf(w.g) - 10, yTop - 4);
       ctx.fillText("note", W / 2 + 4, 8);
       if (wide) {
-        ctx.fillStyle = "#a16207";
+        ctx.fillStyle = "rgba(220, 170, 90, 0.9)";
         ctx.fillText("截断 +" + (w.m + w.late), xOf(w.m + w.late) + 2, yBot + 12);
       }
 
       // 指针
       var px = xOf(pointer);
-      ctx.strokeStyle = "#1c1e22";
+      ctx.strokeStyle = "rgba(140, 190, 120, 0.9)";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(px, 6); ctx.lineTo(px, yBot + 8);
       ctx.stroke();
       ctx.beginPath();
       ctx.arc(px, yBot + 8, 5, 0, Math.PI * 2);
-      ctx.fillStyle = "#1c1e22";
+      ctx.fillStyle = "rgba(140, 190, 120, 0.9)";
       ctx.fill();
-      ctx.fillStyle = "#fff";
+      ctx.fillStyle = "#141416";
       ctx.font = "bold 10px monospace";
       ctx.textAlign = "center";
       ctx.fillText((pointer > 0 ? "+" : "") + pointer, px, yBot + 22);
@@ -414,7 +414,7 @@
     draw();
 
     // 说明行
-    var note = el("p", "", '<span style="color:#8a919c;font-size:12px">拖动上方指针即可查看不同时间偏移对应的判定结果；切到「宽松判定 ×1.5」可观察窗口放大后判定如何变宽松（多个 policy 取最大值，见判定修改章节）。</span>');
+    var note = el("p", "", '<span style="color:rgba(230,230,230,0.5);font-size:12px">拖动上方指针即可查看不同时间偏移对应的判定结果；切到「宽松判定 ×1.5」可观察窗口放大后判定如何变宽松（多个 policy 取最大值，见判定修改章节）。</span>');
     box.appendChild(note);
   });
 
@@ -582,7 +582,7 @@
     body.appendChild(logEl);
 
     var jsonShow = el("pre");
-    jsonShow.style.cssText = "font-family:var(--mono);font-size:12px;background:#101216;color:#c8cdd5;padding:10px 12px;border-radius:5px;overflow-x:auto;margin:10px 0 0";
+    jsonShow.style.cssText = "font-family:var(--mono);font-size:12px;background:#111113;color:#c8cdd5;padding:10px 12px;border-radius:3px;overflow-x:auto;margin:10px 0 0";
     jsonShow.textContent =
       '{\n  "title": "Slide Demo",\n  "bpm": 140,\n  "lanes": 4,\n  "notes": [\n' +
       '    { "type": "slide", "time": 5000, "lane": 1, "endLane": 3 },\n' +
@@ -888,7 +888,7 @@
     }));
     body.appendChild(preset);
 
-    var note = el("p", "", '<span style="color:#8a919c;font-size:12px">观察 RESET 类判定：combo 归零且<b>不显示连击文字</b>（与内置 MISS 同语义），但依旧写入日志与统计；NONE 类不影响 combo。点击判定徽章可删除。</span>');
+    var note = el("p", "", '<span style="color:rgba(230,230,230,0.5);font-size:12px">观察 RESET 类判定：combo 归零且<b>不显示连击文字</b>（与内置 MISS 同语义），但依旧写入日志与统计；NONE 类不影响 combo。点击判定徽章可删除。</span>');
     body.appendChild(note);
 
     box.appendChild(body);
@@ -905,7 +905,7 @@
     var W = 760, H = 300;
 
     var canvas = el("canvas");
-    canvas.style.cssText = "border:1px solid #e2e4e8;border-radius:5px;background:#fff;cursor:crosshair;display:block;width:100%";
+    canvas.style.cssText = "border:1px solid rgba(255,255,255,0.1);border-radius:3px;background:#111113;cursor:crosshair;display:block;width:100%";
     canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext("2d");
     var dpr = 1;
@@ -917,7 +917,7 @@
     fit();
 
     var mode = "fillRect";
-    var color = "#1c1e22";
+    var color = "#e8eaee";
     var alpha = 1;
     var dragStart = null;
 
@@ -993,8 +993,8 @@
       if (!dragStart) return;
       var p = pos(e);
       ctx.save();
-      ctx.globalAlpha = 0.25;
-      ctx.strokeStyle = "#3f5f90";
+      ctx.globalAlpha = 0.3;
+      ctx.strokeStyle = "#8cbe78";
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       ctx.strokeRect(0, 0, W - 1, H - 1);
@@ -1028,7 +1028,7 @@
       row.appendChild(b);
     });
     row.appendChild(el("span", "", "&nbsp;颜色："));
-    [["#1c1e22", "黑"], ["#5b626c", "灰"], ["#00c2a0", "青"], ["#c0392b", "红"]].forEach(function (c) {
+    [["#e8eaee", "白"], ["#8b94a3", "灰"], ["#8cbe78", "绿"], ["#e6786e", "红"]].forEach(function (c) {
       var b = btn("", "", function () {
         color = c[0];
         row.querySelectorAll(".btn.color").forEach(function (x) { x.style.background = ""; x.style.color = ""; });
@@ -1037,7 +1037,7 @@
       });
       b.className = "btn color";
       b.style.cssText += "background:" + c[0] + ";width:22px;height:22px;padding:0;border-radius:50%;border-color:" + c[0];
-      if (c[0] === "#1c1e22") b.style.color = "#fff";
+      if (c[0] === "#e8eaee") b.style.color = "#141416";
       row.appendChild(b);
     });
     row.appendChild(el("span", "", "&nbsp;透明度"));
@@ -1669,6 +1669,43 @@
         if (open && window.__openStep) window.__openStep(step);
       });
     });
+  });
+
+  /* ---------------- HUD 时钟 ---------------- */
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var clocks = document.querySelectorAll(".hud-clock");
+    if (!clocks.length) return;
+    function tick() {
+      var d = new Date();
+      var p = function (n) { return (n < 10 ? "0" : "") + n; };
+      var str = p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds());
+      clocks.forEach(function (c) { c.textContent = str; });
+    }
+    tick();
+    setInterval(tick, 1000);
+  });
+
+  /* ---------------- 滚动渐显 ---------------- */
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var targets = document.querySelectorAll(
+      ".content h2, .content h3, .content blockquote, .content table, .code-wrap, .demo, .card, .step"
+    );
+    if (!targets.length || !("IntersectionObserver" in window)) {
+      targets.forEach(function (t) { t.classList.add("fade-in", "visible"); });
+      return;
+    }
+    targets.forEach(function (t) { t.classList.add("fade-in"); });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.classList.add("visible");
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.06, rootMargin: "0px 0px -40px 0px" });
+    targets.forEach(function (t) { io.observe(t); });
   });
 
   /* ---------------- 暴露给外部 ---------------- */
