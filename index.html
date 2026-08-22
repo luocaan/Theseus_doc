@@ -85,15 +85,15 @@ public class HelloWorldMod implements Mod {
 <p>如果你已有自己的构建体系（Maven / Gradle / IDE），也可以手工引入依赖。</p>
 <blockquote><p><strong>重要</strong>：依赖 scope 必须为 <code>provided</code>（Maven）或 <code>compileOnly</code>（Gradle）。API 由宿主在运行期提供，模组 jar 不得把宿主类打进去。</p></blockquote>
 <p><strong>第一步：安装 mod-api 到本地仓库（只需一次）</strong></p>
-<p>从 <a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mod-api-0.6.7.jar" rel="noopener">这里</a> 下载 jar，执行：</p>
-<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>mvn install:install-file -Dfile=mod-api-0.6.7.jar -DgroupId=com.seecmd -DartifactId=mod-api -Dversion=0.6.7 -Dpackaging=jar</code></pre></div>
+<p>从 <a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mod-api-0.7.0.jar" rel="noopener">这里</a> 下载 jar，执行：</p>
+<div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>mvn install:install-file -Dfile=mod-api-0.7.0.jar -DgroupId=com.seecmd -DartifactId=mod-api -Dversion=0.7.0 -Dpackaging=jar</code></pre></div>
 <p><strong>第二步：声明依赖</strong></p>
 <p>Maven 示例：</p>
 <div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">xml</span></div><pre><code>&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.seecmd&lt;/groupId&gt;
         &lt;artifactId&gt;mod-api&lt;/artifactId&gt;
-        &lt;version&gt;0.6.7&lt;/version&gt;
+        &lt;version&gt;0.7.0&lt;/version&gt;
         &lt;scope&gt;provided&lt;/scope&gt;
     &lt;/dependency&gt;
     &lt;dependency&gt;
@@ -105,7 +105,7 @@ public class HelloWorldMod implements Mod {
 &lt;/dependencies&gt;</code></pre></div>
 <p>Gradle 示例：</p>
 <div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">groovy</span></div><pre><code>dependencies {
-    compileOnly 'com.seecmd:mod-api:0.6.7'
+    compileOnly 'com.seecmd:mod-api:0.7.0'
     compileOnly 'com.google.code.gson:gson:2.10.1'
 }</code></pre></div>
 <p><strong>打包</strong>：编译后打包为标准 jar，manifest 必须包含以下条目：</p>

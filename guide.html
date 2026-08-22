@@ -44,13 +44,13 @@
 <p>两种方式产物一致，均为带完整 manifest 的模组 jar。整个过程中你唯一需要安装的只有 <strong>JDK 17+</strong>（安装时勾选「加入 PATH」即可），其余全部由模板代劳——把注意力放在写代码上，而不是和环境打架。</p>
 <h3 id="手工搭建maven--gradle可选">手工搭建（Maven / Gradle，可选）</h3>
 <p>如果你已有自己的构建体系，可以手工引入依赖。模组开发需要将 SEECMD 的 <strong><code>mod-api</code> 瘦身 jar</strong> 作为编译期依赖。该 jar 仅含 <code>com.seecmd.mod.api.*</code>（含子包）与 <code>com.seecmd.mod.api.spi.*</code>，剥离了宿主实现与游戏内核，是第三方模组唯一应依赖的宿主产物。</p>
-<blockquote><p><strong>获取方式</strong>：<code>mod-api</code> jar 随游戏发布，也可从 <a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mod-api-0.6.7.jar" rel="noopener">Theseus 文档站</a> 直接下载。下载后安装到本地 Maven 仓库：</p><div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span></div><pre><code>mvn install:install-file -Dfile=mod-api-0.6.7.jar -DgroupId=com.seecmd -DartifactId=mod-api -Dversion=0.6.7 -Dpackaging=jar</code></pre></div><p>安装成功后即可按以下坐标引用。</p></blockquote>
+<blockquote><p><strong>获取方式</strong>：<code>mod-api</code> jar 随游戏发布，也可从 <a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mod-api-0.7.0.jar" rel="noopener">Theseus 文档站</a> 直接下载。下载后安装到本地 Maven 仓库：</p><div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span></div><pre><code>mvn install:install-file -Dfile=mod-api-0.7.0.jar -DgroupId=com.seecmd -DartifactId=mod-api -Dversion=0.7.0 -Dpackaging=jar</code></pre></div><p>安装成功后即可按以下坐标引用。</p></blockquote>
 <p>Maven 示例：</p>
 <div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">xml</span></div><pre><code>&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.seecmd&lt;/groupId&gt;
         &lt;artifactId&gt;mod-api&lt;/artifactId&gt;
-        &lt;version&gt;0.6.7&lt;/version&gt;
+        &lt;version&gt;0.7.0&lt;/version&gt;
         &lt;scope&gt;provided&lt;/scope&gt;
     &lt;/dependency&gt;
     &lt;!-- api.spi 的签名参数（JsonObject）依赖 Gson，宿主运行期提供 --&gt;
@@ -64,7 +64,7 @@
 <blockquote><p><code>scope</code> 必须为 <code>provided</code> / <code>compileOnly</code>：API 由宿主在运行期提供，模组 jar 不得把宿主类打进去，否则会引发类加载冲突。</p></blockquote>
 <p>Gradle 示例：</p>
 <div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">groovy</span></div><pre><code>dependencies {
-    compileOnly 'com.seecmd:mod-api:0.6.7'
+    compileOnly 'com.seecmd:mod-api:0.7.0'
     compileOnly 'com.google.code.gson:gson:2.10.1'
 }</code></pre></div>
 <h3 id="包依赖说明">包依赖说明</h3>
@@ -116,7 +116,7 @@ public void onLoad(ModContext ctx) {
     ctx.notifier().error(&quot;音频资源缺失&quot;);
 
     // 重要信息：居中弹窗，5 秒后自动关闭
-    ctx.notifier().dialog(&quot;本模组需要游戏 v0.6.7+&quot;, 5000);
+    ctx.notifier().dialog(&quot;本模组需要游戏 v0.7.0+&quot;, 5000);
 }</code></pre></div>
 <p><code>notifier()</code> 的方法<strong>可在任意线程调用</strong>（仅入队后立即返回，不阻塞调用线程），渲染由游戏线程在每帧统一完成。注意 toast 有同屏数量上限，频繁调用会丢弃最旧的消息——不要用它做每帧刷新的调试输出（请用 <code>getLogger()</code>，见 <a href="#第-13-节">第 13 节</a>）。</p>
 <hr>
