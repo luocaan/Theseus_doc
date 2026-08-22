@@ -45,7 +45,7 @@
 <p>所有 API 位于 <code>com.seecmd.mod.api</code> 包中，标注 <code>@Experimental</code>（实现中，可能调整）。</p>
 <h2 id="最快路径官方模板推荐">最快路径：官方模板（推荐）</h2>
 <p>不需要从零搭工程、不需要装 Maven、不需要配置依赖——<strong>下载模板，解压即用</strong>。</p>
-<ol><li>下载 <a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mods-template-0.1.0.zip" rel="noopener">mods-template-0.1.0.zip</a>（已内含 <code>mod-api</code> jar 与 <code>build.bat</code>）并解压。</li><li>编辑 <code>build.bat</code> 顶部的 4 个变量：<code>MOD_ID</code>、<code>MOD_NAME</code>、<code>MOD_VERSION</code>、<code>MOD_CLASS</code>（指向你的入口类）。</li><li>在 <code>src\main\java</code> 下写你的模组代码（参考模板里的 <code>ExampleMod</code>），资源放 <code>src\main\resources</code>。</li><li>双击 <code>build.bat</code>，产物在 <code>target\&lt;MOD_ID&gt;-&lt;MOD_VERSION&gt;.jar</code>。</li><li>把 jar 复制到游戏的 <code>mods\</code> 目录，启动游戏，模组即被加载。</li></ol>
+<ol><li>下载 <a href="https://github.com/luocaan/Theseus_doc/raw/main/assets/mods-template.zip" rel="noopener">mods-template.zip</a>（已内含 <code>mod-api</code> jar 与 <code>build.bat</code>）并解压。</li><li>编辑 <code>build.bat</code> 顶部的 4 个变量：<code>MOD_ID</code>、<code>MOD_NAME</code>、<code>MOD_VERSION</code>、<code>MOD_CLASS</code>（指向你的入口类）。</li><li>在 <code>src\main\java</code> 下写你的模组代码（参考模板里的 <code>ExampleMod</code>），资源放 <code>src\main\resources</code>。</li><li>双击 <code>build.bat</code>，产物在 <code>target\&lt;MOD_ID&gt;-&lt;MOD_VERSION&gt;.jar</code>。</li><li>把 jar 复制到游戏的 <code>mods\</code> 目录，启动游戏，模组即被加载。</li></ol>
 <p><strong>你唯一需要的环境是 JDK 17+</strong>（安装时勾选「加入 PATH」即可）。其余全部由模板代劳。</p>
 <p>最小模组只需实现 <code>Mod</code> 接口：</p>
 <div class="code-wrap"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">java</span></div><pre><code>package com.example.helloworld;
