@@ -733,9 +733,10 @@ pre code {
   background: var(--bg);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-end;
   gap: 26px;
+  padding: 0 0 52px 52px;
   animation: boot-fade 2.3s ease 0.35s forwards;
 }
 .boot-logo {
